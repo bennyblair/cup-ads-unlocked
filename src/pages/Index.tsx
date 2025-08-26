@@ -15,10 +15,10 @@ const Index = () => {
       <ProblemSection />
       <SolutionSection />
       <BenefitsSection />
-      <ProfitabilityDemo />
       <ProcessSection />
       <ImpactSection />
       <CTASection />
+      <ProfitabilityDemo />
       <Footer />
     </div>
   );

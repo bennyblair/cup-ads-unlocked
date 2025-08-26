@@ -44,8 +44,31 @@ const ProfitabilityDemo = () => {
   useEffect(() => {
     // Auto-start animation on mount
     const timer = setTimeout(handleAnimation, 1000)
-    return () => clearTimeout(timer)
-  }, [])
+    
+    // Auto-restart animation every 8 seconds
+    const interval = setInterval(handleAnimation, 8000)
+    
+    // Intersection observer to restart when in view
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !isAnimating) {
+            handleAnimation()
+          }
+        })
+      },
+      { threshold: 0.3 }
+    )
+    
+    const section = document.querySelector('#profitability-demo')
+    if (section) observer.observe(section)
+    
+    return () => {
+      clearTimeout(timer)
+      clearInterval(interval)
+      observer.disconnect()
+    }
+  }, [isAnimating])
 
   const CostBar = ({ label, amount, color, isHighlighted = false }: { 
     label: string
@@ -97,9 +120,13 @@ const ProfitabilityDemo = () => {
   const profit = currentView === 'before' ? beforeProfit : afterProfit
 
   return (
-    <section className="section-padding bg-gradient-subtle">
+    <section id="profitability-demo" className="section-padding bg-gradient-to-br from-primary/5 to-accent/5 border-t border-border/50">
       <div className="container-custom">
         <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/20 rounded-full text-accent font-semibold mb-4">
+            <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+            Live Profitability Calculator
+          </div>
           <h2 className="heading-section">See The Impact</h2>
           <p className="text-hero-sub max-w-2xl mx-auto">
             Watch how CupSpace transforms cafe profitability by eliminating cup costs
