@@ -8,7 +8,7 @@ const ProblemSection = () => {
         <div className="text-center mb-16">
           <h2 className="heading-section">The Problem</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Two industries facing critical challenges that CupSpace solves
+            Two industries facing critical challenges that BrandPak solves
           </p>
         </div>
         

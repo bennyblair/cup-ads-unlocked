@@ -12,7 +12,7 @@ const ProfitabilityDemo = () => {
     beans: 0.85,
     labor: 1.20,
     overhead: 0.65,
-    cupLid: 0.35, // This is what CupSpace eliminates
+    cupLid: 0.35, // This is what BrandPak eliminates
     other: 0.25
   }
 
@@ -20,7 +20,7 @@ const ProfitabilityDemo = () => {
     beans: 0.85,
     labor: 1.20,
     overhead: 0.65,
-    cupLid: 0.00, // CupSpace provides these free
+    cupLid: 0.00, // BrandPak provides these free
     other: 0.25
   }
 
@@ -129,7 +129,7 @@ const ProfitabilityDemo = () => {
           </div>
           <h2 className="heading-section">See The Impact</h2>
           <p className="text-hero-sub max-w-2xl mx-auto">
-            Watch how CupSpace transforms cafe profitability by eliminating cup costs
+            Watch how BrandPak transforms cafe profitability by eliminating cup costs
           </p>
         </div>
 
@@ -147,7 +147,7 @@ const ProfitabilityDemo = () => {
                       ? 'bg-destructive/10 text-destructive' 
                       : 'bg-accent/10 text-accent'
                   }`}>
-                    {currentView === 'before' ? 'Current Model' : 'With CupSpace'}
+                    {currentView === 'before' ? 'Current Model' : 'With BrandPak'}
                   </div>
                 </div>
 
@@ -186,7 +186,7 @@ const ProfitabilityDemo = () => {
                   <div className="bg-accent/10 border border-accent/20 rounded-lg p-4 animate-fade-in">
                     <div className="flex items-center gap-2 text-accent font-semibold">
                       <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
-                      Cup costs eliminated by CupSpace!
+                      Cup costs eliminated by BrandPak!
                     </div>
                   </div>
                 )}

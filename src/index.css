@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* CupSpace Design System - Modern, Professional, Startup Aesthetic */
+/* BrandPak Design System - Modern, Professional, Startup Aesthetic */
 
 @layer base {
   :root {
@@ -19,11 +19,11 @@
     --popover-foreground: 220 13% 18%;
     
     /* Brand Colors */
-    --primary: 250 60% 15%; /* Deep Purple */
+    --primary: 150 70% 25%; /* Deep Forest Green */
     --primary-foreground: 0 0% 98%;
     
     /* Accent Colors */
-    --accent: 280 100% 65%; /* Electric Purple */
+    --accent: 120 100% 45%; /* Electric Lime Green */
     --accent-foreground: 0 0% 98%;
     
     /* Secondary Colors */
@@ -41,16 +41,16 @@
     /* Border & Input */
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 280 100% 65%;
+    --ring: 120 100% 45%;
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(280 100% 65%), hsl(260 100% 70%));
-    --gradient-hero: linear-gradient(135deg, hsl(250 60% 15%), hsl(270 50% 20%));
-    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(250 20% 98%));
+    --gradient-primary: linear-gradient(135deg, hsl(120 100% 45%), hsl(140 80% 50%));
+    --gradient-hero: linear-gradient(135deg, hsl(150 70% 25%), hsl(130 60% 30%));
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(150 20% 98%));
     
     /* Shadows */
-    --shadow-elegant: 0 10px 30px -10px hsl(250 60% 15% / 0.15);
-    --shadow-accent: 0 10px 30px -10px hsl(280 100% 65% / 0.3);
+    --shadow-elegant: 0 10px 30px -10px hsl(150 70% 25% / 0.15);
+    --shadow-accent: 0 10px 30px -10px hsl(120 100% 45% / 0.3);
     
     /* Spacing & Layout */
     --radius: 0.75rem;

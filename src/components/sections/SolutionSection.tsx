@@ -9,7 +9,7 @@ const SolutionSection = () => {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Content */}
           <div>
-            <h2 className="heading-section">The CupSpace Solution</h2>
+            <h2 className="heading-section">The BrandPak Solution</h2>
             <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
               A revolutionary platform that transforms every takeaway coffee cup into premium advertising space.
             </p>
@@ -21,7 +21,7 @@ const SolutionSection = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-primary mb-2">Free Branded Cups</h3>
-                  <p className="text-muted-foreground">CupSpace provides branded cups to cafés at no cost, eliminating a significant operational expense.</p>
+                  <p className="text-muted-foreground">BrandPak provides branded cups to cafés at no cost, eliminating a significant operational expense.</p>
                 </div>
               </div>
               
