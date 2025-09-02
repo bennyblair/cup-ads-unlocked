@@ -19,11 +19,11 @@
     --popover-foreground: 220 13% 18%;
     
     /* Brand Colors */
-    --primary: 150 70% 25%; /* Deep Forest Green */
+    --primary: 158 64% 20%; /* Sophisticated dark forest green */
     --primary-foreground: 0 0% 98%;
     
     /* Accent Colors */
-    --accent: 120 100% 45%; /* Electric Lime Green */
+    --accent: 158 45% 30%; /* Darker complementary green */
     --accent-foreground: 0 0% 98%;
     
     /* Secondary Colors */
@@ -41,16 +41,16 @@
     /* Border & Input */
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 120 100% 45%;
+    --ring: 158 45% 30%;
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(120 100% 45%), hsl(140 80% 50%));
-    --gradient-hero: linear-gradient(135deg, hsl(150 70% 25%), hsl(130 60% 30%));
-    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(150 20% 98%));
+    --gradient-primary: linear-gradient(135deg, hsl(158 45% 30%), hsl(158 55% 35%));
+    --gradient-hero: linear-gradient(135deg, hsl(158 64% 20%), hsl(158 50% 25%));
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(158 20% 98%));
     
     /* Shadows */
-    --shadow-elegant: 0 10px 30px -10px hsl(150 70% 25% / 0.15);
-    --shadow-accent: 0 10px 30px -10px hsl(120 100% 45% / 0.3);
+    --shadow-elegant: 0 10px 30px -10px hsl(158 64% 20% / 0.15);
+    --shadow-accent: 0 10px 30px -10px hsl(158 45% 30% / 0.3);
     
     /* Spacing & Layout */
     --radius: 0.75rem;
