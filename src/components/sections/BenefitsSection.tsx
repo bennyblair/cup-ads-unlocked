@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card"
-import { Coffee, Megaphone, DollarSign, Eye, Map, Award } from "lucide-react"
+import { Coffee, Megaphone, DollarSign, Eye, Map, Award, QrCode } from "lucide-react"
 import cafeLifestyleImage from "@/assets/cafe-lifestyle.jpg"
+import qrCodeCupsImage from "@/assets/qr-code-collection.jpg"
 
 const BenefitsSection = () => {
   return (
@@ -74,30 +75,34 @@ const BenefitsSection = () => {
                   <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center mr-4">
                     <Eye className="w-5 h-5 text-accent" />
                   </div>
-                  <h3 className="text-lg font-semibold text-primary">Brands in Hands</h3>
+                  <h3 className="text-lg font-semibold text-primary">Trackable QR Code Campaigns</h3>
                 </div>
-                <p className="text-muted-foreground">Customers carry your message for minutes, not seconds — real engagement time.</p>
+                <p className="text-muted-foreground">Include QR codes for measurable lead generation - track conversions from free trials to app downloads with real ROI data.</p>
               </Card>
               
               <Card className="p-6 border-0 shadow-elegant">
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center mr-4">
-                    <Map className="w-5 h-5 text-accent" />
+                    <QrCode className="w-5 h-5 text-accent" />
                   </div>
-                  <h3 className="text-lg font-semibold text-primary">Scalable & Local</h3>
+                  <h3 className="text-lg font-semibold text-primary">Direct Lead Capture</h3>
                 </div>
-                <p className="text-muted-foreground">Premium positioning with local reach that scales across Australia's café culture.</p>
+                <p className="text-muted-foreground">QR codes enable immediate conversions - from free gym trials to app downloads, with full attribution tracking.</p>
               </Card>
             </div>
           </div>
         </div>
         
-        {/* Lifestyle Image */}
+        {/* QR Code Showcase */}
         <div className="mt-16">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-primary mb-4">QR Code Lead Generation in Action</h3>
+            <p className="text-lg text-muted-foreground">See how brands like Snap Fitness capture qualified leads with every coffee sold</p>
+          </div>
           <div className="cup-showcase max-w-5xl mx-auto">
             <img 
-              src={cafeLifestyleImage} 
-              alt="People in a modern café with branded coffee cups"
+              src={qrCodeCupsImage} 
+              alt="Branded coffee cups with QR codes for lead generation campaigns"
               className="w-full h-96 object-cover"
             />
           </div>

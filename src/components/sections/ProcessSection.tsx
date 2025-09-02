@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card"
-import { Search, Truck, Handshake } from "lucide-react"
+import { Search, Truck, QrCode } from "lucide-react"
 
 const ProcessSection = () => {
   return (
@@ -43,9 +43,9 @@ const ProcessSection = () => {
               <Truck className="w-8 h-8 text-accent" />
             </div>
             
-            <h3 className="text-xl font-bold text-primary mb-4">We Supply Branded Cups</h3>
+            <h3 className="text-xl font-bold text-primary mb-4">We Supply Branded Cups with QR Codes</h3>
             <p className="text-muted-foreground leading-relaxed">
-              High-quality takeaway cups featuring advertiser branding are delivered directly to partner cafés at no cost.
+              High-quality takeaway cups featuring advertiser branding and trackable QR codes are delivered directly to partner cafés at no cost.
             </p>
           </Card>
           
@@ -58,12 +58,12 @@ const ProcessSection = () => {
             </div>
             
             <div className="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-6 mt-4">
-              <Handshake className="w-8 h-8 text-accent" />
+              <QrCode className="w-8 h-8 text-accent" />
             </div>
             
-            <h3 className="text-xl font-bold text-primary mb-4">Everyone Wins</h3>
+            <h3 className="text-xl font-bold text-primary mb-4">Measurable Results</h3>
             <p className="text-muted-foreground leading-relaxed">
-              Cafés save money, brands reach customers, and coffee lovers get beautifully designed cups that enhance their experience.
+              Cafés save money, brands capture qualified leads through QR codes, and customers access exclusive offers - everyone wins with trackable ROI.
             </p>
           </Card>
         </div>

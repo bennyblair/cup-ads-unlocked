@@ -40,8 +40,8 @@ const SolutionSection = () => {
                   <Zap className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-primary mb-2">Untapped Medium</h3>
-                  <p className="text-muted-foreground">Brands access a unique, high-impact channel where every cup in hand provides minutes of daily brand visibility.</p>
+                  <h3 className="text-xl font-semibold text-primary mb-2">Trackable Lead Generation</h3>
+                  <p className="text-muted-foreground">QR codes on every cup enable direct lead capture - from gym trials to app downloads - with full conversion tracking and measurable ROI.</p>
                 </div>
               </div>
             </div>
