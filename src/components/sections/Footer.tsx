@@ -9,13 +9,13 @@ const Footer = () => {
           <div className="md:col-span-2">
             <div className="flex items-center mb-4">
               <Coffee className="w-8 h-8 text-accent mr-3" />
-              <span className="text-2xl font-bold">BrandPak</span>
+              <span className="text-2xl font-bold">CupSpace</span>
             </div>
             <p className="text-primary-foreground/80 mb-4 max-w-md">
               Transforming takeaway coffee cups into powerful advertising space while helping cafés improve their margins.
             </p>
             <p className="text-sm text-primary-foreground/60">
-              © 2024 BrandPak. All rights reserved.
+              © 2024 CupSpace. All rights reserved.
             </p>
           </div>
           

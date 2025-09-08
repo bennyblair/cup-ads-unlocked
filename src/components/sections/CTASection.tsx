@@ -11,7 +11,7 @@ const CTASection = () => {
         <div className="text-center mb-16">
           <h2 className="heading-section">Ready to Transform Your Business?</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Join the BrandPak revolution and discover a new way to connect with customers
+            Join the CupSpace revolution and discover a new way to connect with customers
           </p>
         </div>
         
@@ -21,10 +21,10 @@ const CTASection = () => {
             <Card className="p-8 border-0 shadow-elegant text-center">
               <h3 className="text-2xl font-bold text-primary mb-4">For Advertisers</h3>
               <p className="text-muted-foreground mb-6">
-                Ready to reach customers in a revolutionary new way? Let's discuss how BrandPak can amplify your brand.
+                Ready to reach customers in a revolutionary new way? Let's discuss how CupSpace can amplify your brand.
               </p>
               <HeroButton size="lg" className="w-full sm:w-auto">
-                Advertise with BrandPak
+                Advertise with CupSpace
               </HeroButton>
             </Card>
             
@@ -72,7 +72,7 @@ const CTASection = () => {
                   className="w-full mt-1 px-3 py-2 border border-input rounded-md bg-background text-foreground"
                 >
                   <option value="">Select an option</option>
-                  <option value="advertising">Advertising with BrandPak</option>
+                  <option value="advertising">Advertising with CupSpace</option>
                   <option value="partnership">Partnering as a Café</option>
                   <option value="general">General Inquiry</option>
                 </select>

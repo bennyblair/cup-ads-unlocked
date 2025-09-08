@@ -16,7 +16,7 @@ const HeroSection = () => {
       <div className="relative z-10 container-custom text-center text-white">
         <div className="max-w-5xl mx-auto">
           <h1 className="heading-hero text-white mb-6">
-            BrandPak: Where Every Coffee Becomes <span className="text-accent">Ad Space</span>
+            CupSpace: Where Every Coffee Becomes <span className="text-accent">Ad Space</span>
           </h1>
           
           <p className="text-hero-sub text-white/90 mb-12 max-w-3xl mx-auto">
