@@ -2,10 +2,8 @@ import HeroSection from "@/components/sections/HeroSection"
 import ProblemSection from "@/components/sections/ProblemSection"
 import SolutionSection from "@/components/sections/SolutionSection"
 import BenefitsSection from "@/components/sections/BenefitsSection"
-import QRShowcaseSection from "@/components/sections/QRShowcaseSection"
 import ProfitabilityDemo from "@/components/sections/ProfitabilityDemo"
 import ProcessSection from "@/components/sections/ProcessSection"
-import ImpactSection from "@/components/sections/ImpactSection"
 import CTASection from "@/components/sections/CTASection"
 import Footer from "@/components/sections/Footer"
 
@@ -16,11 +14,9 @@ const Index = () => {
       <ProblemSection />
       <SolutionSection />
       <BenefitsSection />
-      <QRShowcaseSection />
       <ProcessSection />
-      <ImpactSection />
-      <CTASection />
       <ProfitabilityDemo />
+      <CTASection />
       <Footer />
     </div>
   );
