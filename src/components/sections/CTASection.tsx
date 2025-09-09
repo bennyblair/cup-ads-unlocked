@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label"
 
 const CTASection = () => {
   return (
-    <section className="section-padding bg-gradient-subtle">
+    <section id="cta" className="section-padding bg-gradient-subtle">
       <div className="container-custom">
         <div className="text-center mb-16">
           <h2 className="heading-section">Ready to Transform Your Business?</h2>

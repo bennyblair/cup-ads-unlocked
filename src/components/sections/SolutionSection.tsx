@@ -4,7 +4,7 @@ import brandedCupsImage from "@/assets/branded-cups-collection.jpg"
 
 const SolutionSection = () => {
   return (
-    <section className="section-padding">
+    <section id="solution" className="section-padding">
       <div className="container-custom">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Content */}

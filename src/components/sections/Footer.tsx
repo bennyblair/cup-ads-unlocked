@@ -2,7 +2,7 @@ import { Coffee } from "lucide-react"
 
 const Footer = () => {
   return (
-    <footer className="bg-primary text-primary-foreground py-12">
+    <footer id="contact" className="bg-primary text-primary-foreground py-12">
       <div className="container-custom">
         <div className="grid md:grid-cols-4 gap-8">
           {/* Logo and Description */}
@@ -27,17 +27,18 @@ const Footer = () => {
               <li><a href="#problem" className="hover:text-accent transition-colors">The Problem</a></li>
               <li><a href="#solution" className="hover:text-accent transition-colors">Our Solution</a></li>
               <li><a href="#process" className="hover:text-accent transition-colors">How It Works</a></li>
+              <li><a href="#contact" className="hover:text-accent transition-colors">Contact</a></li>
             </ul>
           </div>
           
-          {/* Contact */}
+          {/* Get Started */}
           <div>
             <h4 className="font-semibold mb-4">Get Started</h4>
             <ul className="space-y-2 text-primary-foreground/80">
-              <li><a href="#contact" className="hover:text-accent transition-colors">Advertise with Us</a></li>
-              <li><a href="#contact" className="hover:text-accent transition-colors">Partner as a Café</a></li>
-              <li><a href="#contact" className="hover:text-accent transition-colors">Contact</a></li>
-              <li><a href="#" className="hover:text-accent transition-colors">About</a></li>
+              <li><a href="#cta" className="hover:text-accent transition-colors">Get Started</a></li>
+              <li><a href="#cta" className="hover:text-accent transition-colors">Advertise with Us</a></li>
+              <li><a href="#cta" className="hover:text-accent transition-colors">Partner as a Café</a></li>
+              <li><a href="#contact" className="hover:text-accent transition-colors">About</a></li>
             </ul>
           </div>
         </div>

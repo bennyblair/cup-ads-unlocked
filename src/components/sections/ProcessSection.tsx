@@ -3,7 +3,7 @@ import { Search, Truck, QrCode } from "lucide-react"
 
 const ProcessSection = () => {
   return (
-    <section className="section-padding">
+    <section id="process" className="section-padding">
       <div className="container-custom">
         <div className="text-center mb-16">
           <h2 className="heading-section">How It Works</h2>

@@ -3,7 +3,7 @@ import { TrendingDown, Target } from "lucide-react"
 
 const ProblemSection = () => {
   return (
-    <section className="section-padding bg-gradient-subtle">
+    <section id="problem" className="section-padding bg-gradient-subtle">
       <div className="container-custom">
         <div className="text-center mb-16">
           <h2 className="heading-section">The Problem</h2>
