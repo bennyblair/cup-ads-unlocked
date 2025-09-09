@@ -1,4 +1,5 @@
 import { HeroButton } from "@/components/ui/hero-button"
+import { Link } from "react-router-dom"
 import heroImage from "@/assets/hero-coffee-cup.jpg"
 
 const HeroSection = () => {
@@ -24,12 +25,16 @@ const HeroSection = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <HeroButton size="lg" variant="primary">
-              Advertise with Us
-            </HeroButton>
-            <HeroButton size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
-              Partner as a Café
-            </HeroButton>
+            <Link to="/advertiser-form">
+              <HeroButton size="lg" variant="primary">
+                Advertise with Us
+              </HeroButton>
+            </Link>
+            <Link to="/cafe-form">
+              <HeroButton size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+                Partner as a Café
+              </HeroButton>
+            </Link>
           </div>
         </div>
       </div>

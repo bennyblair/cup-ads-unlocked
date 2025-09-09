@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { Link } from "react-router-dom"
 
 const CTASection = () => {
   return (
@@ -23,9 +24,11 @@ const CTASection = () => {
               <p className="text-muted-foreground mb-6">
                 Ready to reach customers in a revolutionary new way? Let's discuss how CupSpace can amplify your brand.
               </p>
-              <HeroButton size="lg" className="w-full sm:w-auto">
-                Advertise with CupSpace
-              </HeroButton>
+              <Link to="/advertiser-form">
+                <HeroButton size="lg" className="w-full sm:w-auto">
+                  Advertise with CupSpace
+                </HeroButton>
+              </Link>
             </Card>
             
             <Card className="p-8 border-0 shadow-elegant text-center">
@@ -33,9 +36,11 @@ const CTASection = () => {
               <p className="text-muted-foreground mb-6">
                 Want to cut costs and improve your margins? Partner with us for free branded cups and better unit economics.
               </p>
-              <HeroButton size="lg" variant="outline" className="w-full sm:w-auto">
-                Partner as a Café
-              </HeroButton>
+              <Link to="/cafe-form">
+                <HeroButton size="lg" variant="outline" className="w-full sm:w-auto">
+                  Partner as a Café
+                </HeroButton>
+              </Link>
             </Card>
           </div>
           
