@@ -1,6 +1,6 @@
 import { HeroButton } from "@/components/ui/hero-button"
 import { Link } from "react-router-dom"
-import heroImage from "@/assets/hero-coffee-cup.jpg"
+import heroImage from "@/assets/hero-coffee-cup-updated.jpg"
 
 const HeroSection = () => {
   return (

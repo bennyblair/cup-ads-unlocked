@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card"
 import { Coffee, Users, Zap } from "lucide-react"
-import brandedCupsImage from "@/assets/branded-cups-collection.jpg"
+import brandedCupsImage from "@/assets/branded-cups-collection-updated.jpg"
 
 const SolutionSection = () => {
   return (
