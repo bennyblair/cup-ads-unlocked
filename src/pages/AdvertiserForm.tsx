@@ -3,10 +3,17 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { useState } from "react"
+import { useEffect } from "react"
 import { Link } from "react-router-dom"
 import { ArrowLeft, Coffee } from "lucide-react"
 
 const AdvertiserForm = () => {
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   return (
     <div className="min-h-screen bg-gradient-subtle">
       {/* Header with back link */}

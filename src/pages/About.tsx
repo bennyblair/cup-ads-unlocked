@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom"
+import { useEffect } from "react"
 import { ArrowLeft, Coffee, Users, Lightbulb, Target } from "lucide-react"
 import { Card } from "@/components/ui/card"
 
 const About = () => {
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   return (
     <div className="min-h-screen bg-gradient-subtle">
       {/* Header with back link */}
