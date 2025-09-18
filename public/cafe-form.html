@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cafe Form - CupSpace</title>
+</head>
+<body>
+    <!-- Static HTML version for Netlify form detection -->
+    <form name="cafe-form" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" style="display: none;">
+        <input type="hidden" name="form-name" value="cafe-form" />
+        <div style="display: none;">
+            <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+        </div>
+        
+        <input name="firstName" type="text" />
+        <input name="lastName" type="text" />
+        <input name="email" type="email" />
+        <input name="phone" type="tel" />
+        <input name="cafeName" type="text" />
+        <select name="role">
+            <option value="owner">Owner</option>
+            <option value="manager">Manager</option>
+            <option value="operations">Operations Manager</option>
+            <option value="other">Other</option>
+        </select>
+        <input name="address" type="text" />
+        <select name="dailyCups">
+            <option value="under-50">Under 50 cups</option>
+            <option value="50-150">50-150 cups</option>
+            <option value="150-300">150-300 cups</option>
+            <option value="300-500">300-500 cups</option>
+            <option value="500-plus">500+ cups</option>
+        </select>
+        <input name="openHours" type="text" />
+        <input name="currentSupplier" type="text" />
+        <select name="monthlyCost">
+            <option value="under-200">Under $200</option>
+            <option value="200-500">$200-$500</option>
+            <option value="500-1000">$500-$1,000</option>
+            <option value="1000-2000">$1,000-$2,000</option>
+            <option value="2000-plus">$2,000+</option>
+        </select>
+        <textarea name="customerBase"></textarea>
+        <textarea name="goals"></textarea>
+        <select name="timeline">
+            <option value="asap">As soon as possible</option>
+            <option value="1-month">Within 1 month</option>
+            <option value="3-months">Within 3 months</option>
+            <option value="exploring">Just exploring options</option>
+        </select>
+    </form>
+</body>
+</html>

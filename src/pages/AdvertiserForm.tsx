@@ -41,38 +41,52 @@ const AdvertiserForm = () => {
           </div>
 
           <Card className="p-8 border-0 shadow-elegant">
-            <form className="space-y-6">
+            <form 
+              name="advertiser-form" 
+              method="POST" 
+              data-netlify="true"
+              data-netlify-honeypot="bot-field"
+              className="space-y-6"
+            >
+              {/* Hidden honeypot field for spam protection */}
+              <input type="hidden" name="form-name" value="advertiser-form" />
+              <div style={{ display: 'none' }}>
+                <label>
+                  Don't fill this out if you're human: <input name="bot-field" />
+                </label>
+              </div>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <Label htmlFor="firstName">First Name *</Label>
-                  <Input id="firstName" placeholder="John" className="mt-2" required />
+                  <Input id="firstName" name="firstName" placeholder="John" className="mt-2" required />
                 </div>
                 <div>
                   <Label htmlFor="lastName">Last Name *</Label>
-                  <Input id="lastName" placeholder="Smith" className="mt-2" required />
+                  <Input id="lastName" name="lastName" placeholder="Smith" className="mt-2" required />
                 </div>
               </div>
               
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <Label htmlFor="email">Email *</Label>
-                  <Input id="email" type="email" placeholder="john@company.com" className="mt-2" required />
+                  <Input id="email" name="email" type="email" placeholder="john@company.com" className="mt-2" required />
                 </div>
                 <div>
                   <Label htmlFor="phone">Phone Number</Label>
-                  <Input id="phone" type="tel" placeholder="+61 400 000 000" className="mt-2" />
+                  <Input id="phone" name="phone" type="tel" placeholder="+61 400 000 000" className="mt-2" />
                 </div>
               </div>
               
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <Label htmlFor="company">Company Name *</Label>
-                  <Input id="company" placeholder="Your Company" className="mt-2" required />
+                  <Input id="company" name="company" placeholder="Your Company" className="mt-2" required />
                 </div>
                 <div>
                   <Label htmlFor="industry">Industry</Label>
                   <select 
                     id="industry" 
+                    name="industry"
                     className="w-full mt-2 px-3 py-2 border border-input rounded-md bg-background text-foreground"
                   >
                     <option value="">Select industry</option>
@@ -94,6 +108,7 @@ const AdvertiserForm = () => {
                   <Label htmlFor="budget">Monthly Marketing Budget</Label>
                   <select 
                     id="budget" 
+                    name="budget"
                     className="w-full mt-2 px-3 py-2 border border-input rounded-md bg-background text-foreground"
                   >
                     <option value="">Select budget range</option>
@@ -107,6 +122,7 @@ const AdvertiserForm = () => {
                   <Label htmlFor="timeline">When would you like to start?</Label>
                   <select 
                     id="timeline" 
+                    name="timeline"
                     className="w-full mt-2 px-3 py-2 border border-input rounded-md bg-background text-foreground"
                   >
                     <option value="">Select timeline</option>
@@ -123,6 +139,7 @@ const AdvertiserForm = () => {
                 <Label htmlFor="locations">Target Locations/Areas</Label>
                 <Input 
                   id="locations" 
+                  name="locations"
                   placeholder="e.g., Sydney CBD, Melbourne inner suburbs, Brisbane north..." 
                   className="mt-2" 
                 />
@@ -132,6 +149,7 @@ const AdvertiserForm = () => {
                 <Label htmlFor="goals">Campaign Goals & Objectives</Label>
                 <Textarea 
                   id="goals" 
+                  name="goals"
                   placeholder="Tell us about your marketing goals, target audience, and what success looks like for your campaign..."
                   className="mt-2"
                   rows={4}
@@ -142,6 +160,7 @@ const AdvertiserForm = () => {
                 <Label htmlFor="message">Additional Information</Label>
                 <Textarea 
                   id="message" 
+                  name="message"
                   placeholder="Any additional details about your requirements, questions, or specific needs..."
                   className="mt-2"
                   rows={3}

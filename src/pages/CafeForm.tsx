@@ -41,38 +41,52 @@ const CafeForm = () => {
           </div>
 
           <Card className="p-8 border-0 shadow-elegant">
-            <form className="space-y-6">
+            <form 
+              name="cafe-form" 
+              method="POST" 
+              data-netlify="true"
+              data-netlify-honeypot="bot-field"
+              className="space-y-6"
+            >
+              {/* Hidden honeypot field for spam protection */}
+              <input type="hidden" name="form-name" value="cafe-form" />
+              <div style={{ display: 'none' }}>
+                <label>
+                  Don't fill this out if you're human: <input name="bot-field" />
+                </label>
+              </div>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <Label htmlFor="firstName">First Name *</Label>
-                  <Input id="firstName" placeholder="Sarah" className="mt-2" required />
+                  <Input id="firstName" name="firstName" placeholder="Sarah" className="mt-2" required />
                 </div>
                 <div>
                   <Label htmlFor="lastName">Last Name *</Label>
-                  <Input id="lastName" placeholder="Wilson" className="mt-2" required />
+                  <Input id="lastName" name="lastName" placeholder="Wilson" className="mt-2" required />
                 </div>
               </div>
               
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <Label htmlFor="email">Email *</Label>
-                  <Input id="email" type="email" placeholder="sarah@mycafe.com.au" className="mt-2" required />
+                  <Input id="email" name="email" type="email" placeholder="sarah@mycafe.com.au" className="mt-2" required />
                 </div>
                 <div>
                   <Label htmlFor="phone">Phone Number *</Label>
-                  <Input id="phone" type="tel" placeholder="+61 400 000 000" className="mt-2" required />
+                  <Input id="phone" name="phone" type="tel" placeholder="+61 400 000 000" className="mt-2" required />
                 </div>
               </div>
               
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <Label htmlFor="cafeName">Café Name *</Label>
-                  <Input id="cafeName" placeholder="The Corner Coffee Co." className="mt-2" required />
+                  <Input id="cafeName" name="cafeName" placeholder="The Corner Coffee Co." className="mt-2" required />
                 </div>
                 <div>
                   <Label htmlFor="role">Your Role</Label>
                   <select 
                     id="role" 
+                    name="role"
                     className="w-full mt-2 px-3 py-2 border border-input rounded-md bg-background text-foreground"
                   >
                     <option value="">Select your role</option>
@@ -89,6 +103,7 @@ const CafeForm = () => {
                 <Label htmlFor="address">Café Address *</Label>
                 <Input 
                   id="address" 
+                  name="address"
                   placeholder="123 Main Street, Sydney NSW 2000" 
                   className="mt-2" 
                   required 
@@ -100,6 +115,7 @@ const CafeForm = () => {
                   <Label htmlFor="dailyCups">Daily Cup Volume</Label>
                   <select 
                     id="dailyCups" 
+                    name="dailyCups"
                     className="w-full mt-2 px-3 py-2 border border-input rounded-md bg-background text-foreground"
                   >
                     <option value="">Select daily volume</option>
@@ -114,6 +130,7 @@ const CafeForm = () => {
                   <Label htmlFor="openHours">Operating Hours</Label>
                   <Input 
                     id="openHours" 
+                    name="openHours"
                     placeholder="e.g., 6AM - 4PM Mon-Fri, 7AM - 3PM Weekends" 
                     className="mt-2" 
                   />
@@ -125,6 +142,7 @@ const CafeForm = () => {
                   <Label htmlFor="currentSupplier">Current Cup Supplier</Label>
                   <Input 
                     id="currentSupplier" 
+                    name="currentSupplier"
                     placeholder="Who supplies your takeaway cups?" 
                     className="mt-2" 
                   />
@@ -133,6 +151,7 @@ const CafeForm = () => {
                   <Label htmlFor="monthlyCost">Monthly Cup Costs</Label>
                   <select 
                     id="monthlyCost" 
+                    name="monthlyCost"
                     className="w-full mt-2 px-3 py-2 border border-input rounded-md bg-background text-foreground"
                   >
                     <option value="">Select cost range</option>
@@ -149,6 +168,7 @@ const CafeForm = () => {
                 <Label htmlFor="customerBase">Tell us about your customers</Label>
                 <Textarea 
                   id="customerBase" 
+                  name="customerBase"
                   placeholder="Who are your typical customers? Office workers, locals, students, tourists? What are their demographics and preferences?"
                   className="mt-2"
                   rows={3}
@@ -159,6 +179,7 @@ const CafeForm = () => {
                 <Label htmlFor="goals">What interests you about CupSpace?</Label>
                 <Textarea 
                   id="goals" 
+                  name="goals"
                   placeholder="Are you looking to reduce costs, try innovative partnerships, or something else? Any specific concerns or questions?"
                   className="mt-2"
                   rows={3}
@@ -169,6 +190,7 @@ const CafeForm = () => {
                 <Label htmlFor="timeline">When would you like to start?</Label>
                 <select 
                   id="timeline" 
+                  name="timeline"
                   className="w-full mt-2 px-3 py-2 border border-input rounded-md bg-background text-foreground"
                 >
                   <option value="">Select timeline</option>
