@@ -1,4 +1,5 @@
 import { Coffee } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const Footer = () => {
   return (
@@ -36,9 +37,9 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Get Started</h4>
             <ul className="space-y-2 text-primary-foreground/80">
               <li><a href="#cta" className="hover:text-accent transition-colors">Get Started</a></li>
-              <li><a href="/advertiser-form" className="hover:text-accent transition-colors">Advertise with Us</a></li>
-              <li><a href="/cafe-form" className="hover:text-accent transition-colors">Partner as a Café</a></li>
-              <li><a href="/about" className="hover:text-accent transition-colors">About</a></li>
+              <li><Link to="/advertiser-form" className="hover:text-accent transition-colors">Advertise with Us</Link></li>
+              <li><Link to="/cafe-form" className="hover:text-accent transition-colors">Partner as a Café</Link></li>
+              <li><Link to="/about" className="hover:text-accent transition-colors">About</Link></li>
             </ul>
           </div>
         </div>
