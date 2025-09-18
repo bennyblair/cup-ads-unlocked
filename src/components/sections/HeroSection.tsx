@@ -1,8 +1,16 @@
 import { HeroButton } from "@/components/ui/hero-button"
 import { Link } from "react-router-dom"
+import { ChevronDown } from "lucide-react"
 import heroImage from "@/assets/hero-coffee-cup-updated.jpg"
 
 const HeroSection = () => {
+  const scrollToNext = () => {
+    const nextSection = document.querySelector('#problem');
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -40,10 +48,14 @@ const HeroSection = () => {
       </div>
       
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/80 animate-bounce">
-        <div className="w-6 h-10 border-2 border-white/50 rounded-full relative">
-          <div className="w-1 h-3 bg-white/70 rounded-full absolute left-1/2 top-2 transform -translate-x-1/2 animate-pulse"></div>
-        </div>
+      <div className="absolute bottom-8 w-full flex justify-center">
+        <button 
+          onClick={scrollToNext}
+          className="flex items-center justify-center w-12 h-12 rounded-full border border-white/30 text-white/70 hover:text-white hover:border-white/50 transition-all animate-bounce cursor-pointer"
+          aria-label="Scroll to next section"
+        >
+          <ChevronDown size={24} />
+        </button>
       </div>
     </section>
   )
