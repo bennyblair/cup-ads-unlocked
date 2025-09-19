@@ -48,7 +48,7 @@ const HeroSection = () => {
       </div>
       
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 w-full flex justify-center">
+      <div className="absolute bottom-4 sm:bottom-8 w-full flex justify-center">
         <button 
           onClick={scrollToNext}
           className="flex items-center justify-center w-12 h-12 rounded-full border border-white/30 text-white/70 hover:text-white hover:border-white/50 transition-all animate-bounce cursor-pointer"
