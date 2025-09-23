@@ -39,6 +39,7 @@ const Footer = () => {
               <li><a href="#cta" className="hover:text-accent transition-colors">Get Started</a></li>
               <li><Link to="/advertiser-form" className="hover:text-accent transition-colors">Advertise with Us</Link></li>
               <li><Link to="/cafe-form" className="hover:text-accent transition-colors">Partner as a Café</Link></li>
+              <li><Link to="/savings-calculator" className="hover:text-accent transition-colors">Savings Calculator</Link></li>
               <li><Link to="/about" className="hover:text-accent transition-colors">About</Link></li>
             </ul>
           </div>
