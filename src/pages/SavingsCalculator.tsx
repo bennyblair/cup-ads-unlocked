@@ -82,7 +82,7 @@ const SavingsCalculator = () => {
                       background: `linear-gradient(to right, #10b981 0%, #10b981 ${((cupsPerWeek - 50) / (5000 - 50)) * 100}%, #dcfce7 ${((cupsPerWeek - 50) / (5000 - 50)) * 100}%, #dcfce7 100%)`
                     }}
                   />
-                  <style jsx>{`
+                  <style>{`
                     .slider::-webkit-slider-thumb {
                       appearance: none;
                       height: 24px;
