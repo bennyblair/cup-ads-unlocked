@@ -39,7 +39,7 @@ const HeroSection = () => {
               </HeroButton>
             </Link>
             <Link to="/cafe-form">
-              <HeroButton size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+              <HeroButton size="lg" variant="primary">
                 Partner as a Café
               </HeroButton>
             </Link>
