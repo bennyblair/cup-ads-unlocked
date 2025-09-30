@@ -45,13 +45,12 @@ const HeroSection = () => {
             </Link>
           </div>
           
-          {/* Savings Calculator Link */}
+          {/* Savings Calculator Button */}
           <div className="mt-6 text-center">
-            <Link 
-              to="/savings-calculator" 
-              className="inline-flex items-center text-white/90 hover:text-white text-sm font-medium underline underline-offset-4 hover:underline-offset-8 transition-all duration-300"
-            >
-              💰 See how much your café can save with CupSpace
+            <Link to="/savings-calculator">
+              <HeroButton size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+                See How Much Your Café Can Save
+              </HeroButton>
             </Link>
           </div>
         </div>
