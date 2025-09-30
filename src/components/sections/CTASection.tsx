@@ -44,13 +44,13 @@ const CTASection = () => {
             </Card>
 
             {/* Savings Calculator Card */}
-            <Card className="p-8 border-0 shadow-elegant text-center bg-gradient-to-br from-green-50 to-emerald-50 border-green-100">
-              <h3 className="text-2xl font-bold text-green-600 mb-4">💰 See Your Savings</h3>
-              <p className="text-green-700 mb-6">
+            <Card className="p-8 border-0 shadow-elegant text-center bg-gradient-subtle">
+              <h3 className="text-2xl font-bold text-primary mb-4">See Your Savings</h3>
+              <p className="text-accent mb-6">
                 Curious how much your café could save? Use our calculator to see your potential annual savings.
               </p>
               <Link to="/savings-calculator">
-                <HeroButton size="lg" className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                <HeroButton size="lg" className="w-full sm:w-auto rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
                   Calculate Your Savings
                 </HeroButton>
               </Link>
