@@ -1,7 +1,7 @@
 import { HeroButton } from "@/components/ui/hero-button"
 import { Link } from "react-router-dom"
 import { ChevronDown } from "lucide-react"
-import heroImage from "@/assets/cupspace-hero-cup.jpg"
+import heroImage from "@/assets/hero-cafe-cup.png"
 
 const HeroSection = () => {
   const scrollToNext = () => {
