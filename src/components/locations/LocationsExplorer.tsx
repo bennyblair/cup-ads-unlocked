@@ -3,6 +3,8 @@ import { Link } from "react-router-dom"
 import maplibregl, {
   type GeoJSONSource,
   type Map as MapLibreMap,
+  type MapGeoJSONFeature,
+  type MapMouseEvent,
 } from "maplibre-gl"
 import "maplibre-gl/dist/maplibre-gl.css"
 import { ArrowRight, Coffee, LocateFixed, MapPin, Search } from "lucide-react"
@@ -266,64 +268,101 @@ const LocationsExplorer = ({ className }: { className?: string }) => {
         },
       })
 
-      const getFeatureCoordinates = (event: maplibregl.MapLayerMouseEvent) =>
+      map.addLayer({
+        id: "cafe-cluster-hit",
+        type: "circle",
+        source: "cupspace-cafes",
+        filter: ["has", "point_count"],
+        paint: {
+          "circle-radius": 32,
+          "circle-color": "#176746",
+          "circle-opacity": 0.01,
+        },
+      })
+
+      map.addLayer({
+        id: "cafe-point-hit",
+        type: "circle",
+        source: "cupspace-cafes",
+        filter: ["!", ["has", "point_count"]],
+        paint: {
+          "circle-radius": 18,
+          "circle-color": "#176746",
+          "circle-opacity": 0.01,
+        },
+      })
+
+      const interactiveLayerIds = ["cafe-cluster-hit", "cafe-point-hit"]
+
+      const getFeatureCoordinates = (feature: MapGeoJSONFeature) =>
         (
-          event.features?.[0]?.geometry as GeoJSON.Point | undefined
+          feature.geometry as GeoJSON.Point | undefined
         )?.coordinates as [number, number] | undefined
 
-      const selectCafe = (event: maplibregl.MapLayerMouseEvent) => {
-        const areaId = event.features?.[0]?.properties?.areaId
+      const selectCafe = (feature: MapGeoJSONFeature) => {
+        const areaId = feature.properties?.areaId
         if (typeof areaId === "string") {
           setSelectedAreaId(areaId)
         }
 
-        const coordinates = getFeatureCoordinates(event)
+        const coordinates = getFeatureCoordinates(feature)
         if (coordinates) {
-          map.easeTo({
+          map.flyTo({
             center: coordinates,
-            zoom: Math.max(map.getZoom(), 13),
-            duration: 700,
+            zoom: Math.min(15, Math.max(map.getZoom() + 1, 13)),
+            duration: 850,
             essential: true,
           })
         }
       }
 
-      const zoomIntoCluster = async (event: maplibregl.MapLayerMouseEvent) => {
-        const clusterId = Number(
-          event.features?.[0]?.properties?.cluster_id,
-        )
+      const zoomIntoCluster = async (feature: MapGeoJSONFeature) => {
+        const clusterId = Number(feature.properties?.cluster_id)
         const source = map.getSource("cupspace-cafes") as GeoJSONSource
         if (!Number.isInteger(clusterId)) {
           return
         }
 
         const expansionZoom = await source.getClusterExpansionZoom(clusterId)
-        const coordinates = getFeatureCoordinates(event)
+        const coordinates = getFeatureCoordinates(feature)
 
         if (coordinates) {
-          map.easeTo({
+          map.flyTo({
             center: coordinates,
-            zoom: Math.max(expansionZoom, 9),
-            duration: 750,
+            zoom: Math.min(
+              14,
+              Math.max(expansionZoom, map.getZoom() + 2, 9),
+            ),
+            duration: 900,
             essential: true,
           })
         }
       }
 
-      map.on("click", "cafe-points", selectCafe)
-      map.on(
-        "click",
-        ["cafe-clusters", "cafe-cluster-count"],
-        zoomIntoCluster,
-      )
+      const getInteractiveFeatures = (event: MapMouseEvent) =>
+        map.queryRenderedFeatures(event.point, { layers: interactiveLayerIds })
 
-      ;["cafe-points", "cafe-clusters", "cafe-cluster-count"].forEach((layerId) => {
-        map.on("mouseenter", layerId, () => {
-          map.getCanvas().style.cursor = "pointer"
-        })
-        map.on("mouseleave", layerId, () => {
-          map.getCanvas().style.cursor = ""
-        })
+      map.on("click", (event) => {
+        const feature = getInteractiveFeatures(event)[0]
+        if (!feature) {
+          return
+        }
+
+        if (Number.isInteger(Number(feature.properties?.cluster_id))) {
+          void zoomIntoCluster(feature)
+        } else {
+          selectCafe(feature)
+        }
+      })
+
+      map.on("mousemove", (event) => {
+        map.getCanvas().style.cursor = getInteractiveFeatures(event).length
+          ? "pointer"
+          : ""
+      })
+
+      map.on("mouseout", () => {
+        map.getCanvas().style.cursor = ""
       })
     })
 
