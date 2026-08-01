@@ -266,35 +266,58 @@ const LocationsExplorer = ({ className }: { className?: string }) => {
         },
       })
 
-      const selectFeature = (event: maplibregl.MapLayerMouseEvent) => {
+      const getFeatureCoordinates = (event: maplibregl.MapLayerMouseEvent) =>
+        (
+          event.features?.[0]?.geometry as GeoJSON.Point | undefined
+        )?.coordinates as [number, number] | undefined
+
+      const selectCafe = (event: maplibregl.MapLayerMouseEvent) => {
         const areaId = event.features?.[0]?.properties?.areaId
         if (typeof areaId === "string") {
           setSelectedAreaId(areaId)
         }
+
+        const coordinates = getFeatureCoordinates(event)
+        if (coordinates) {
+          map.easeTo({
+            center: coordinates,
+            zoom: Math.max(map.getZoom(), 13),
+            duration: 700,
+            essential: true,
+          })
+        }
       }
 
-      map.on("click", "cafe-points", selectFeature)
-      map.on("click", "cafe-clusters", async (event) => {
-        const clusterId = event.features?.[0]?.properties?.cluster_id
+      const zoomIntoCluster = async (event: maplibregl.MapLayerMouseEvent) => {
+        const clusterId = Number(
+          event.features?.[0]?.properties?.cluster_id,
+        )
         const source = map.getSource("cupspace-cafes") as GeoJSONSource
-        if (typeof clusterId !== "number") {
+        if (!Number.isInteger(clusterId)) {
           return
         }
 
-        const zoom = await source.getClusterExpansionZoom(clusterId)
-        const coordinates = (
-          event.features?.[0]?.geometry as GeoJSON.Point | undefined
-        )?.coordinates
+        const expansionZoom = await source.getClusterExpansionZoom(clusterId)
+        const coordinates = getFeatureCoordinates(event)
 
         if (coordinates) {
           map.easeTo({
-            center: coordinates as [number, number],
-            zoom,
+            center: coordinates,
+            zoom: Math.max(expansionZoom, 9),
+            duration: 750,
+            essential: true,
           })
         }
-      })
+      }
 
-      ;["cafe-points", "cafe-clusters"].forEach((layerId) => {
+      map.on("click", "cafe-points", selectCafe)
+      map.on(
+        "click",
+        ["cafe-clusters", "cafe-cluster-count"],
+        zoomIntoCluster,
+      )
+
+      ;["cafe-points", "cafe-clusters", "cafe-cluster-count"].forEach((layerId) => {
         map.on("mouseenter", layerId, () => {
           map.getCanvas().style.cursor = "pointer"
         })
@@ -374,7 +397,7 @@ const LocationsExplorer = ({ className }: { className?: string }) => {
           <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2 sm:right-auto">
             <div className="flex items-center gap-2 rounded-full bg-white/95 px-3 py-2 text-xs font-semibold text-primary shadow-lg backdrop-blur">
               <span className="h-3 w-3 rounded-full bg-primary ring-2 ring-white" />
-              Live partner cafés
+              Live partner cafés · Click a circle to zoom
             </div>
           </div>
         </div>
