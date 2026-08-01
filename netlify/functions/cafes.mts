@@ -121,6 +121,5 @@ export default {
   config: {
     path: "/api/cafes",
     method: ["GET", "POST"],
-    region: "syd",
   },
 } satisfies NetlifyFunction
