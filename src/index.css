@@ -121,7 +121,11 @@
   }
 
   body {
-    @apply bg-background text-foreground font-inter;
+    @apply overflow-x-hidden bg-background text-foreground font-inter;
+  }
+
+  #root {
+    @apply min-h-screen overflow-x-hidden;
   }
 }
 
@@ -137,7 +141,7 @@
   
   /* Typography */
   .heading-hero {
-    @apply text-5xl md:text-7xl font-bold text-primary leading-tight;
+    @apply text-4xl sm:text-5xl md:text-7xl font-bold text-primary leading-tight;
   }
   
   .heading-section {
@@ -169,5 +173,13 @@
   
   .bg-gradient-subtle {
     background: var(--gradient-subtle);
+  }
+
+  .maplibregl-map {
+    @apply font-inter;
+  }
+
+  .maplibregl-ctrl-attrib {
+    font-size: 10px;
   }
 }

@@ -4,8 +4,29 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Link } from "react-router-dom"
+import { type FormEvent, useState } from "react"
+import { CheckCircle2 } from "lucide-react"
+import { submitNetlifyForm } from "@/lib/netlify-forms"
 
 const CTASection = () => {
+  const [submissionState, setSubmissionState] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle")
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const form = event.currentTarget
+    setSubmissionState("submitting")
+
+    try {
+      await submitNetlifyForm("contact-form", form)
+      form.reset()
+      setSubmissionState("success")
+    } catch {
+      setSubmissionState("error")
+    }
+  }
+
   return (
     <section id="cta" className="section-padding bg-gradient-subtle">
       <div className="container-custom">
@@ -61,32 +82,57 @@ const CTASection = () => {
           <Card className="p-8 border-0 shadow-elegant">
             <h3 className="text-2xl font-bold text-primary mb-6">Get In Touch</h3>
             
-            <form className="space-y-4">
+            {submissionState === "success" ? (
+              <div className="flex min-h-[420px] flex-col items-center justify-center text-center">
+                <CheckCircle2 className="h-14 w-14 text-primary" />
+                <h4 className="mt-5 text-2xl font-bold text-primary">
+                  Message received
+                </h4>
+                <p className="mt-3 max-w-sm text-muted-foreground">
+                  Thanks for getting in touch. The CupSpace team will reply shortly.
+                </p>
+              </div>
+            ) : (
+            <form
+              name="contact-form"
+              method="POST"
+              data-netlify="true"
+              data-netlify-honeypot="bot-field"
+              onSubmit={handleSubmit}
+              className="space-y-4"
+            >
+              <input type="hidden" name="form-name" value="contact-form" />
+              <div className="hidden">
+                <label>
+                  Do not fill this out: <input name="bot-field" />
+                </label>
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="firstName">First Name</Label>
-                  <Input id="firstName" placeholder="John" className="mt-1" />
+                  <Input id="firstName" name="firstName" autoComplete="given-name" placeholder="John" className="mt-1" required />
                 </div>
                 <div>
                   <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" placeholder="Smith" className="mt-1" />
+                  <Input id="lastName" name="lastName" autoComplete="family-name" placeholder="Smith" className="mt-1" required />
                 </div>
               </div>
               
               <div>
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="john@company.com" className="mt-1" />
+                <Input id="email" name="email" type="email" autoComplete="email" placeholder="john@company.com" className="mt-1" required />
               </div>
               
               <div>
                 <Label htmlFor="company">Company</Label>
-                <Input id="company" placeholder="Your Company" className="mt-1" />
+                <Input id="company" name="company" autoComplete="organization" placeholder="Your Company" className="mt-1" />
               </div>
               
               <div>
                 <Label htmlFor="interest">I'm interested in...</Label>
                 <select 
                   id="interest" 
+                  name="interest"
                   className="w-full mt-1 px-3 py-2 border border-input rounded-md bg-background text-foreground"
                 >
                   <option value="">Select an option</option>
@@ -100,16 +146,29 @@ const CTASection = () => {
                 <Label htmlFor="message">Message</Label>
                 <Textarea 
                   id="message" 
+                  name="message"
                   placeholder="Tell us about your needs..."
                   className="mt-1"
                   rows={4}
                 />
               </div>
               
-              <HeroButton type="submit" className="w-full">
-                Send Message
+              <HeroButton
+                type="submit"
+                className="w-full"
+                disabled={submissionState === "submitting"}
+              >
+                {submissionState === "submitting" ? "Sending..." : "Send Message"}
               </HeroButton>
+
+              {submissionState === "error" && (
+                <p role="alert" className="text-sm font-medium text-destructive">
+                  We could not send your message. Please try again or email
+                  info@cupspace.com.au.
+                </p>
+              )}
             </form>
+            )}
           </Card>
         </div>
       </div>

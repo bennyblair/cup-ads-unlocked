@@ -16,7 +16,7 @@ const Footer = () => {
               Transforming takeaway coffee cups into powerful advertising space while helping cafés improve their margins.
             </p>
             <p className="text-sm text-primary-foreground/60">
-              © 2024 CupSpace. All rights reserved.
+              © 2026 CupSpace. All rights reserved.
             </p>
           </div>
           
@@ -27,6 +27,7 @@ const Footer = () => {
               <li><a href="#hero" className="hover:text-accent transition-colors">Home</a></li>
               <li><a href="#problem" className="hover:text-accent transition-colors">The Problem</a></li>
               <li><a href="#solution" className="hover:text-accent transition-colors">Our Solution</a></li>
+              <li><a href="#network" className="hover:text-accent transition-colors">Locations</a></li>
               <li><a href="#process" className="hover:text-accent transition-colors">How It Works</a></li>
               <li><a href="#contact" className="hover:text-accent transition-colors">Contact</a></li>
             </ul>
@@ -40,6 +41,7 @@ const Footer = () => {
               <li><Link to="/advertiser-form" className="hover:text-accent transition-colors">Advertise with Us</Link></li>
               <li><Link to="/cafe-form" className="hover:text-accent transition-colors">Partner as a Café</Link></li>
               <li><Link to="/savings-calculator" className="hover:text-accent transition-colors">Savings Calculator</Link></li>
+              <li><Link to="/locations" className="hover:text-accent transition-colors">Explore Locations</Link></li>
               <li><Link to="/about" className="hover:text-accent transition-colors">About</Link></li>
             </ul>
           </div>

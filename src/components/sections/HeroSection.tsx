@@ -1,6 +1,6 @@
 import { HeroButton } from "@/components/ui/hero-button"
 import { Link } from "react-router-dom"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, MapPin } from "lucide-react"
 import heroImage from "@/assets/hero-cafe-cup.png"
 
 const HeroSection = () => {
@@ -32,14 +32,14 @@ const HeroSection = () => {
             Helping cafés cut costs while giving brands a powerful new way to connect.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Link to="/advertiser-form">
-              <HeroButton size="lg" variant="primary">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
+            <Link to="/advertiser-form" className="flex w-full justify-center sm:w-auto">
+              <HeroButton size="lg" variant="primary" className="h-auto min-h-14 w-full max-w-xs whitespace-normal px-5 sm:w-auto sm:max-w-none sm:whitespace-nowrap sm:px-10">
                 Advertise with Us
               </HeroButton>
             </Link>
-            <Link to="/cafe-form">
-              <HeroButton size="lg" variant="primary">
+            <Link to="/cafe-form" className="flex w-full justify-center sm:w-auto">
+              <HeroButton size="lg" variant="primary" className="h-auto min-h-14 w-full max-w-xs whitespace-normal px-5 sm:w-auto sm:max-w-none sm:whitespace-nowrap sm:px-10">
                 Partner as a Café
               </HeroButton>
             </Link>
@@ -47,12 +47,20 @@ const HeroSection = () => {
           
           {/* Savings Calculator Button */}
           <div className="mt-6 text-center">
-            <Link to="/savings-calculator">
-              <HeroButton size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+            <Link to="/savings-calculator" className="flex w-full justify-center">
+              <HeroButton size="lg" variant="outline" className="h-auto min-h-14 w-full max-w-xs whitespace-normal border-white px-5 text-white hover:bg-white hover:text-primary sm:max-w-md sm:px-10">
                 See How Much Your Café Can Save
               </HeroButton>
             </Link>
           </div>
+
+          <Link
+            to="/locations"
+            className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white/90 underline-offset-4 transition hover:text-white hover:underline"
+          >
+            <MapPin className="h-4 w-4" />
+            Explore cafés and target areas
+          </Link>
         </div>
       </div>
       
