@@ -11,7 +11,7 @@ const SiteHeader = () => (
         className="hidden items-center gap-7 text-xs font-bold uppercase tracking-[0.12em] md:flex"
         aria-label="Main navigation"
       >
-        <Link className="transition hover:text-primary" to="/#solution">
+        <Link className="transition hover:text-primary" to="/how-it-works">
           The model
         </Link>
         <Link className="transition hover:text-primary" to="/locations">

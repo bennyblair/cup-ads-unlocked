@@ -28,17 +28,17 @@ const NetworkSection = () => {
   }, [shouldLoadMap])
 
   return (
-    <section ref={sectionRef} id="network" className="poster-grid section-padding border-b-2 border-foreground">
+    <section ref={sectionRef} id="network" className="poster-grid border-b-2 border-foreground py-16 md:py-20">
       <div className="container-custom">
-        <div className="mb-12 grid gap-8 lg:grid-cols-[1fr_0.72fr] lg:items-end">
+        <div className="mb-9 grid gap-6 lg:grid-cols-[1fr_0.72fr] lg:items-end">
           <div>
             <span className="eyebrow mb-7">The CupSpace network</span>
             <h2 className="heading-section mb-0 max-w-4xl">Pick your patch.</h2>
           </div>
           <div className="lg:pb-2">
             <p className="text-lg font-medium leading-relaxed text-muted-foreground">
-              Explore anonymous, approximate markers for CupSpace coverage, or
-              request the exact Australian suburb your campaign needs.
+              Select a marker, compare live areas or request the exact Australian
+              suburb your campaign needs.
             </p>
             <Link
               to="/locations"

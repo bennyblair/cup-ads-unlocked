@@ -1,4 +1,4 @@
-import { ArrowDownRight, ArrowRight, MapPin } from "lucide-react"
+import { ArrowDownRight, ArrowRight } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import brandedCup from "@/assets/branded-cups-collection-updated.jpg"
@@ -32,20 +32,6 @@ const HeroSection = () => (
           </Link>
         </div>
 
-        <div className="mt-7 flex flex-wrap gap-x-7 gap-y-3 text-sm font-bold">
-          <Link
-            to="/locations"
-            className="inline-flex items-center gap-2 border-b-2 border-foreground pb-1 transition hover:border-primary hover:text-primary"
-          >
-            <MapPin className="h-4 w-4" /> Explore the network
-          </Link>
-          <Link
-            to="/savings-calculator"
-            className="border-b-2 border-foreground pb-1 transition hover:border-primary hover:text-primary"
-          >
-            Calculate café savings
-          </Link>
-        </div>
       </div>
 
       <div className="relative mx-auto w-full max-w-[520px] lg:mr-2">
@@ -71,18 +57,6 @@ const HeroSection = () => (
       </div>
     </div>
 
-    <div className="overflow-hidden border-t-2 border-foreground bg-foreground py-3 text-background">
-      <div className="ticker-track flex gap-10 whitespace-nowrap font-display text-lg uppercase tracking-[-0.02em]">
-        {[0, 1].map((copy) => (
-          <div key={copy} className="flex gap-10" aria-hidden={copy === 1}>
-            <span>Local reach</span><span className="text-accent">✦</span>
-            <span>Free café cups</span><span className="text-accent">✦</span>
-            <span>Trackable QR</span><span className="text-accent">✦</span>
-            <span>Campaigns people carry</span><span className="text-accent">✦</span>
-          </div>
-        ))}
-      </div>
-    </div>
   </section>
 )
 

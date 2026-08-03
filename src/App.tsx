@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import AdvertiserForm from "./pages/AdvertiserForm";
 import CafeForm from "./pages/CafeForm";
+import Contact from "./pages/Contact";
+import HowItWorks from "./pages/HowItWorks";
 import SavingsCalculator from "./pages/SavingsCalculator";
 import NotFound from "./pages/NotFound";
 
@@ -24,6 +26,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
+          <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/advertiser-form" element={<AdvertiserForm />} />
           <Route path="/cafe-form" element={<CafeForm />} />
           <Route path="/savings-calculator" element={<SavingsCalculator />} />
