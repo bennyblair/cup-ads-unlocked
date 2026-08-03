@@ -1,17 +1,15 @@
-import { HeroButton } from "@/components/ui/hero-button"
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Link } from "react-router-dom"
 import { type FormEvent, useState } from "react"
-import { CheckCircle2 } from "lucide-react"
+import { ArrowRight, CheckCircle2 } from "lucide-react"
+import { Link } from "react-router-dom"
+
+import { HeroButton } from "@/components/ui/hero-button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { submitNetlifyForm } from "@/lib/netlify-forms"
 
 const CTASection = () => {
-  const [submissionState, setSubmissionState] = useState<
-    "idle" | "submitting" | "success" | "error"
-  >("idle")
+  const [submissionState, setSubmissionState] = useState<"idle" | "submitting" | "success" | "error">("idle")
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -28,148 +26,64 @@ const CTASection = () => {
   }
 
   return (
-    <section id="cta" className="section-padding bg-gradient-subtle">
+    <section id="cta" className="paper-noise section-padding border-b-2 border-foreground">
       <div className="container-custom">
-        <div className="text-center mb-16">
-          <h2 className="heading-section">Ready to Transform Your Business?</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Join the CupSpace revolution and discover a new way to connect with customers
-          </p>
-        </div>
-        
-        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          {/* CTA Buttons */}
-          <div className="space-y-8">
-            <Card className="p-8 border-0 shadow-elegant text-center">
-              <h3 className="text-2xl font-bold text-primary mb-4">For Advertisers</h3>
-              <p className="text-muted-foreground mb-6">
-                Ready to reach customers in a revolutionary new way? Let's discuss how CupSpace can amplify your brand.
-              </p>
-              <Link to="/advertiser-form">
-                <HeroButton size="lg" className="w-full sm:w-auto">
-                  Advertise with CupSpace
-                </HeroButton>
-              </Link>
-            </Card>
-            
-            <Card className="p-8 border-0 shadow-elegant text-center">
-              <h3 className="text-2xl font-bold text-primary mb-4">For Cafés</h3>
-              <p className="text-muted-foreground mb-6">
-                Want to cut costs and improve your margins? Partner with us for free branded cups and better unit economics.
-              </p>
-              <Link to="/cafe-form">
-                <HeroButton size="lg" variant="outline" className="w-full sm:w-auto">
-                  Partner as a Café
-                </HeroButton>
-              </Link>
-            </Card>
+        <span className="eyebrow mb-7">Choose your side</span>
+        <h2 className="heading-section max-w-5xl">Ready for the next coffee run?</h2>
 
-            {/* Savings Calculator Card */}
-            <Card className="p-8 border-0 shadow-elegant text-center bg-gradient-subtle">
-              <h3 className="text-2xl font-bold text-primary mb-4">See Your Savings</h3>
-              <p className="text-accent mb-6">
-                Curious how much your café could save? Use our calculator to see your potential annual savings.
-              </p>
-              <Link to="/savings-calculator">
-                <HeroButton size="lg" className="w-full sm:w-auto rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
-                  Calculate Your Savings
-                </HeroButton>
-              </Link>
-            </Card>
+        <div className="mt-12 grid border-2 border-foreground lg:grid-cols-2">
+          <article className="bg-primary p-7 text-primary-foreground sm:p-10 lg:p-12">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">I&apos;m a brand</p>
+            <h3 className="mt-8 font-display text-4xl uppercase leading-[0.9] sm:text-6xl">Put your campaign in hand.</h3>
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-primary-foreground/75">Tell us who you want to reach and where you want the cups to land.</p>
+            <Link to="/advertiser-form" className="mt-9 inline-flex items-center gap-2 border-b-2 border-accent pb-1 text-sm font-bold uppercase tracking-[0.1em]">
+              Build a campaign brief <ArrowRight className="h-4 w-4" />
+            </Link>
+          </article>
+
+          <article className="border-t-2 border-foreground bg-accent p-7 text-accent-foreground sm:p-10 lg:border-l-2 lg:border-t-0 lg:p-12">
+            <p className="text-xs font-bold uppercase tracking-[0.2em]">I run a café</p>
+            <h3 className="mt-8 font-display text-4xl uppercase leading-[0.9] sm:text-6xl">Get your cup costs covered.</h3>
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-accent-foreground/75">Join the network and tell us what your café needs each week.</p>
+            <Link to="/cafe-form" className="mt-9 inline-flex items-center gap-2 border-b-2 border-foreground pb-1 text-sm font-bold uppercase tracking-[0.1em]">
+              Apply as a café <ArrowRight className="h-4 w-4" />
+            </Link>
+          </article>
+        </div>
+
+        <div className="mt-16 grid gap-10 border-t-2 border-foreground pt-12 lg:grid-cols-[0.75fr_1.25fr]">
+          <div>
+            <p className="font-display text-4xl uppercase leading-[0.95] sm:text-5xl">Not sure where you fit?</p>
+            <p className="mt-5 max-w-md text-lg leading-relaxed text-muted-foreground">Send a straight question. It goes to the CupSpace team through the existing Netlify form.</p>
+            <a className="mt-6 inline-block border-b-2 border-foreground text-sm font-bold" href="mailto:info@cupspace.com.au">info@cupspace.com.au</a>
           </div>
-          
-          {/* Contact Form */}
-          <Card className="p-8 border-0 shadow-elegant">
-            <h3 className="text-2xl font-bold text-primary mb-6">Get In Touch</h3>
-            
+
+          <div className="poster-panel p-6 sm:p-8">
             {submissionState === "success" ? (
-              <div className="flex min-h-[420px] flex-col items-center justify-center text-center">
+              <div className="flex min-h-[360px] flex-col items-center justify-center text-center">
                 <CheckCircle2 className="h-14 w-14 text-primary" />
-                <h4 className="mt-5 text-2xl font-bold text-primary">
-                  Message received
-                </h4>
-                <p className="mt-3 max-w-sm text-muted-foreground">
-                  Thanks for getting in touch. The CupSpace team will reply shortly.
-                </p>
+                <h3 className="mt-5 font-display text-3xl uppercase">Message received</h3>
+                <p className="mt-3 max-w-sm text-muted-foreground">The CupSpace team will reply shortly.</p>
               </div>
             ) : (
-            <form
-              name="contact-form"
-              method="POST"
-              data-netlify="true"
-              data-netlify-honeypot="bot-field"
-              onSubmit={handleSubmit}
-              className="space-y-4"
-            >
-              <input type="hidden" name="form-name" value="contact-form" />
-              <div className="hidden">
-                <label>
-                  Do not fill this out: <input name="bot-field" />
-                </label>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input id="firstName" name="firstName" autoComplete="given-name" placeholder="John" className="mt-1" required />
+              <form name="contact-form" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onSubmit={handleSubmit} className="space-y-5">
+                <input type="hidden" name="form-name" value="contact-form" />
+                <div className="hidden"><label>Do not fill this out: <input name="bot-field" /></label></div>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div><Label htmlFor="firstName">First name</Label><Input id="firstName" name="firstName" autoComplete="given-name" className="mt-2" required /></div>
+                  <div><Label htmlFor="lastName">Last name</Label><Input id="lastName" name="lastName" autoComplete="family-name" className="mt-2" required /></div>
                 </div>
-                <div>
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" name="lastName" autoComplete="family-name" placeholder="Smith" className="mt-1" required />
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div><Label htmlFor="email">Email</Label><Input id="email" name="email" type="email" autoComplete="email" className="mt-2" required /></div>
+                  <div><Label htmlFor="company">Company</Label><Input id="company" name="company" autoComplete="organization" className="mt-2" /></div>
                 </div>
-              </div>
-              
-              <div>
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" name="email" type="email" autoComplete="email" placeholder="john@company.com" className="mt-1" required />
-              </div>
-              
-              <div>
-                <Label htmlFor="company">Company</Label>
-                <Input id="company" name="company" autoComplete="organization" placeholder="Your Company" className="mt-1" />
-              </div>
-              
-              <div>
-                <Label htmlFor="interest">I'm interested in...</Label>
-                <select 
-                  id="interest" 
-                  name="interest"
-                  className="w-full mt-1 px-3 py-2 border border-input rounded-md bg-background text-foreground"
-                >
-                  <option value="">Select an option</option>
-                  <option value="advertising">Advertising with CupSpace</option>
-                  <option value="partnership">Partnering as a Café</option>
-                  <option value="general">General Inquiry</option>
-                </select>
-              </div>
-              
-              <div>
-                <Label htmlFor="message">Message</Label>
-                <Textarea 
-                  id="message" 
-                  name="message"
-                  placeholder="Tell us about your needs..."
-                  className="mt-1"
-                  rows={4}
-                />
-              </div>
-              
-              <HeroButton
-                type="submit"
-                className="w-full"
-                disabled={submissionState === "submitting"}
-              >
-                {submissionState === "submitting" ? "Sending..." : "Send Message"}
-              </HeroButton>
-
-              {submissionState === "error" && (
-                <p role="alert" className="text-sm font-medium text-destructive">
-                  We could not send your message. Please try again or email
-                  info@cupspace.com.au.
-                </p>
-              )}
-            </form>
+                <div><Label htmlFor="interest">I&apos;m interested in</Label><select id="interest" name="interest" className="mt-2"><option value="">Select an option</option><option value="advertising">Advertising with CupSpace</option><option value="partnership">Partnering as a café</option><option value="general">General enquiry</option></select></div>
+                <div><Label htmlFor="message">Message</Label><Textarea id="message" name="message" className="mt-2" rows={4} required /></div>
+                <HeroButton type="submit" disabled={submissionState === "submitting"}>{submissionState === "submitting" ? "Sending..." : "Send it"}</HeroButton>
+                {submissionState === "error" && <p role="alert" className="text-sm font-bold text-destructive">We could not send this. Try again or email info@cupspace.com.au.</p>}
+              </form>
             )}
-          </Card>
+          </div>
         </div>
       </div>
     </section>

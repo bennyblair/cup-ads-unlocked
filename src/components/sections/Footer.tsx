@@ -1,58 +1,47 @@
-import { Coffee } from "lucide-react"
 import { Link } from "react-router-dom"
 
-const Footer = () => {
-  return (
-    <footer id="contact" className="bg-primary text-primary-foreground py-12">
-      <div className="container-custom">
-        <div className="grid md:grid-cols-4 gap-8">
-          {/* Logo and Description */}
-          <div className="md:col-span-2">
-            <div className="flex items-center mb-4">
-              <Coffee className="w-8 h-8 text-accent mr-3" />
-              <span className="text-2xl font-bold">CupSpace</span>
-            </div>
-            <p className="text-primary-foreground/80 mb-4 max-w-md">
-              Transforming takeaway coffee cups into powerful advertising space while helping cafés improve their margins.
-            </p>
-            <p className="text-sm text-primary-foreground/60">
-              © 2026 CupSpace. All rights reserved.
-            </p>
+import BrandMark from "@/components/brand/BrandMark"
+
+const Footer = () => (
+  <footer id="contact" className="bg-foreground py-12 text-background sm:py-16">
+    <div className="container-custom">
+      <div className="grid gap-10 border-b border-background/30 pb-12 lg:grid-cols-[1.4fr_0.6fr_0.6fr]">
+        <div>
+          <div className="inline-flex border-2 border-background bg-background px-3 py-2">
+            <BrandMark />
           </div>
-          
-          {/* Quick Links */}
-          <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-primary-foreground/80">
-              <li><a href="#hero" className="hover:text-accent transition-colors">Home</a></li>
-              <li><a href="#problem" className="hover:text-accent transition-colors">The Problem</a></li>
-              <li><a href="#solution" className="hover:text-accent transition-colors">Our Solution</a></li>
-              <li><a href="#network" className="hover:text-accent transition-colors">Locations</a></li>
-              <li><a href="#process" className="hover:text-accent transition-colors">How It Works</a></li>
-              <li><a href="#contact" className="hover:text-accent transition-colors">Contact</a></li>
-            </ul>
-          </div>
-          
-          {/* Get Started */}
-          <div>
-            <h4 className="font-semibold mb-4">Get Started</h4>
-            <ul className="space-y-2 text-primary-foreground/80">
-              <li><a href="#cta" className="hover:text-accent transition-colors">Get Started</a></li>
-              <li><Link to="/advertiser-form" className="hover:text-accent transition-colors">Advertise with Us</Link></li>
-              <li><Link to="/cafe-form" className="hover:text-accent transition-colors">Partner as a Café</Link></li>
-              <li><Link to="/savings-calculator" className="hover:text-accent transition-colors">Savings Calculator</Link></li>
-              <li><Link to="/locations" className="hover:text-accent transition-colors">Explore Locations</Link></li>
-              <li><Link to="/about" className="hover:text-accent transition-colors">About</Link></li>
-            </ul>
-          </div>
+          <p className="mt-6 max-w-lg text-lg leading-relaxed text-background/65">
+            Branded takeaway cups for cafés. Local, trackable physical media for advertisers.
+          </p>
+          <a className="mt-5 inline-block border-b border-accent text-sm font-bold" href="mailto:info@cupspace.com.au">
+            info@cupspace.com.au
+          </a>
         </div>
-        
-        <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center text-primary-foreground/60">
-          <p>Making every coffee cup count. Supporting Australian cafés and brands.</p>
-        </div>
+
+        <nav aria-label="Explore" className="text-sm">
+          <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-accent">Explore</p>
+          <ul className="space-y-3 text-background/70">
+            <li><Link className="hover:text-background" to="/locations">Locations</Link></li>
+            <li><Link className="hover:text-background" to="/savings-calculator">Savings calculator</Link></li>
+            <li><Link className="hover:text-background" to="/about">Our story</Link></li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Get started" className="text-sm">
+          <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-accent">Get started</p>
+          <ul className="space-y-3 text-background/70">
+            <li><Link className="hover:text-background" to="/advertiser-form">For brands</Link></li>
+            <li><Link className="hover:text-background" to="/cafe-form">For cafés</Link></li>
+          </ul>
+        </nav>
       </div>
-    </footer>
-  )
-}
+
+      <div className="flex flex-col gap-2 pt-7 text-xs uppercase tracking-[0.12em] text-background/45 sm:flex-row sm:justify-between">
+        <p>© 2026 CupSpace. Australia.</p>
+        <p>Physical media / local impact</p>
+      </div>
+    </div>
+  </footer>
+)
 
 export default Footer

@@ -1,75 +1,38 @@
-import { Card } from "@/components/ui/card"
-import { Search, Truck, QrCode } from "lucide-react"
+const steps = [
+  ["01", "Choose the patch", "Tell us the audience, suburb and action your campaign needs."],
+  ["02", "Print + deliver", "We coordinate the cup artwork and supply approved partner cafés."],
+  ["03", "Serve + measure", "Cups go over the counter and QR response gives the campaign a next step."],
+] as const
 
-const ProcessSection = () => {
-  return (
-    <section id="process" className="section-padding">
-      <div className="container-custom">
-        <div className="text-center mb-16">
-          <h2 className="heading-section">How It Works</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            A simple three-step process that creates value for everyone
-          </p>
+const ProcessSection = () => (
+  <section id="process" className="section-padding border-b-2 border-foreground bg-foreground text-background">
+    <div className="container-custom">
+      <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div>
+          <span className="eyebrow mb-6 border-background">From brief to coffee run</span>
+          <h2 className="font-display text-5xl uppercase leading-[0.9] tracking-[-0.04em] sm:text-7xl md:text-8xl">
+            How it moves.
+          </h2>
         </div>
-        
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {/* Step 1 */}
-          <Card className="p-8 text-center border-0 shadow-elegant relative">
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-              <div className="w-8 h-8 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-sm font-bold">
-                1
-              </div>
-            </div>
-            
-            <div className="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-6 mt-4">
-              <Search className="w-8 h-8 text-accent" />
-            </div>
-            
-            <h3 className="text-xl font-bold text-primary mb-4">We Source Advertisers</h3>
-            <p className="text-muted-foreground leading-relaxed">
-              We connect with brands looking for innovative, high-impact advertising opportunities in the local market.
-            </p>
-          </Card>
-          
-          {/* Step 2 */}
-          <Card className="p-8 text-center border-0 shadow-elegant relative">
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-              <div className="w-8 h-8 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-sm font-bold">
-                2
-              </div>
-            </div>
-            
-            <div className="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-6 mt-4">
-              <Truck className="w-8 h-8 text-accent" />
-            </div>
-            
-            <h3 className="text-xl font-bold text-primary mb-4">We Supply Branded Cups with QR Codes</h3>
-            <p className="text-muted-foreground leading-relaxed">
-              High-quality takeaway cups featuring advertiser branding and trackable QR codes are delivered directly to partner cafés at no cost.
-            </p>
-          </Card>
-          
-          {/* Step 3 */}
-          <Card className="p-8 text-center border-0 shadow-elegant relative">
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-              <div className="w-8 h-8 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-sm font-bold">
-                3
-              </div>
-            </div>
-            
-            <div className="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-6 mt-4">
-              <QrCode className="w-8 h-8 text-accent" />
-            </div>
-            
-            <h3 className="text-xl font-bold text-primary mb-4">Measurable Results</h3>
-            <p className="text-muted-foreground leading-relaxed">
-              Cafés save money, brands capture qualified leads through QR codes, and customers access exclusive offers - everyone wins with trackable ROI.
-            </p>
-          </Card>
-        </div>
+        <p className="max-w-md text-lg leading-relaxed text-background/65">
+          A physical campaign with a simple digital response path.
+        </p>
       </div>
-    </section>
-  )
-}
+
+      <div className="grid border-2 border-background md:grid-cols-3">
+        {steps.map(([number, title, body], index) => (
+          <article
+            key={number}
+            className={`relative min-h-[300px] p-7 sm:p-9 ${index ? "border-t-2 border-background md:border-l-2 md:border-t-0" : ""}`}
+          >
+            <span className="font-display text-7xl leading-none text-accent">{number}</span>
+            <h3 className="mt-12 font-display text-2xl uppercase leading-none sm:text-3xl">{title}</h3>
+            <p className="mt-4 max-w-sm leading-relaxed text-background/65">{body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+)
 
 export default ProcessSection

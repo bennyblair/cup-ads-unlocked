@@ -1,151 +1,90 @@
-import { Link } from "react-router-dom"
 import { useEffect } from "react"
-import { ArrowLeft, Coffee, Users, Lightbulb, Target } from "lucide-react"
-import { Card } from "@/components/ui/card"
+import { ArrowRight } from "lucide-react"
+import { Link } from "react-router-dom"
+
+import SiteHeader from "@/components/layout/SiteHeader"
+import Footer from "@/components/sections/Footer"
 
 const About = () => {
-  // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0)
+    document.title = "Our Story | CupSpace"
   }, [])
+
   return (
-    <div className="min-h-screen bg-gradient-subtle">
-      {/* Header with back link */}
-      <header className="container-custom py-8">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center text-primary hover:text-accent transition-colors">
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Back to Home
-          </Link>
-          <div className="flex items-center">
-            <Coffee className="w-8 h-8 text-accent mr-3" />
-            <span className="text-2xl font-bold text-primary">CupSpace</span>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="container-custom pb-16">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h1 className="heading-section">About CupSpace</h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Born from loss, built for change
+    <div className="public-site">
+      <SiteHeader />
+      <main>
+        <section className="border-b-2 border-foreground bg-primary py-20 text-primary-foreground sm:py-28">
+          <div className="container-custom">
+            <span className="eyebrow mb-8">Our story / three mates</span>
+            <h1 className="max-w-6xl font-display text-[clamp(4rem,10vw,9rem)] uppercase leading-[0.82] tracking-[-0.055em]">
+              A café closed. The idea opened.
+            </h1>
+            <p className="mt-9 max-w-2xl border-l-4 border-accent pl-5 text-xl leading-relaxed text-primary-foreground/75">
+              CupSpace started with a simple question: could the takeaway cup
+              itself help cafés spend less and give brands a better local channel?
             </p>
           </div>
+        </section>
 
-          {/* Our Story */}
-          <Card className="p-12 border-0 shadow-elegant mb-12">
-            <div className="flex items-center mb-8">
-              <Users className="w-8 h-8 text-accent mr-4" />
-              <h2 className="text-3xl font-bold text-primary">Our Story</h2>
+        <section className="paper-noise section-padding border-b-2 border-foreground">
+          <div className="container-custom grid gap-14 lg:grid-cols-[0.65fr_1.35fr]">
+            <div>
+              <span className="eyebrow">The short version</span>
             </div>
-            
-            <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+            <div className="max-w-4xl space-y-8 text-xl leading-relaxed sm:text-2xl">
               <p>
-                It started with three mates and a devastating reality check. Our favourite café closed down.
+                It started with three mates watching a favourite local café close.
+                Rising costs had taken out more than a place to buy coffee; the
+                neighbourhood lost a meeting point and local jobs.
               </p>
-              
               <p>
-                <strong className="text-primary">The same story that's happening across Australia.</strong> Rising rents, increasing costs, razor-thin margins, and fierce competition were forcing beloved local cafés to shut their doors forever. We watched our community lose not just a coffee shop, but a gathering place, a local business that employed people, and a piece of what made our neighbourhood special.
+                Takeaway cups were one of those constant costs. They were also
+                blank space moving through the streets every morning.
               </p>
-              
+              <blockquote className="border-y-2 border-foreground py-8 font-display text-4xl uppercase leading-[0.95] text-primary sm:text-6xl">
+                “What if the cup paid for itself?”
+              </blockquote>
               <p>
-                But in that moment of loss, we had a realisation that would change everything.
+                That became CupSpace: advertisers fund useful, well-placed cup
+                media; cafés receive cup supply; QR codes give each campaign a
+                direct response path.
               </p>
-              
-              <p className="text-xl font-semibold text-primary bg-accent/5 p-6 rounded-xl border-l-4 border-accent">
-                "Every takeaway cup is prime real estate. And it's being wasted."
-              </p>
-              
-              <p>
-                We saw thousands of cups leaving cafés every day, each one a missed opportunity. These weren't just containers for coffee – they were mobile billboards, conversation starters, and direct pathways to engaged customers. The cup itself could be the solution that helps cafés improve their economics while giving brands something digital advertising simply can't provide: <strong className="text-primary">tangible, memorable, daily touchpoints</strong>.
-              </p>
-            </div>
-          </Card>
-
-          {/* Our Mission */}
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <Card className="p-8 border-0 shadow-elegant">
-              <div className="flex items-center mb-6">
-                <Target className="w-8 h-8 text-accent mr-4" />
-                <h3 className="text-2xl font-bold text-primary">Our Mission</h3>
-              </div>
-              <p className="text-muted-foreground leading-relaxed">
-                To save Australian cafés by transforming their biggest expense into their biggest opportunity. We're not just reducing costs – we're creating a sustainable ecosystem where great coffee culture can thrive alongside smart business innovation.
-              </p>
-            </Card>
-
-            <Card className="p-8 border-0 shadow-elegant">
-              <div className="flex items-center mb-6">
-                <Lightbulb className="w-8 h-8 text-accent mr-4" />
-                <h3 className="text-2xl font-bold text-primary">The Vision</h3>
-              </div>
-              <p className="text-muted-foreground leading-relaxed">
-                A future where every café can focus on what they do best – creating amazing coffee experiences – while their cups work as silent partners, generating value through thoughtful, tasteful partnerships with brands that respect the café's community and culture.
-              </p>
-            </Card>
-          </div>
-
-          {/* Why It Matters */}
-          <Card className="p-12 border-0 shadow-elegant">
-            <h2 className="text-3xl font-bold text-primary mb-8 text-center">Why This Matters</h2>
-            
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Coffee className="w-8 h-8 text-accent" />
-                </div>
-                <h4 className="text-xl font-semibold text-primary mb-3">For Cafés</h4>
-                <p className="text-muted-foreground">
-                  Every café that survives and thrives means jobs preserved, communities maintained, and Australia's incredible coffee culture protected.
-                </p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Target className="w-8 h-8 text-accent" />
-                </div>
-                <h4 className="text-xl font-semibold text-primary mb-3">For Brands</h4>
-                <p className="text-muted-foreground">
-                  Authentic connections with customers through brands they choose to engage with, not ads they're forced to see.
-                </p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Users className="w-8 h-8 text-accent" />
-                </div>
-                <h4 className="text-xl font-semibold text-primary mb-3">For Communities</h4>
-                <p className="text-muted-foreground">
-                  Local businesses that can afford to stay, neighbourhoods that keep their character, and coffee culture that continues to evolve.
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          {/* Call to Action */}
-          <div className="text-center mt-16">
-            <p className="text-xl text-muted-foreground mb-8">
-              We're not just building a business. We're building a movement to save the cafés we love.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                to="/advertiser-form" 
-                className="bg-gradient-primary text-accent-foreground font-semibold px-8 py-4 rounded-xl shadow-accent hover:shadow-lg hover:scale-105 transition-all duration-300 inline-block"
-              >
-                Partner with Us
-              </Link>
-              <Link 
-                to="/cafe-form" 
-                className="border-2 border-primary text-primary font-semibold px-8 py-4 rounded-xl hover:bg-primary hover:text-primary-foreground transition-all duration-300 inline-block"
-              >
-                Join as a Café
-              </Link>
             </div>
           </div>
-        </div>
+        </section>
+
+        <section className="border-b-2 border-foreground">
+          <div className="container-custom py-20 sm:py-24">
+            <h2 className="heading-section max-w-4xl">What we want to change.</h2>
+            <div className="mt-12 grid border-2 border-foreground md:grid-cols-3">
+              {[
+                ["Cafés", "Remove a recurring cup cost so more money stays behind the counter."],
+                ["Brands", "Make local advertising tangible, useful and easy to act on."],
+                ["Communities", "Help independent cafés keep doing what makes an area feel local."],
+              ].map(([title, body], index) => (
+                <article key={title} className={`min-h-[280px] p-8 ${index ? "border-t-2 border-foreground md:border-l-2 md:border-t-0" : ""}`}>
+                  <span className="font-display text-6xl text-accent">0{index + 1}</span>
+                  <h3 className="mt-10 font-display text-3xl uppercase text-primary">{title}</h3>
+                  <p className="mt-4 leading-relaxed text-muted-foreground">{body}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-accent py-16 sm:py-20">
+          <div className="container-custom flex flex-col justify-between gap-8 lg:flex-row lg:items-center">
+            <h2 className="max-w-3xl font-display text-4xl uppercase leading-[0.9] sm:text-6xl">Put the next cup to work.</h2>
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <Link className="inline-flex items-center justify-center gap-2 border-2 border-foreground bg-primary px-6 py-4 text-sm font-bold uppercase tracking-[0.08em] text-primary-foreground" to="/advertiser-form">For brands <ArrowRight className="h-4 w-4" /></Link>
+              <Link className="inline-flex items-center justify-center gap-2 border-2 border-foreground bg-background px-6 py-4 text-sm font-bold uppercase tracking-[0.08em]" to="/cafe-form">For cafés <ArrowRight className="h-4 w-4" /></Link>
+            </div>
+          </div>
+        </section>
       </main>
+      <Footer />
     </div>
   )
 }

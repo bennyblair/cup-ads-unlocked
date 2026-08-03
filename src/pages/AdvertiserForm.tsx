@@ -1,7 +1,9 @@
 import { type FormEvent, useEffect, useState } from "react"
 import { Link, useSearchParams } from "react-router-dom"
-import { ArrowLeft, CheckCircle2, Coffee, MapPin } from "lucide-react"
+import { CheckCircle2, MapPin } from "lucide-react"
 
+import SiteHeader from "@/components/layout/SiteHeader"
+import Footer from "@/components/sections/Footer"
 import { Card } from "@/components/ui/card"
 import { HeroButton } from "@/components/ui/hero-button"
 import { Input } from "@/components/ui/input"
@@ -44,37 +46,23 @@ const AdvertiserForm = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-subtle">
-      <header className="container-custom py-6 sm:py-8">
-        <div className="flex items-center justify-between gap-4">
-          <Link
-            to="/"
-            className="flex items-center text-sm font-semibold text-primary transition hover:text-accent sm:text-base"
-          >
-            <ArrowLeft className="mr-2 h-5 w-5" />
-            Back to Home
-          </Link>
-          <div className="flex items-center">
-            <Coffee className="mr-2 h-7 w-7 text-accent sm:h-8 sm:w-8" />
-            <span className="text-xl font-bold text-primary sm:text-2xl">
-              CupSpace
-            </span>
-          </div>
-        </div>
-      </header>
+    <div className="public-site">
+      <SiteHeader />
 
-      <main className="container-custom pb-16">
+      <main className="poster-grid border-b-2 border-foreground py-16 sm:py-20">
+        <div className="container-custom">
         <div className="mx-auto max-w-4xl">
-          <div className="mb-10 text-center sm:mb-12">
-            <h1 className="heading-section">Advertise with CupSpace</h1>
-            <p className="mx-auto max-w-3xl text-lg text-muted-foreground sm:text-xl">
-              Tell us where you want your campaign to land and we will build a
-              café network around your audience.
+          <div className="mb-10 sm:mb-12">
+            <span className="eyebrow mb-7">Campaign brief / for brands</span>
+            <h1 className="heading-section max-w-4xl">Put your campaign in hand.</h1>
+            <p className="max-w-2xl text-lg font-medium leading-relaxed text-muted-foreground sm:text-xl">
+              Tell us who you want to reach, where the cups should land and what
+              you want people to do next.
             </p>
           </div>
 
           {hasSelectedLocation && submissionState !== "success" && (
-            <Card className="mb-6 border border-primary/15 bg-primary/5 p-5 shadow-none">
+            <Card className="mb-6 border-2 border-foreground bg-accent p-5 shadow-none">
               <div className="flex items-start gap-3">
                 <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
                 <div className="min-w-0 flex-1">
@@ -100,7 +88,7 @@ const AdvertiserForm = () => {
           )}
 
           {submissionState === "success" ? (
-            <Card className="border-0 p-8 text-center shadow-elegant sm:p-12">
+            <Card className="border-2 border-foreground p-8 text-center shadow-elegant sm:p-12">
               <CheckCircle2 className="mx-auto h-14 w-14 text-primary" />
               <h2 className="mt-5 text-2xl font-bold text-primary">
                 Request received
@@ -117,7 +105,7 @@ const AdvertiserForm = () => {
               </Link>
             </Card>
           ) : (
-            <Card className="border-0 p-6 shadow-elegant sm:p-8">
+            <Card className="border-2 border-foreground p-6 shadow-elegant sm:p-8">
               <form
                 name="advertiser-form"
                 method="POST"
@@ -332,7 +320,9 @@ const AdvertiserForm = () => {
             </Card>
           )}
         </div>
+        </div>
       </main>
+      <Footer />
     </div>
   )
 }

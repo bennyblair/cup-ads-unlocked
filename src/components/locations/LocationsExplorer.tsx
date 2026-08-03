@@ -117,7 +117,13 @@ const toFeatureCollection = (locations: NetworkLocation[]) => ({
   })),
 })
 
-const LocationsExplorer = ({ className }: { className?: string }) => {
+const LocationsExplorer = ({
+  className,
+  compact = false,
+}: {
+  className?: string
+  compact?: boolean
+}) => {
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MapLibreMap | null>(null)
   const [selectedAreaId, setSelectedAreaId] = useState("")
@@ -420,7 +426,7 @@ const LocationsExplorer = ({ className }: { className?: string }) => {
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-3xl border border-border bg-card shadow-elegant",
+        "overflow-hidden rounded-none border-2 border-foreground bg-card",
         className,
       )}
     >
@@ -434,7 +440,7 @@ const LocationsExplorer = ({ className }: { className?: string }) => {
           />
 
           <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2 sm:right-auto">
-            <div className="flex items-center gap-2 rounded-full bg-white/95 px-3 py-2 text-xs font-semibold text-primary shadow-lg backdrop-blur">
+            <div className="flex items-center gap-2 border-2 border-foreground bg-background px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] text-primary shadow-[4px_4px_0_hsl(var(--foreground))]">
               <span className="h-3 w-3 rounded-full bg-primary ring-2 ring-white" />
               Live partner cafés · Click a circle to zoom
             </div>
@@ -443,16 +449,16 @@ const LocationsExplorer = ({ className }: { className?: string }) => {
 
         <div className="flex min-h-0 flex-col bg-background">
           <div className="border-b border-border p-5">
-            <div className="flex items-center justify-between gap-4 rounded-xl border border-primary/20 bg-primary/5 p-4">
+            <div className="flex items-center justify-between gap-4 border-2 border-foreground bg-primary p-4 text-primary-foreground">
               <span className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <span className="flex h-10 w-10 items-center justify-center border border-primary-foreground bg-primary text-primary-foreground">
                   <Coffee className="h-5 w-5" />
                 </span>
                 <span>
-                  <span className="block text-xs font-bold uppercase tracking-[0.14em] text-primary">
+                  <span className="block text-xs font-bold uppercase tracking-[0.14em] text-accent">
                     Live network
                   </span>
-                  <span className="mt-0.5 block text-sm font-bold text-foreground">
+                  <span className="mt-0.5 block text-sm font-bold text-primary-foreground">
                     {cafeCount} cafés across {cafeAreas.length} areas
                   </span>
                 </span>
@@ -467,13 +473,13 @@ const LocationsExplorer = ({ className }: { className?: string }) => {
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search live partner areas"
-                className="h-11 w-full rounded-xl border border-input bg-card pl-10 pr-4 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+                className="h-11 w-full rounded-none border-2 border-input bg-card pl-10 pr-4 text-sm outline-none transition focus:ring-2 focus:ring-accent focus:ring-offset-2"
               />
             </label>
 
             <Link
               to={getAdvertiserRequestUrl()}
-              className="group mt-3 inline-flex w-full items-center gap-3 rounded-xl border-2 border-primary px-4 py-3 text-primary transition hover:bg-primary hover:text-primary-foreground"
+              className="group mt-3 inline-flex w-full items-center gap-3 border-2 border-foreground bg-accent px-4 py-3 text-foreground transition hover:bg-foreground hover:text-background"
             >
               <LocateFixed className="h-5 w-5 shrink-0" />
               <span className="min-w-0 flex-1 text-left">
@@ -490,7 +496,7 @@ const LocationsExplorer = ({ className }: { className?: string }) => {
 
           <div className="min-h-0 flex-1 overflow-y-auto p-5">
             {selectedArea ? (
-              <div className="mb-5 rounded-2xl border border-primary/15 bg-primary/5 p-5">
+              <div className="mb-5 border-2 border-foreground bg-secondary p-5">
                 <div className="mb-3 flex items-center gap-2">
                   <Coffee className="h-5 w-5 text-primary" />
                   <span className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
@@ -510,63 +516,83 @@ const LocationsExplorer = ({ className }: { className?: string }) => {
                 </p>
                 <Link
                   to={getAdvertiserRequestUrl(selectedRequestLocation)}
-                  className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+                  className="mt-5 inline-flex w-full items-center justify-center gap-2 border-2 border-foreground bg-primary px-4 py-3 text-sm font-bold uppercase tracking-[0.06em] text-primary-foreground transition hover:bg-foreground"
                 >
                   Advertise in {selectedArea.name}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
             ) : (
-              <div className="mb-5 rounded-2xl border border-dashed border-border p-5 text-sm text-muted-foreground">
+              <div className="mb-5 border-2 border-dashed border-border p-5 text-sm text-muted-foreground">
                 No locations match those filters.
               </div>
             )}
 
-            <div className="mb-3 flex items-end justify-between gap-3">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
-                  Available now
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Grouped by campaign area
-                </p>
-              </div>
-              <span className="shrink-0 rounded-full bg-secondary px-2.5 py-1 text-xs font-bold text-secondary-foreground">
-                {filteredAreas.length} {filteredAreas.length === 1 ? "area" : "areas"}
-              </span>
-            </div>
+            {compact ? (
+              <Link
+                to="/locations"
+                className="group flex items-center gap-3 border-2 border-foreground bg-card p-4 transition hover:bg-foreground hover:text-background"
+              >
+                <MapPin className="h-5 w-5 shrink-0 text-primary group-hover:text-accent" />
+                <span className="min-w-0 flex-1">
+                  <span className="block font-bold">
+                    View all {cafeAreas.length} areas
+                  </span>
+                  <span className="block text-xs opacity-70">
+                    Search and compare the full network
+                  </span>
+                </span>
+                <ArrowRight className="h-4 w-4 shrink-0 transition group-hover:translate-x-0.5" />
+              </Link>
+            ) : (
+              <>
+                <div className="mb-3 flex items-end justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                      Available now
+                    </p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Grouped by campaign area
+                    </p>
+                  </div>
+                  <span className="shrink-0 border border-foreground bg-secondary px-2.5 py-1 text-xs font-bold text-secondary-foreground">
+                    {filteredAreas.length} {filteredAreas.length === 1 ? "area" : "areas"}
+                  </span>
+                </div>
 
-            <div className="space-y-2" aria-label="Map coverage areas">
-              {filteredAreas.map((area) => (
-                <button
-                  key={area.id}
-                  type="button"
-                  onClick={() => focusArea(area)}
-                  className={cn(
-                    "flex w-full items-center gap-3 rounded-xl border p-3 text-left transition",
-                    selectedArea?.id === area.id
-                      ? "border-primary/30 bg-primary/5"
-                      : "border-transparent hover:border-border hover:bg-secondary/60",
-                  )}
-                >
-                  <MapPin
-                    className="h-5 w-5 shrink-0 text-primary"
-                  />
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-semibold text-foreground">
-                      {area.name}
-                    </span>
-                    <span className="block text-xs text-muted-foreground">
-                      {area.locations.length} partner {" "}
-                      {area.locations.length === 1 ? "café" : "cafés"}
-                    </span>
-                  </span>
-                  <span className="flex h-8 min-w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                    {area.locations.length}
-                  </span>
-                </button>
-              ))}
-            </div>
+                <div className="space-y-2" aria-label="Map coverage areas">
+                  {filteredAreas.map((area) => (
+                    <button
+                      key={area.id}
+                      type="button"
+                      onClick={() => focusArea(area)}
+                      className={cn(
+                        "flex w-full items-center gap-3 rounded-none border-2 p-3 text-left transition",
+                        selectedArea?.id === area.id
+                          ? "border-primary/30 bg-primary/5"
+                          : "border-transparent hover:border-border hover:bg-secondary/60",
+                      )}
+                    >
+                      <MapPin
+                        className="h-5 w-5 shrink-0 text-primary"
+                      />
+                      <span className="min-w-0 flex-1">
+                        <span className="block font-semibold text-foreground">
+                          {area.name}
+                        </span>
+                        <span className="block text-xs text-muted-foreground">
+                          {area.locations.length} partner {" "}
+                          {area.locations.length === 1 ? "café" : "cafés"}
+                        </span>
+                      </span>
+                      <span className="flex h-8 min-w-8 items-center justify-center border border-foreground bg-primary text-xs font-bold text-primary-foreground">
+                        {area.locations.length}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
 
         </div>

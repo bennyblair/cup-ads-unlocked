@@ -7,8 +7,10 @@ import {
   useState,
 } from "react"
 import { Link } from "react-router-dom"
-import { ArrowLeft, CheckCircle2, Coffee } from "lucide-react"
+import { CheckCircle2 } from "lucide-react"
 
+import SiteHeader from "@/components/layout/SiteHeader"
+import Footer from "@/components/sections/Footer"
 import { Card } from "@/components/ui/card"
 import { HeroButton } from "@/components/ui/hero-button"
 import { Input } from "@/components/ui/input"
@@ -67,37 +69,23 @@ const CafeForm = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-subtle">
-      <header className="container-custom py-6 sm:py-8">
-        <div className="flex items-center justify-between gap-4">
-          <Link
-            to="/"
-            className="flex items-center text-sm font-semibold text-primary transition hover:text-accent sm:text-base"
-          >
-            <ArrowLeft className="mr-2 h-5 w-5" />
-            Back to Home
-          </Link>
-          <div className="flex items-center">
-            <Coffee className="mr-2 h-7 w-7 text-accent sm:h-8 sm:w-8" />
-            <span className="text-xl font-bold text-primary sm:text-2xl">
-              CupSpace
-            </span>
-          </div>
-        </div>
-      </header>
+    <div className="public-site">
+      <SiteHeader />
 
-      <main className="container-custom pb-16">
+      <main className="poster-grid border-b-2 border-foreground py-16 sm:py-20">
+        <div className="container-custom">
         <div className="mx-auto max-w-4xl">
-          <div className="mb-10 text-center sm:mb-12">
-            <h1 className="heading-section">Partner as a Café</h1>
-            <p className="mx-auto max-w-3xl text-lg text-muted-foreground sm:text-xl">
-              Join our network of forward-thinking cafés, cut cup costs, and
-              create a new local advertising channel.
+          <div className="mb-10 sm:mb-12">
+            <span className="eyebrow mb-7">Network application / for cafés</span>
+            <h1 className="heading-section max-w-4xl">Put your cup costs down.</h1>
+            <p className="max-w-2xl text-lg font-medium leading-relaxed text-muted-foreground sm:text-xl">
+              Tell us about your café, weekly cup volume and location. We review
+              every application before anything appears on the public map.
             </p>
           </div>
 
           {submissionState === "success" ? (
-            <Card className="border-0 p-8 text-center shadow-elegant sm:p-12">
+            <Card className="border-2 border-foreground p-8 text-center shadow-elegant sm:p-12">
               <CheckCircle2 className="mx-auto h-14 w-14 text-primary" />
               <h2 className="mt-5 text-2xl font-bold text-primary">
                 Application received
@@ -114,7 +102,7 @@ const CafeForm = () => {
               </Link>
             </Card>
           ) : (
-            <Card className="border-0 p-6 shadow-elegant sm:p-8">
+            <Card className="border-2 border-foreground p-6 shadow-elegant sm:p-8">
               <form
                 name="cafe-form"
                 method="POST"
@@ -279,7 +267,7 @@ const CafeForm = () => {
 
                 <Suspense
                   fallback={
-                    <div className="flex h-[360px] items-center justify-center rounded-2xl border border-border bg-secondary text-sm font-medium text-primary">
+                    <div className="flex h-[360px] items-center justify-center border-2 border-foreground bg-secondary text-sm font-bold uppercase tracking-[0.08em] text-primary">
                       Loading the private pin map…
                     </div>
                   }
@@ -393,7 +381,7 @@ const CafeForm = () => {
                   </select>
                 </div>
 
-                <label className="flex items-start gap-3 rounded-xl border border-border bg-secondary/40 p-4 text-sm leading-relaxed">
+                <label className="flex items-start gap-3 border-2 border-foreground bg-secondary/60 p-4 text-sm leading-relaxed">
                   <input
                     type="checkbox"
                     name="publicListingConsent"
@@ -435,7 +423,9 @@ const CafeForm = () => {
             </Card>
           )}
         </div>
+        </div>
       </main>
+      <Footer />
     </div>
   )
 }

@@ -2,116 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-/* CupSpace Design System - Modern, Professional, Startup Aesthetic */
+/* CupSpace: bold, tactile media system inspired by printed cup artwork. */
 
 @layer base {
   :root {
-    /* Base Colors */
-    --background: 0 0% 100%;
-    --foreground: 220 13% 18%;
-    
-    /* Card Colors */
-    --card: 0 0% 100%;
-    --card-foreground: 220 13% 18%;
-    
-    /* Popover Colors */
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 13% 18%;
-    
-    /* Brand Colors */
-    --primary: 158 64% 20%; /* Sophisticated dark forest green */
-    --primary-foreground: 0 0% 98%;
-    
-    /* Accent Colors */
-    --accent: 158 45% 30%; /* Darker complementary green */
-    --accent-foreground: 0 0% 98%;
-    
-    /* Secondary Colors */
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 220 13% 18%;
-    
-    /* Muted Colors */
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
-    
-    /* Status Colors */
-    --destructive: 0 84% 60%;
+    --background: 43 39% 94%;
+    --foreground: 60 5% 9%;
+    --card: 45 45% 97%;
+    --card-foreground: 60 5% 9%;
+    --popover: 45 45% 97%;
+    --popover-foreground: 60 5% 9%;
+    --primary: 157 74% 18%;
+    --primary-foreground: 43 39% 94%;
+    --accent: 12 100% 61%;
+    --accent-foreground: 60 5% 9%;
+    --secondary: 43 26% 88%;
+    --secondary-foreground: 60 5% 9%;
+    --muted: 43 26% 88%;
+    --muted-foreground: 45 4% 35%;
+    --destructive: 0 78% 48%;
     --destructive-foreground: 0 0% 98%;
-    
-    /* Border & Input */
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 158 45% 30%;
-    
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(158 45% 30%), hsl(158 55% 35%));
-    --gradient-hero: linear-gradient(135deg, hsl(158 64% 20%), hsl(158 50% 25%));
-    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(158 20% 98%));
-    
-    /* Shadows */
-    --shadow-elegant: 0 10px 30px -10px hsl(158 64% 20% / 0.15);
-    --shadow-accent: 0 10px 30px -10px hsl(158 45% 30% / 0.3);
-    
-    /* Spacing & Layout */
-    --radius: 0.75rem;
+    --border: 60 5% 9%;
+    --input: 60 5% 9%;
+    --ring: 12 100% 61%;
+    --radius: 0.2rem;
 
-    --sidebar-background: 0 0% 98%;
+    --gradient-primary: linear-gradient(135deg, hsl(157 74% 18%), hsl(157 64% 23%));
+    --gradient-hero: linear-gradient(135deg, hsl(157 74% 18%), hsl(157 64% 23%));
+    --gradient-subtle: linear-gradient(180deg, hsl(43 39% 94%), hsl(43 42% 91%));
+    --shadow-elegant: 7px 7px 0 hsl(60 5% 9%);
+    --shadow-accent: 6px 6px 0 hsl(12 100% 61%);
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 43 39% 94%;
+    --sidebar-foreground: 60 5% 9%;
+    --sidebar-primary: 157 74% 18%;
+    --sidebar-primary-foreground: 43 39% 94%;
+    --sidebar-accent: 12 100% 61%;
+    --sidebar-accent-foreground: 60 5% 9%;
+    --sidebar-border: 60 5% 9%;
+    --sidebar-ring: 12 100% 61%;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
@@ -121,65 +52,113 @@
   }
 
   body {
-    @apply overflow-x-hidden bg-background text-foreground font-inter;
+    @apply overflow-x-hidden bg-background font-body text-foreground antialiased;
   }
 
   #root {
     @apply min-h-screen overflow-x-hidden;
   }
+
+  ::selection {
+    background: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+  }
 }
 
 @layer components {
-  /* Custom Button Variants */
-  .btn-hero {
-    @apply bg-gradient-to-r from-accent to-accent/90 text-accent-foreground font-semibold px-8 py-4 rounded-xl shadow-accent hover:shadow-lg hover:scale-105 transition-all duration-300;
+  .public-site {
+    @apply min-h-screen bg-background text-foreground;
   }
-  
-  .btn-outline-hero {
-    @apply border-2 border-primary text-primary bg-transparent font-semibold px-8 py-4 rounded-xl hover:bg-primary hover:text-primary-foreground transition-all duration-300;
-  }
-  
-  /* Typography */
-  .heading-hero {
-    @apply text-4xl sm:text-5xl md:text-7xl font-bold text-primary leading-tight;
-  }
-  
-  .heading-section {
-    @apply text-3xl md:text-4xl font-bold text-primary mb-6;
-  }
-  
-  .text-hero-sub {
-    @apply text-xl md:text-2xl text-muted-foreground leading-relaxed;
-  }
-  
-  /* Section Styling */
-  .section-padding {
-    @apply py-16 md:py-24;
-  }
-  
+
   .container-custom {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12;
   }
-  
-  /* Coffee Cup Showcase */
-  .cup-showcase {
-    @apply rounded-2xl overflow-hidden shadow-elegant;
+
+  .section-padding {
+    @apply py-20 md:py-28;
   }
-  
-  /* Gradient Backgrounds */
+
+  .heading-hero {
+    @apply font-display text-[clamp(3.7rem,9vw,8.7rem)] uppercase leading-[0.82] tracking-[-0.055em] text-foreground;
+  }
+
+  .heading-section {
+    @apply mb-6 font-display text-4xl uppercase leading-[0.9] tracking-[-0.035em] text-foreground sm:text-5xl md:text-7xl;
+  }
+
+  .text-hero-sub {
+    @apply text-lg font-medium leading-relaxed text-foreground/75 sm:text-xl;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center border-2 border-foreground bg-accent px-3 py-1 font-body text-[0.68rem] font-bold uppercase tracking-[0.18em] text-accent-foreground;
+  }
+
+  .poster-panel {
+    @apply border-2 border-foreground bg-card shadow-elegant;
+  }
+
+  .poster-grid {
+    background-image:
+      linear-gradient(hsl(var(--foreground) / 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--foreground) / 0.07) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .paper-noise {
+    background-image:
+      radial-gradient(circle at 20% 30%, hsl(var(--foreground) / 0.035) 0 1px, transparent 1px),
+      radial-gradient(circle at 70% 60%, hsl(var(--foreground) / 0.03) 0 1px, transparent 1px);
+    background-size: 11px 11px, 15px 15px;
+  }
+
+  .halftone {
+    background-image: radial-gradient(circle, currentColor 1.3px, transparent 1.5px);
+    background-size: 9px 9px;
+  }
+
+  .ticker-track {
+    animation: ticker 28s linear infinite;
+    width: max-content;
+  }
+
+  .public-site select {
+    @apply min-h-11 w-full rounded-none border-2 border-foreground bg-card px-3 py-2 text-foreground outline-none transition focus:ring-2 focus:ring-accent focus:ring-offset-2;
+  }
+
   .bg-gradient-hero {
     background: var(--gradient-hero);
   }
-  
+
   .bg-gradient-subtle {
     background: var(--gradient-subtle);
   }
 
+  .cup-showcase {
+    @apply overflow-hidden border-2 border-foreground shadow-elegant;
+  }
+
   .maplibregl-map {
-    @apply font-inter;
+    @apply font-body;
   }
 
   .maplibregl-ctrl-attrib {
     font-size: 10px;
+  }
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ticker-track { animation: none; }
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
