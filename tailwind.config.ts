@@ -18,10 +18,11 @@ export default {
 				'2xl': '1400px'
 			}
 		},
-		extend: {
+			extend: {
 			fontFamily: {
-				'inter': ['Inter', 'sans-serif'],
-				'display': ['Inter', 'sans-serif'],
+				'body': ['"IBM Plex Sans Variable"', 'Arial', 'sans-serif'],
+				'inter': ['"IBM Plex Sans Variable"', 'Arial', 'sans-serif'],
+				'display': ['"Archivo Black"', 'Impact', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -49,6 +50,7 @@ export default {
 					DEFAULT: 'hsl(var(--accent))',
 					foreground: 'hsl(var(--accent-foreground))'
 				},
+				signal: 'hsl(var(--accent))',
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
 					foreground: 'hsl(var(--popover-foreground))'

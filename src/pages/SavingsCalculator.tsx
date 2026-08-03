@@ -1,74 +1,54 @@
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
+import { ArrowRight } from "lucide-react"
 import { Link } from "react-router-dom"
-import { ArrowLeft, Coffee, Calculator, TrendingUp } from "lucide-react"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+
+import SiteHeader from "@/components/layout/SiteHeader"
+import Footer from "@/components/sections/Footer"
+import { HeroButton } from "@/components/ui/hero-button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 const SavingsCalculator = () => {
-  // Scroll to top when component mounts
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
-  const [cupsPerWeek, setCupsPerWeek] = useState(1000) // Default Australian café average
-  const costPerCup = 0.18 // $0.18 per cup + lid
-
-  // Calculate savings
+  const [cupsPerWeek, setCupsPerWeek] = useState(1000)
+  const costPerCup = 0.18
   const weeklySavings = cupsPerWeek * costPerCup
-  const monthlySavings = weeklySavings * 4.33 // Average weeks per month
+  const monthlySavings = weeklySavings * 4.33
   const annualSavings = weeklySavings * 52
 
-  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCupsPerWeek(parseInt(e.target.value))
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    document.title = "Café Savings Calculator | CupSpace"
+  }, [])
+
+  const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCupsPerWeek(Number.parseInt(event.target.value))
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value) || 0
-    setCupsPerWeek(Math.max(0, Math.min(10000, value))) // Limit between 0-10,000
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number.parseInt(event.target.value) || 0
+    setCupsPerWeek(Math.max(0, Math.min(10000, value)))
   }
+
+  const sliderProgress = ((cupsPerWeek - 50) / (5000 - 50)) * 100
 
   return (
-    <div className="min-h-screen bg-gradient-subtle">
-      {/* Header */}
-      <div className="bg-background border-b border-border">
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          <Link to="/" className="flex items-center text-primary hover:text-accent transition-colors mb-4">
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Back to Home
-          </Link>
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-              <Calculator className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">Café Savings Calculator</h1>
-              <p className="text-muted-foreground mt-1">Discover how much your café could save with CupSpace</p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="public-site">
+      <SiteHeader />
+      <main>
+        <section className="poster-grid border-b-2 border-foreground py-16 sm:py-20">
+          <div className="container-custom">
+            <span className="eyebrow mb-7">Café calculator / $0.18 per set</span>
+            <h1 className="heading-section max-w-5xl">What are your cups costing you?</h1>
+            <p className="max-w-2xl text-lg font-medium leading-relaxed text-muted-foreground">
+              Set your weekly takeaway volume to estimate the cup-and-lid cost
+              CupSpace could cover. The estimate uses $0.18 per cup and lid.
+            </p>
 
-      {/* Main Calculator */}
-      <div className="max-w-4xl mx-auto px-4 py-12">
-        <div className="grid lg:grid-cols-2 gap-8">
-          
-          {/* Input Section */}
-          <Card className="p-8 bg-card shadow-elegant hover:shadow-accent transition-all duration-300 border-0">
-            <div className="text-center mb-8">
-              <Coffee className="w-16 h-16 text-primary mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-foreground mb-2">How many takeaway cups do you use?</h2>
-              <p className="text-muted-foreground">Adjust the slider or enter your weekly cup usage</p>
-            </div>
-
-            {/* Slider */}
-            <div className="space-y-6">
-              <div>
-                <Label htmlFor="cups-slider" className="text-lg font-medium text-foreground mb-4 block">
-                  Cups per week
-                </Label>
-                <div className="relative">
+            <div className="mt-12 grid items-stretch lg:grid-cols-[0.9fr_1.1fr]">
+              <section className="border-2 border-foreground bg-card p-6 sm:p-10">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Your weekly volume</p>
+                <div className="mt-10">
+                  <Label htmlFor="cups-slider" className="text-base font-bold">Takeaway cups per week</Label>
                   <input
                     id="cups-slider"
                     type="range"
@@ -77,142 +57,45 @@ const SavingsCalculator = () => {
                     step="50"
                     value={cupsPerWeek}
                     onChange={handleSliderChange}
-                    className="w-full h-3 bg-primary/10 rounded-lg appearance-none cursor-pointer slider"
+                    className="mt-6 h-3 w-full cursor-pointer appearance-none border-2 border-foreground"
                     style={{
-                      background: `linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--primary)) ${((cupsPerWeek - 50) / (5000 - 50)) * 100}%, hsl(var(--primary) / 0.1) ${((cupsPerWeek - 50) / (5000 - 50)) * 100}%, hsl(var(--primary) / 0.1) 100%)`
+                      background: `linear-gradient(to right, hsl(var(--accent)) 0%, hsl(var(--accent)) ${sliderProgress}%, hsl(var(--background)) ${sliderProgress}%, hsl(var(--background)) 100%)`,
                     }}
                   />
                   <style>{`
-                    .slider::-webkit-slider-thumb {
-                      appearance: none;
-                      height: 24px;
-                      width: 24px;
-                      border-radius: 50%;
-                      background: hsl(var(--primary));
-                      cursor: pointer;
-                      box-shadow: 0 4px 12px hsl(var(--primary) / 0.4);
-                      border: 3px solid white;
-                    }
-                    .slider::-moz-range-thumb {
-                      height: 24px;
-                      width: 24px;
-                      border-radius: 50%;
-                      background: hsl(var(--primary));
-                      cursor: pointer;
-                      box-shadow: 0 4px 12px hsl(var(--primary) / 0.4);
-                      border: 3px solid white;
-                    }
+                    input[type="range"]::-webkit-slider-thumb { appearance: none; width: 26px; height: 26px; border: 2px solid hsl(var(--foreground)); border-radius: 0; background: hsl(var(--primary)); cursor: pointer; }
+                    input[type="range"]::-moz-range-thumb { width: 26px; height: 26px; border: 2px solid hsl(var(--foreground)); border-radius: 0; background: hsl(var(--primary)); cursor: pointer; }
                   `}</style>
+                  <div className="mt-3 flex justify-between text-xs font-bold uppercase tracking-[0.12em] text-muted-foreground"><span>50</span><span>5,000</span></div>
                 </div>
-                <div className="flex justify-between text-sm text-muted-foreground mt-2">
-                  <span>50</span>
-                  <span>5,000</span>
-                </div>
-              </div>
 
-              {/* Number Input */}
-              <div>
-                <Label htmlFor="cups-input" className="text-lg font-medium text-foreground mb-2 block">
-                  Or enter exact number
-                </Label>
-                <Input
-                  id="cups-input"
-                  type="number"
-                  min="0"
-                  max="10000"
-                  value={cupsPerWeek}
-                  onChange={handleInputChange}
-                  className="text-xl text-center font-semibold border-2 border-primary/20 focus:border-primary rounded-xl h-14"
-                  placeholder="1000"
-                />
-              </div>
-
-              {/* Current Selection Display */}
-              <div className="bg-primary/5 rounded-xl p-4 text-center">
-                <div className="text-3xl font-bold text-primary">{cupsPerWeek.toLocaleString()}</div>
-                <div className="text-accent font-medium">cups per week</div>
-                <div className="text-sm text-primary mt-1">
-                  That's about {Math.round(cupsPerWeek / 7)} cups per day
+                <div className="mt-10 border-t-2 border-foreground pt-7">
+                  <Label htmlFor="cups-input" className="text-base font-bold">Enter an exact number</Label>
+                  <Input id="cups-input" type="number" min="0" max="10000" value={cupsPerWeek} onChange={handleInputChange} className="mt-3 h-16 font-display text-3xl" />
+                  <p className="mt-3 text-sm text-muted-foreground">About {Math.round(cupsPerWeek / 7).toLocaleString()} cups each day.</p>
                 </div>
-              </div>
+              </section>
+
+              <section className="border-2 border-t-0 border-foreground bg-primary p-6 text-primary-foreground sm:p-10 lg:-ml-0.5 lg:border-l-0 lg:border-t-2">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">Potential annual cup cost</p>
+                <p className="mt-7 font-display text-[clamp(4rem,9vw,8rem)] leading-none tracking-[-0.06em]">${annualSavings.toLocaleString()}</p>
+                <p className="mt-4 max-w-lg text-lg leading-relaxed text-primary-foreground/70">
+                  That is the estimated amount currently spent on takeaway cups
+                  and lids each year at the selected volume.
+                </p>
+
+                <dl className="mt-10 grid border-y-2 border-primary-foreground/50 sm:grid-cols-2">
+                  <div className="py-6 sm:border-r-2 sm:border-primary-foreground/50 sm:pr-6"><dt className="text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground/60">Per week</dt><dd className="mt-2 font-display text-3xl">${weeklySavings.toFixed(0)}</dd></div>
+                  <div className="border-t-2 border-primary-foreground/50 py-6 sm:border-t-0 sm:pl-6"><dt className="text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground/60">Per month</dt><dd className="mt-2 font-display text-3xl">${monthlySavings.toFixed(0)}</dd></div>
+                </dl>
+
+                <Link to="/cafe-form" className="mt-9 inline-block"><HeroButton variant="outline" size="lg" className="bg-background text-foreground">Apply as a café <ArrowRight className="ml-2 h-4 w-4" /></HeroButton></Link>
+              </section>
             </div>
-          </Card>
-
-          {/* Results Section */}
-          <Card className="p-8 bg-gradient-primary text-primary-foreground shadow-elegant hover:shadow-accent transition-all duration-300 border-0">
-            <div className="text-center mb-8">
-              <TrendingUp className="w-16 h-16 text-primary-foreground mx-auto mb-4" />
-              <h2 className="text-2xl font-bold mb-2">Your Potential Savings</h2>
-              <p className="text-primary-foreground/90">With CupSpace providing cups for free</p>
-            </div>
-
-            <div className="space-y-6">
-              {/* Weekly Savings */}
-              <div className="bg-white/10 rounded-xl p-4 backdrop-blur-sm">
-                <div className="text-primary-foreground/80 text-sm font-medium">Weekly Savings</div>
-                <div className="text-2xl font-bold transition-all duration-300">
-                  ${weeklySavings.toFixed(0)}
-                </div>
-              </div>
-
-              {/* Monthly Savings */}
-              <div className="bg-white/10 rounded-xl p-4 backdrop-blur-sm">
-                <div className="text-primary-foreground/80 text-sm font-medium">Monthly Savings</div>
-                <div className="text-2xl font-bold transition-all duration-300">
-                  ${monthlySavings.toFixed(0)}
-                </div>
-              </div>
-
-              {/* Annual Savings - Highlighted */}
-              <div className="bg-background rounded-xl p-6 text-center transform hover:scale-105 transition-all duration-300">
-                <div className="text-primary text-sm font-semibold uppercase tracking-wide mb-2">
-                  🎉 Annual Savings
-                </div>
-                <div className="text-4xl font-black text-primary mb-2 transition-all duration-300">
-                  ${annualSavings.toLocaleString()}
-                </div>
-                <div className="text-accent font-bold text-lg leading-tight">
-                  You could save ${annualSavings.toLocaleString()} every year just on cups and lids!
-                </div>
-              </div>
-
-              {/* Cost Breakdown */}
-              <div className="bg-white/10 rounded-xl p-4 backdrop-blur-sm">
-                <div className="text-primary-foreground/80 text-xs mb-2">Calculation based on:</div>
-                <div className="text-sm space-y-1">
-                  <div>• ${costPerCup.toFixed(2)} per cup + lid</div>
-                  <div>• {cupsPerWeek.toLocaleString()} cups per week</div>
-                  <div>• 52 weeks per year</div>
-                </div>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center mt-12">
-          <Card className="inline-block p-8 bg-card shadow-elegant border-0">
-            <h3 className="text-2xl font-bold text-foreground mb-4">
-              Ready to start saving?
-            </h3>
-            <p className="text-muted-foreground mb-6 max-w-md">
-              Join CupSpace and transform your takeaway cups into advertising revenue while cutting costs.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/cafe-form">
-                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-full text-lg font-semibold shadow-accent hover:shadow-lg transition-all duration-300">
-                  Partner as a Café
-                </Button>
-              </Link>
-              <Link to="/about">
-                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-3 rounded-full text-lg font-semibold">
-                  Learn More
-                </Button>
-              </Link>
-            </div>
-          </Card>
-        </div>
-      </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
     </div>
   )
 }

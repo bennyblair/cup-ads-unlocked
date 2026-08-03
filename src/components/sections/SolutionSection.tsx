@@ -1,64 +1,58 @@
-import { Card } from "@/components/ui/card"
-import { Coffee, Users, Zap } from "lucide-react"
-import brandedCupsImage from "@/assets/branded-cups-collection-updated.jpg"
+const specs = [
+  {
+    number: "01",
+    title: "Supply",
+    body: "Branded takeaway cups are delivered to approved café partners at no cost.",
+  },
+  {
+    number: "02",
+    title: "Placement",
+    body: "Campaigns are matched to the suburbs and café audiences a brand wants to reach.",
+  },
+  {
+    number: "03",
+    title: "Response",
+    body: "A campaign QR code gives customers a direct next step and makes response measurable.",
+  },
+]
 
-const SolutionSection = () => {
-  return (
-    <section id="solution" className="section-padding">
-      <div className="container-custom">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Content */}
-          <div>
-            <h2 className="heading-section">The CupSpace Solution</h2>
-            <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-              A revolutionary platform that transforms every takeaway coffee cup into premium advertising space.
-            </p>
-            
-            <div className="space-y-6">
-              <div className="flex items-start">
-                <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mr-4 mt-1">
-                  <Coffee className="w-6 h-6 text-accent" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-primary mb-2">Free Branded Cups</h3>
-                  <p className="text-muted-foreground">CupSpace provides branded cups to cafés at no cost, eliminating a significant operational expense.</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start">
-                <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mr-4 mt-1">
-                  <Users className="w-6 h-6 text-accent" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-primary mb-2">Improved Unit Economics</h3>
-                  <p className="text-muted-foreground">Cafés improve their margins significantly in a challenging hospitality climate.</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start">
-                <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mr-4 mt-1">
-                  <Zap className="w-6 h-6 text-accent" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-primary mb-2">Trackable Lead Generation</h3>
-                  <p className="text-muted-foreground">QR codes on every cup enable direct lead capture - from gym trials to app downloads - with full conversion tracking and measurable ROI.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Image */}
-          <div className="cup-showcase">
-            <img 
-              src={brandedCupsImage} 
-              alt="Collection of branded coffee cups with various advertisements"
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
+const SolutionSection = () => (
+  <section id="solution" className="poster-grid section-padding border-b-2 border-foreground">
+    <div className="container-custom grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+      <div className="lg:sticky lg:top-28">
+        <span className="eyebrow mb-7">The model / no fluff</span>
+        <h2 className="heading-section max-w-3xl">
+          Built to do more than hold coffee.
+        </h2>
+        <p className="max-w-xl text-lg font-medium leading-relaxed text-muted-foreground">
+          CupSpace turns an everyday café essential into useful, local media.
+          The café gets the cups. The brand gets the space. The customer gets a
+          clear reason to scan.
+        </p>
       </div>
-    </section>
-  )
-}
+
+      <div className="border-t-2 border-foreground bg-background">
+        {specs.map((spec) => (
+          <article
+            key={spec.number}
+            className="grid gap-5 border-b-2 border-foreground py-8 sm:grid-cols-[100px_1fr] sm:py-10"
+          >
+            <span className="font-display text-6xl leading-none text-accent [-webkit-text-stroke:1.5px_hsl(var(--foreground))]">
+              {spec.number}
+            </span>
+            <div>
+              <h3 className="font-display text-3xl uppercase tracking-[-0.03em] text-primary sm:text-4xl">
+                {spec.title}
+              </h3>
+              <p className="mt-3 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+                {spec.body}
+              </p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+)
 
 export default SolutionSection

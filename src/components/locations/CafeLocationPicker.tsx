@@ -143,14 +143,14 @@ const CafeLocationPicker = ({
         </Button>
       </div>
 
-      <div className="relative h-[360px] overflow-hidden rounded-2xl border border-border bg-secondary">
+      <div className="relative h-[360px] overflow-hidden rounded-none border-2 border-foreground bg-secondary">
         <div
           ref={containerRef}
           className="h-full w-full"
           aria-label="Choose the exact café location"
         />
         {!coordinates && (
-          <div className="pointer-events-none absolute bottom-4 left-4 right-4 rounded-xl bg-white/95 px-4 py-3 text-sm font-medium text-primary shadow-lg sm:right-auto">
+          <div className="pointer-events-none absolute bottom-4 left-4 right-4 border-2 border-foreground bg-background px-4 py-3 text-sm font-bold text-primary shadow-[4px_4px_0_hsl(var(--foreground))] sm:right-auto">
             Zoom in, then click your café to place the pin.
           </div>
         )}

@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react"
-import { Link } from "react-router-dom"
 import { ArrowRight } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const LocationsExplorer = lazy(
   () => import("@/components/locations/LocationsExplorer"),
@@ -11,9 +11,7 @@ const NetworkSection = () => {
   const [shouldLoadMap, setShouldLoadMap] = useState(false)
 
   useEffect(() => {
-    if (!sectionRef.current || shouldLoadMap) {
-      return
-    }
+    if (!sectionRef.current || shouldLoadMap) return
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -30,44 +28,44 @@ const NetworkSection = () => {
   }, [shouldLoadMap])
 
   return (
-  <section ref={sectionRef} id="network" className="section-padding bg-gradient-subtle">
-    <div className="container-custom">
-      <div className="mx-auto mb-10 max-w-3xl text-center">
-        <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-accent">
-          The CupSpace network
-        </p>
-        <h2 className="heading-section">Choose where your campaign lands</h2>
-        <p className="text-lg leading-relaxed text-muted-foreground">
-          Explore anonymous approximate markers for approved partner cafés and
-          the Australian areas we are actively building toward. Target areas are
-          clearly marked and are not claimed partners.
-        </p>
-        <Link
-          to="/locations"
-          className="mt-5 inline-flex items-center gap-2 font-semibold text-primary hover:text-accent"
-        >
-          Open the full locations page
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
-
-      {shouldLoadMap ? (
-        <Suspense
-          fallback={
-            <div className="flex min-h-[680px] items-center justify-center rounded-3xl border border-border bg-card text-sm font-semibold text-primary shadow-elegant">
-              Loading the CupSpace map…
-            </div>
-          }
-        >
-          <LocationsExplorer />
-        </Suspense>
-      ) : (
-        <div className="flex min-h-[680px] items-center justify-center rounded-3xl border border-border bg-card text-sm font-semibold text-primary shadow-elegant">
-          Map loads as you approach this section
+    <section ref={sectionRef} id="network" className="poster-grid section-padding border-b-2 border-foreground">
+      <div className="container-custom">
+        <div className="mb-12 grid gap-8 lg:grid-cols-[1fr_0.72fr] lg:items-end">
+          <div>
+            <span className="eyebrow mb-7">The CupSpace network</span>
+            <h2 className="heading-section mb-0 max-w-4xl">Pick your patch.</h2>
+          </div>
+          <div className="lg:pb-2">
+            <p className="text-lg font-medium leading-relaxed text-muted-foreground">
+              Explore anonymous, approximate markers for CupSpace coverage, or
+              request the exact Australian suburb your campaign needs.
+            </p>
+            <Link
+              to="/locations"
+              className="mt-5 inline-flex items-center gap-2 border-b-2 border-foreground pb-1 text-sm font-bold uppercase tracking-[0.08em] transition hover:border-primary hover:text-primary"
+            >
+              Open the full map <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
-      )}
-    </div>
-  </section>
+
+        {shouldLoadMap ? (
+          <Suspense
+            fallback={
+              <div className="flex min-h-[680px] items-center justify-center border-2 border-foreground bg-card text-sm font-bold uppercase tracking-[0.1em] text-primary shadow-elegant">
+                Loading the CupSpace map…
+              </div>
+            }
+          >
+            <LocationsExplorer className="rounded-none border-2 border-foreground shadow-[9px_9px_0_hsl(var(--foreground))]" />
+          </Suspense>
+        ) : (
+          <div className="flex min-h-[680px] items-center justify-center border-2 border-foreground bg-card text-sm font-bold uppercase tracking-[0.1em] text-primary shadow-elegant">
+            Map loads as you approach this section
+          </div>
+        )}
+      </div>
+    </section>
   )
 }
 

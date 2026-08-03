@@ -1,81 +1,89 @@
-import { HeroButton } from "@/components/ui/hero-button"
+import { ArrowDownRight, ArrowRight, MapPin } from "lucide-react"
 import { Link } from "react-router-dom"
-import { ChevronDown, MapPin } from "lucide-react"
-import heroImage from "@/assets/hero-cafe-cup.png"
 
-const HeroSection = () => {
-  const scrollToNext = () => {
-    const nextSection = document.querySelector('#problem');
-    if (nextSection) {
-      nextSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+import brandedCup from "@/assets/branded-cups-collection-updated.jpg"
+import { HeroButton } from "@/components/ui/hero-button"
 
-  return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `linear-gradient(rgba(34, 34, 34, 0.7), rgba(34, 34, 34, 0.7)), url(${heroImage})`,
-        }}
-      />
-      
-      {/* Content */}
-      <div className="relative z-10 container-custom text-center text-white">
-        <div className="max-w-5xl mx-auto">
-          <h1 className="heading-hero text-white mb-6">
-            CupSpace: Where Every Coffee Becomes <span className="text-accent">Ad Space</span>
-          </h1>
-          
-          <p className="text-hero-sub text-white/90 mb-12 max-w-3xl mx-auto">
-            Helping cafés cut costs while giving brands a powerful new way to connect.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
-            <Link to="/advertiser-form" className="flex w-full justify-center sm:w-auto">
-              <HeroButton size="lg" variant="primary" className="h-auto min-h-14 w-full max-w-xs whitespace-normal px-5 sm:w-auto sm:max-w-none sm:whitespace-nowrap sm:px-10">
-                Advertise with Us
-              </HeroButton>
-            </Link>
-            <Link to="/cafe-form" className="flex w-full justify-center sm:w-auto">
-              <HeroButton size="lg" variant="primary" className="h-auto min-h-14 w-full max-w-xs whitespace-normal px-5 sm:w-auto sm:max-w-none sm:whitespace-nowrap sm:px-10">
-                Partner as a Café
-              </HeroButton>
-            </Link>
-          </div>
-          
-          {/* Savings Calculator Button */}
-          <div className="mt-6 text-center">
-            <Link to="/savings-calculator" className="flex w-full justify-center">
-              <HeroButton size="lg" variant="outline" className="h-auto min-h-14 w-full max-w-xs whitespace-normal border-white px-5 text-white hover:bg-white hover:text-primary sm:max-w-md sm:px-10">
-                See How Much Your Café Can Save
-              </HeroButton>
-            </Link>
-          </div>
+const HeroSection = () => (
+  <section id="hero" className="paper-noise relative overflow-hidden border-b-2 border-foreground">
+    <div className="container-custom grid min-h-[calc(100svh-70px)] items-center gap-12 py-14 lg:grid-cols-[1.08fr_0.72fr] lg:gap-16 lg:py-20">
+      <div className="relative z-10">
+        <span className="eyebrow mb-7">Australia&apos;s cup media network</span>
+        <h1 className="heading-hero max-w-5xl">
+          Cups for <span className="text-primary">cafés.</span>
+          <br />
+          Reach for <span className="text-accent [-webkit-text-stroke:2px_hsl(var(--foreground))]">brands.</span>
+        </h1>
+        <p className="text-hero-sub mt-8 max-w-2xl border-l-4 border-primary pl-5">
+          Free branded takeaway cups for cafés. Local, trackable campaigns for
+          advertisers. One useful piece of media, carried through the community.
+        </p>
 
+        <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+          <Link to="/advertiser-form">
+            <HeroButton size="lg" className="w-full sm:w-auto">
+              Plan a campaign <ArrowRight className="ml-2 h-4 w-4" />
+            </HeroButton>
+          </Link>
+          <Link to="/cafe-form">
+            <HeroButton size="lg" variant="outline" className="w-full sm:w-auto">
+              Get cups supplied <ArrowDownRight className="ml-2 h-4 w-4" />
+            </HeroButton>
+          </Link>
+        </div>
+
+        <div className="mt-7 flex flex-wrap gap-x-7 gap-y-3 text-sm font-bold">
           <Link
             to="/locations"
-            className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white/90 underline-offset-4 transition hover:text-white hover:underline"
+            className="inline-flex items-center gap-2 border-b-2 border-foreground pb-1 transition hover:border-primary hover:text-primary"
           >
-            <MapPin className="h-4 w-4" />
-            Explore cafés and target areas
+            <MapPin className="h-4 w-4" /> Explore the network
+          </Link>
+          <Link
+            to="/savings-calculator"
+            className="border-b-2 border-foreground pb-1 transition hover:border-primary hover:text-primary"
+          >
+            Calculate café savings
           </Link>
         </div>
       </div>
-      
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-4 sm:bottom-8 w-full flex justify-center">
-        <button 
-          onClick={scrollToNext}
-          className="flex items-center justify-center w-12 h-12 rounded-full border border-white/30 text-white/70 hover:text-white hover:border-white/50 transition-all animate-bounce cursor-pointer"
-          aria-label="Scroll to next section"
-        >
-          <ChevronDown size={24} />
-        </button>
+
+      <div className="relative mx-auto w-full max-w-[520px] lg:mr-2">
+        <div className="absolute -left-5 -top-5 h-full w-full border-2 border-foreground bg-accent sm:-left-8 sm:-top-8" />
+        <figure className="relative border-2 border-foreground bg-primary p-3 shadow-[10px_10px_0_hsl(var(--foreground))]">
+          <div className="relative aspect-[4/5] overflow-hidden bg-primary">
+            <img
+              src={brandedCup}
+              alt="Green CupSpace branded takeaway cup"
+              className="h-full w-full object-cover object-center saturate-[0.85] contrast-[1.08]"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-primary/10 mix-blend-multiply" />
+          </div>
+          <figcaption className="flex items-center justify-between gap-4 bg-primary px-2 pb-1 pt-4 text-xs font-bold uppercase tracking-[0.16em] text-primary-foreground">
+            <span>Physical media / Local reach</span>
+            <span>01</span>
+          </figcaption>
+        </figure>
+
+        <div className="absolute -right-3 top-12 rotate-3 border-2 border-foreground bg-background px-4 py-3 font-display text-xl uppercase leading-none shadow-[4px_4px_0_hsl(var(--foreground))] sm:-right-8 sm:text-2xl">
+          Held.<br />Seen.<br /><span className="text-primary">Scanned.</span>
+        </div>
       </div>
-    </section>
-  )
-}
+    </div>
+
+    <div className="overflow-hidden border-t-2 border-foreground bg-foreground py-3 text-background">
+      <div className="ticker-track flex gap-10 whitespace-nowrap font-display text-lg uppercase tracking-[-0.02em]">
+        {[0, 1].map((copy) => (
+          <div key={copy} className="flex gap-10" aria-hidden={copy === 1}>
+            <span>Local reach</span><span className="text-accent">✦</span>
+            <span>Free café cups</span><span className="text-accent">✦</span>
+            <span>Trackable QR</span><span className="text-accent">✦</span>
+            <span>Campaigns people carry</span><span className="text-accent">✦</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)
 
 export default HeroSection
