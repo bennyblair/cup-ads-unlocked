@@ -4,8 +4,10 @@ import { cn } from "@/lib/utils"
 
 const BrandMark = ({
   className,
+  compactOnMobile = false,
 }: {
   className?: string
+  compactOnMobile?: boolean
 }) => (
   <Link
     to="/"
@@ -16,7 +18,10 @@ const BrandMark = ({
       Cup<span className="text-primary">Space</span>
     </span>
     <span
-      className="border border-foreground bg-accent px-1.5 py-0.5 text-[0.52rem] font-bold uppercase leading-none tracking-[0.16em] text-accent-foreground transition-transform group-hover:-rotate-2"
+      className={cn(
+        "border border-foreground bg-accent px-1.5 py-0.5 text-[0.52rem] font-bold uppercase leading-none tracking-[0.16em] text-accent-foreground transition-transform group-hover:-rotate-2",
+        compactOnMobile && "hidden min-[400px]:inline-block",
+      )}
     >
       Cup media
     </span>
