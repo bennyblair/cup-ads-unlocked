@@ -32,13 +32,13 @@ const NetworkSection = () => {
       <div className="container-custom">
         <div className="mb-9 grid gap-6 lg:grid-cols-[1fr_0.72fr] lg:items-end">
           <div>
-            <span className="eyebrow mb-7">The CupSpace network</span>
-            <h2 className="heading-section mb-0 max-w-4xl">Pick your patch.</h2>
+            <span className="eyebrow mb-7">Hyper-local by design</span>
+            <h2 className="heading-section mb-0 max-w-4xl">Choose your patch.</h2>
           </div>
           <div className="lg:pb-2">
             <p className="text-lg font-medium leading-relaxed text-muted-foreground">
-              Select a marker, compare live areas or request the exact Australian
-              suburb your campaign needs.
+              Target the suburbs that matter and place your campaign inside the
+              daily coffee routine of the people who live and work there.
             </p>
             <Link
               to="/locations"

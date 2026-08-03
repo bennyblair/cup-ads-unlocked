@@ -13,12 +13,12 @@ const audiences = [
   {
     id: "brands",
     eyebrow: "For brands",
-    title: "Put local reach in people’s hands.",
-    body: "Choose the areas that matter, place your creative on an everyday café essential and give customers a clear QR-powered next step.",
+    title: "Reach people beyond the feed.",
+    body: "Digital ads compete for a split second of attention. CupSpace puts your brand inside the daily coffee run—at the café counter, through the suburb and into the workplace.",
     points: [
-      "Choose campaign areas and audiences",
-      "Cup artwork and partner distribution coordinated",
-      "Trackable QR response built into the campaign",
+      "Choose the exact suburbs and audience you need",
+      "Turn a useful everyday object into local brand attention",
+      "Connect real-world reach to trackable QR response",
     ],
     action: "Plan a campaign",
     href: "/advertiser-form",

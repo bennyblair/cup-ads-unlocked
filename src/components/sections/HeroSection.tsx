@@ -15,8 +15,9 @@ const HeroSection = () => (
           Reach for <span className="text-accent [-webkit-text-stroke:2px_hsl(var(--foreground))]">brands.</span>
         </h1>
         <p className="text-hero-sub mt-8 max-w-2xl border-l-4 border-primary pl-5">
-          Free branded takeaway cups for cafés. Local, trackable campaigns for
-          advertisers. One useful piece of media, carried through the community.
+          Cut through crowded feeds with intimate, hyper-local cup advertising.
+          Brands choose the suburbs and drive trackable action, while cafés get
+          their cups supplied at no cost.
         </p>
 
         <div className="mt-9 flex flex-col gap-4 sm:flex-row">
