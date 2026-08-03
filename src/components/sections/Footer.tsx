@@ -7,7 +7,9 @@ const Footer = () => (
     <div className="container-custom">
       <div className="grid gap-10 border-b border-background/30 pb-12 lg:grid-cols-[1.4fr_0.6fr_0.6fr]">
         <div>
-          <BrandMark inverse />
+          <div className="inline-flex border-2 border-background bg-background px-3 py-2">
+            <BrandMark />
+          </div>
           <p className="mt-6 max-w-lg text-lg leading-relaxed text-background/65">
             Branded takeaway cups for cafés. Local, trackable physical media for advertisers.
           </p>
