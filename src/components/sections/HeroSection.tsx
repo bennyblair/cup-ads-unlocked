@@ -10,7 +10,7 @@ const HeroSection = () => (
       <div className="relative z-10">
         <span className="eyebrow mb-7">Australia&apos;s cup media network</span>
         <h1 className="heading-hero max-w-5xl">
-          Cups for <span className="text-primary">cafés.</span>
+          Cups for <span className="text-primary">cafes.</span>
           <br />
           Reach for <span className="text-accent [-webkit-text-stroke:2px_hsl(var(--foreground))]">brands.</span>
         </h1>
