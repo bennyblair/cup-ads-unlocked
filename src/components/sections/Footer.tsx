@@ -21,9 +21,11 @@ const Footer = () => (
         <nav aria-label="Explore" className="text-sm">
           <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-accent">Explore</p>
           <ul className="space-y-3 text-background/70">
+            <li><Link className="hover:text-background" to="/how-it-works">How it works</Link></li>
             <li><Link className="hover:text-background" to="/locations">Locations</Link></li>
             <li><Link className="hover:text-background" to="/savings-calculator">Savings calculator</Link></li>
             <li><Link className="hover:text-background" to="/about">Our story</Link></li>
+            <li><Link className="hover:text-background" to="/contact">Contact</Link></li>
           </ul>
         </nav>
 

@@ -79,7 +79,7 @@
   }
 
   .heading-hero {
-    @apply font-display text-[clamp(3.7rem,9vw,8.7rem)] uppercase leading-[0.82] tracking-[-0.055em] text-foreground;
+    @apply font-display text-[clamp(3.1rem,9vw,8.7rem)] uppercase leading-[0.9] tracking-[-0.05em] text-foreground sm:leading-[0.82] sm:tracking-[-0.055em];
   }
 
   .heading-section {
