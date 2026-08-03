@@ -57,7 +57,10 @@ const NetworkSection = () => {
               </div>
             }
           >
-            <LocationsExplorer className="rounded-none border-2 border-foreground shadow-[9px_9px_0_hsl(var(--foreground))]" />
+            <LocationsExplorer
+              compact
+              className="rounded-none border-2 border-foreground shadow-[9px_9px_0_hsl(var(--foreground))]"
+            />
           </Suspense>
         ) : (
           <div className="flex min-h-[680px] items-center justify-center border-2 border-foreground bg-card text-sm font-bold uppercase tracking-[0.1em] text-primary shadow-elegant">

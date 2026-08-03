@@ -117,7 +117,13 @@ const toFeatureCollection = (locations: NetworkLocation[]) => ({
   })),
 })
 
-const LocationsExplorer = ({ className }: { className?: string }) => {
+const LocationsExplorer = ({
+  className,
+  compact = false,
+}: {
+  className?: string
+  compact?: boolean
+}) => {
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MapLibreMap | null>(null)
   const [selectedAreaId, setSelectedAreaId] = useState("")
@@ -522,51 +528,71 @@ const LocationsExplorer = ({ className }: { className?: string }) => {
               </div>
             )}
 
-            <div className="mb-3 flex items-end justify-between gap-3">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
-                  Available now
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Grouped by campaign area
-                </p>
-              </div>
-              <span className="shrink-0 border border-foreground bg-secondary px-2.5 py-1 text-xs font-bold text-secondary-foreground">
-                {filteredAreas.length} {filteredAreas.length === 1 ? "area" : "areas"}
-              </span>
-            </div>
+            {compact ? (
+              <Link
+                to="/locations"
+                className="group flex items-center gap-3 border-2 border-foreground bg-card p-4 transition hover:bg-foreground hover:text-background"
+              >
+                <MapPin className="h-5 w-5 shrink-0 text-primary group-hover:text-accent" />
+                <span className="min-w-0 flex-1">
+                  <span className="block font-bold">
+                    View all {cafeAreas.length} areas
+                  </span>
+                  <span className="block text-xs opacity-70">
+                    Search and compare the full network
+                  </span>
+                </span>
+                <ArrowRight className="h-4 w-4 shrink-0 transition group-hover:translate-x-0.5" />
+              </Link>
+            ) : (
+              <>
+                <div className="mb-3 flex items-end justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                      Available now
+                    </p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Grouped by campaign area
+                    </p>
+                  </div>
+                  <span className="shrink-0 border border-foreground bg-secondary px-2.5 py-1 text-xs font-bold text-secondary-foreground">
+                    {filteredAreas.length} {filteredAreas.length === 1 ? "area" : "areas"}
+                  </span>
+                </div>
 
-            <div className="space-y-2" aria-label="Map coverage areas">
-              {filteredAreas.map((area) => (
-                <button
-                  key={area.id}
-                  type="button"
-                  onClick={() => focusArea(area)}
-                  className={cn(
-                    "flex w-full items-center gap-3 rounded-none border-2 p-3 text-left transition",
-                    selectedArea?.id === area.id
-                      ? "border-primary/30 bg-primary/5"
-                      : "border-transparent hover:border-border hover:bg-secondary/60",
-                  )}
-                >
-                  <MapPin
-                    className="h-5 w-5 shrink-0 text-primary"
-                  />
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-semibold text-foreground">
-                      {area.name}
-                    </span>
-                    <span className="block text-xs text-muted-foreground">
-                      {area.locations.length} partner {" "}
-                      {area.locations.length === 1 ? "café" : "cafés"}
-                    </span>
-                  </span>
-                  <span className="flex h-8 min-w-8 items-center justify-center border border-foreground bg-primary text-xs font-bold text-primary-foreground">
-                    {area.locations.length}
-                  </span>
-                </button>
-              ))}
-            </div>
+                <div className="space-y-2" aria-label="Map coverage areas">
+                  {filteredAreas.map((area) => (
+                    <button
+                      key={area.id}
+                      type="button"
+                      onClick={() => focusArea(area)}
+                      className={cn(
+                        "flex w-full items-center gap-3 rounded-none border-2 p-3 text-left transition",
+                        selectedArea?.id === area.id
+                          ? "border-primary/30 bg-primary/5"
+                          : "border-transparent hover:border-border hover:bg-secondary/60",
+                      )}
+                    >
+                      <MapPin
+                        className="h-5 w-5 shrink-0 text-primary"
+                      />
+                      <span className="min-w-0 flex-1">
+                        <span className="block font-semibold text-foreground">
+                          {area.name}
+                        </span>
+                        <span className="block text-xs text-muted-foreground">
+                          {area.locations.length} partner {" "}
+                          {area.locations.length === 1 ? "café" : "cafés"}
+                        </span>
+                      </span>
+                      <span className="flex h-8 min-w-8 items-center justify-center border border-foreground bg-primary text-xs font-bold text-primary-foreground">
+                        {area.locations.length}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
 
         </div>
