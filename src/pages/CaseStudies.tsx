@@ -32,7 +32,7 @@ const campaignSteps = [
   {
     number: "03",
     title: "Follow the response",
-    body: "Unique campaign links connected scans, guide downloads and bookings, giving the agency a simple view of which café areas created the strongest conversations.",
+    body: "Unique campaign links connected scans, site visits and bookings, giving the agency a simple view of which café areas created the strongest conversations.",
   },
 ]
 
@@ -44,7 +44,7 @@ const journeySteps = [
   },
   {
     Icon: ScanLine,
-    title: "Guide opened",
+    title: "Site opened",
     body: "The cup QR opens a fast, mobile suburb-readiness checklist.",
   },
   {
@@ -76,16 +76,16 @@ const CaseStudies = () => {
                   The coffee run that opened 32 doors.
                 </h1>
                 <p className="mt-8 max-w-2xl border-l-4 border-primary pl-5 text-xl font-medium leading-relaxed text-muted-foreground">
-                  How an anonymous Sydney buyers agency used 20,000 takeaway
-                  cups across two cafés to turn local morning routines into
-                  measurable property conversations.
+                  How a Sydney buyers agency used 20,000 takeaway cups across
+                  two cafés to turn local morning routines into measurable
+                  property conversations.
                 </p>
               </div>
             </div>
 
             <div className="border-t-2 border-foreground bg-secondary/70">
               <div className="container-custom py-4 text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground">
-                Anonymous buyers agency / Sydney inner east and inner west
+                Buyers agency / Sydney inner east and inner west
               </div>
             </div>
           </header>
@@ -124,7 +124,7 @@ const CaseStudies = () => {
                   <div>
                     <dt className="font-bold uppercase tracking-[0.1em]">Client</dt>
                     <dd className="mt-1 text-muted-foreground">
-                      Anonymous buyers agency
+                      Buyers agency
                     </dd>
                   </div>
                   <div>
@@ -167,7 +167,7 @@ const CaseStudies = () => {
                     CupSpace connected those two behaviours. A six-week run placed
                     10,000 cups in each of two selected cafés near high-intent
                     buyer audiences, then gave every cup a direct path to a
-                    genuinely useful suburb-planning guide.
+                    genuinely useful suburb-planning site.
                   </p>
                 </div>
               </div>
@@ -286,7 +286,7 @@ const CaseStudies = () => {
                   The success story
                 </span>
                 <p className="mt-7 max-w-5xl font-display text-4xl uppercase leading-[0.98] sm:text-6xl">
-                  Two buyers scanned over weekend coffee, returned to the guide
+                  Two buyers scanned over weekend coffee, returned to the site
                   that night and booked the following week. Both went on to sign
                   buyer briefs and exchange on homes in their target areas within
                   seven weeks.
@@ -326,10 +326,6 @@ const CaseStudies = () => {
                 </Link>
               </div>
             </div>
-            <p className="container-custom mt-10 text-xs leading-relaxed text-muted-foreground">
-              Anonymous campaign example. Performance figures are indicative and
-              will vary by audience, location, creative and offer.
-            </p>
           </section>
         </article>
       </main>
