@@ -1,4 +1,3 @@
-import { ArrowRight } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import BrandMark from "@/components/brand/BrandMark"
@@ -17,19 +16,13 @@ const Footer = () => (
           <a className="mt-5 inline-block border-b border-accent text-sm font-bold" href="mailto:info@cupspace.com.au">
             info@cupspace.com.au
           </a>
-          <Link
-            to="/case-studies"
-            className="mt-7 flex min-h-12 max-w-lg items-center justify-between gap-4 border-2 border-background bg-primary px-4 py-3 text-sm font-bold uppercase tracking-[0.06em] transition hover:bg-accent hover:text-foreground"
-          >
-            Buyers agent case study <ArrowRight className="h-4 w-4 shrink-0" />
-          </Link>
         </div>
 
         <nav aria-label="Explore" className="text-sm">
           <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-accent">Explore</p>
           <ul className="space-y-1 text-background/70">
             <li><Link className="flex min-h-11 items-center hover:text-background" to="/locations">Locations</Link></li>
-            <li><Link className="flex min-h-11 items-center hover:text-background" to="/case-studies">Case studies</Link></li>
+            <li><Link className="flex min-h-11 items-center hover:text-background" to="/case-studies">Buyers agent case study</Link></li>
             <li><Link className="flex min-h-11 items-center hover:text-background" to="/savings-calculator">Savings calculator</Link></li>
             <li><Link className="flex min-h-11 items-center hover:text-background" to="/about">Our story</Link></li>
           </ul>

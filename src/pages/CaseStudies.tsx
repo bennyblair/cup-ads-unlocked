@@ -250,8 +250,8 @@ const CaseStudies = () => {
                 </p>
               </div>
 
-              <div className="border-2 border-foreground bg-secondary/60 p-7 shadow-elegant sm:p-10">
-                <div className="space-y-6">
+              <div className="border-2 border-foreground bg-secondary/60 p-5 shadow-elegant sm:p-10">
+                <div className="space-y-5 sm:space-y-6">
                   {[
                     ["8.0%", "of cup handoffs became landing-page visits"],
                     ["14.0%", "of visitors completed a qualified enquiry"],
@@ -260,12 +260,12 @@ const CaseStudies = () => {
                   ].map(([value, label]) => (
                     <div
                       key={label}
-                      className="grid grid-cols-[82px_1fr] items-baseline gap-3 border-b border-foreground/20 pb-5 sm:grid-cols-[110px_1fr] sm:gap-4 last:border-0 last:pb-0"
+                      className="flex flex-col items-start border-b border-foreground/20 pb-5 sm:grid sm:grid-cols-[110px_1fr] sm:items-baseline sm:gap-4 last:border-0 last:pb-0"
                     >
-                      <strong className="font-display text-4xl text-primary">
+                      <strong className="whitespace-nowrap font-display text-[2.75rem] leading-none text-primary sm:text-4xl">
                         {value}
                       </strong>
-                      <span className="leading-relaxed text-muted-foreground">
+                      <span className="mt-2 leading-relaxed text-muted-foreground sm:mt-0">
                         {label}
                       </span>
                     </div>
