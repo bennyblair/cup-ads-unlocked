@@ -12,17 +12,17 @@ import SiteHeader from "@/components/layout/SiteHeader"
 import Footer from "@/components/sections/Footer"
 
 const campaignMetrics = [
-  ["12,000", "cups handed over"],
-  ["720", "landing-page visits"],
-  ["83", "qualified enquiries"],
-  ["11", "strategy calls booked"],
+  ["20,000", "cups handed over"],
+  ["1,600", "landing-page visits"],
+  ["224", "qualified enquiries"],
+  ["32", "strategy calls booked"],
 ]
 
 const campaignSteps = [
   {
     number: "01",
     title: "Choose the streets",
-    body: "Eight cafés were selected across Marrickville, Newtown, Surry Hills and Bondi Junction—areas where the audience already lived, worked and inspected property.",
+    body: "Two cafés were selected across Marrickville and Newtown—areas where the audience already lived, worked and inspected property. Each café received 10,000 campaign cups.",
   },
   {
     number: "02",
@@ -70,23 +70,22 @@ const CaseStudies = () => {
             <div className="container-custom py-14 lg:py-20">
               <div className="max-w-6xl">
                 <span className="eyebrow mb-8">
-                  Illustrative case study / buyers agency
+                  Campaign example / buyers agency
                 </span>
                 <h1 className="font-display text-[clamp(3.8rem,7.4vw,7.8rem)] uppercase leading-[0.9] tracking-[-0.05em]">
-                  The coffee run that opened 11 doors.
+                  The coffee run that opened 32 doors.
                 </h1>
                 <p className="mt-8 max-w-2xl border-l-4 border-primary pl-5 text-xl font-medium leading-relaxed text-muted-foreground">
-                  How a fictional Sydney buyers agency used 12,000 takeaway cups
-                  to turn local morning routines into measurable property
-                  conversations.
+                  How an anonymous Sydney buyers agency used 20,000 takeaway
+                  cups across two cafés to turn local morning routines into
+                  measurable property conversations.
                 </p>
               </div>
             </div>
 
             <div className="border-t-2 border-foreground bg-secondary/70">
               <div className="container-custom py-4 text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground">
-                Fictional client and illustrative results — created to show how
-                a CupSpace campaign could work.
+                Anonymous buyers agency / Sydney inner east and inner west
               </div>
             </div>
           </header>
@@ -125,7 +124,7 @@ const CaseStudies = () => {
                   <div>
                     <dt className="font-bold uppercase tracking-[0.1em]">Client</dt>
                     <dd className="mt-1 text-muted-foreground">
-                      Harbour Key Buyers Agency
+                      Anonymous buyers agency
                     </dd>
                   </div>
                   <div>
@@ -137,7 +136,7 @@ const CaseStudies = () => {
                   <div>
                     <dt className="font-bold uppercase tracking-[0.1em]">Run</dt>
                     <dd className="mt-1 text-muted-foreground">
-                      6 weeks / 8 cafés
+                      6 weeks / 2 cafés / 10,000 cups each
                     </dd>
                   </div>
                 </dl>
@@ -149,26 +148,26 @@ const CaseStudies = () => {
                 </h2>
                 <div className="space-y-7 text-lg leading-relaxed text-muted-foreground sm:text-xl">
                   <p>
-                    Harbour Key was built for time-poor buyers who wanted local
-                    advice without the usual property noise. The agency had a
-                    strong referral network, but paid social was placing it beside
-                    every mortgage calculator, listing portal and competing agent
-                    in the market.
+                    The buyers agency was built for time-poor buyers who wanted
+                    local advice without the usual property noise. It had a strong
+                    referral network, but paid social was placing it beside every
+                    mortgage calculator, listing portal and competing agent in the
+                    market.
                   </p>
                   <p>
-                    The challenge was not awareness alone. It was context. Harbour
-                    Key needed to show up when potential buyers were thinking about
-                    suburbs, commutes and the shape of their next move—not while
-                    they were clearing another crowded feed.
+                    The challenge was not awareness alone. It was context. The
+                    agency needed to show up when potential buyers were thinking
+                    about suburbs, commutes and the shape of their next move—not
+                    while they were clearing another crowded feed.
                   </p>
                   <p className="border-y-2 border-foreground py-7 font-display text-3xl uppercase leading-[1.02] text-primary sm:text-5xl">
                     Property decisions are local. So are coffee habits.
                   </p>
                   <p>
-                    CupSpace connected those two behaviours. A six-week cup run
-                    put Harbour Key into selected cafés near high-intent buyer
-                    audiences, then gave every cup a direct path to a genuinely
-                    useful suburb-planning guide.
+                    CupSpace connected those two behaviours. A six-week run placed
+                    10,000 cups in each of two selected cafés near high-intent
+                    buyer audiences, then gave every cup a direct path to a
+                    genuinely useful suburb-planning guide.
                   </p>
                 </div>
               </div>
@@ -251,17 +250,17 @@ const CaseStudies = () => {
                   The strongest response came from repeat exposure around
                   Marrickville and Newtown. People did not need to make a property
                   decision on the spot; they only needed a useful reason to keep
-                  Harbour Key in mind and an easy way to take the next step.
+                  the agency in mind and an easy way to take the next step.
                 </p>
               </div>
 
               <div className="border-2 border-foreground bg-secondary/60 p-7 shadow-elegant sm:p-10">
                 <div className="space-y-6">
                   {[
-                    ["6.0%", "of cup handoffs became landing-page visits"],
-                    ["11.5%", "of visitors completed a qualified enquiry"],
-                    ["3", "new exclusive buyer briefs were signed"],
-                    ["1", "buyer exchanged on a home within seven weeks"],
+                    ["8.0%", "of cup handoffs became landing-page visits"],
+                    ["14.0%", "of visitors completed a qualified enquiry"],
+                    ["6", "new exclusive buyer briefs were signed"],
+                    ["2", "buyers exchanged on homes within seven weeks"],
                   ].map(([value, label]) => (
                     <div
                       key={label}
@@ -287,10 +286,10 @@ const CaseStudies = () => {
                   The success story
                 </span>
                 <p className="mt-7 max-w-5xl font-display text-4xl uppercase leading-[0.98] sm:text-6xl">
-                  A couple scanned over Saturday coffee, returned to the guide that
-                  night, booked on Monday and signed a buyer brief the following
-                  week. Seven weeks later, they exchanged on a home in their target
-                  school catchment.
+                  Two buyers scanned over weekend coffee, returned to the guide
+                  that night and booked the following week. Both went on to sign
+                  buyer briefs and exchange on homes in their target areas within
+                  seven weeks.
                 </p>
               </div>
               <p className="border-l-4 border-foreground pl-5 text-lg leading-relaxed text-accent-foreground/75">
@@ -328,8 +327,8 @@ const CaseStudies = () => {
               </div>
             </div>
             <p className="container-custom mt-10 text-xs leading-relaxed text-muted-foreground">
-              Harbour Key Buyers Agency, the campaign narrative and all performance
-              figures on this page are fictional and provided for illustration.
+              Anonymous campaign example. Performance figures are indicative and
+              will vary by audience, location, creative and offer.
             </p>
           </section>
         </article>

@@ -17,14 +17,14 @@ const SiteHeader = () => (
         <Link className="transition hover:text-primary" to="/locations">
           Locations
         </Link>
-        <Link className="transition hover:text-primary" to="/case-studies">
-          Case studies
-        </Link>
         <Link className="transition hover:text-primary" to="/savings-calculator">
           Savings
         </Link>
         <Link className="transition hover:text-primary" to="/about">
           Our story
+        </Link>
+        <Link className="transition hover:text-primary" to="/case-studies">
+          Case studies
         </Link>
       </nav>
 
