@@ -6,7 +6,7 @@ const ProblemSection = () => (
     <div className="grid lg:grid-cols-2">
       <article className="bg-primary px-6 py-20 text-primary-foreground sm:px-10 lg:px-[max(3rem,calc((100vw-1440px)/2+3rem))] lg:py-28">
         <p className="mb-8 text-xs font-bold uppercase tracking-[0.2em] text-accent">
-          For cafés / side A
+          For cafés
         </p>
         <h2 className="font-display text-5xl uppercase leading-[0.9] tracking-[-0.04em] sm:text-7xl">
           Cups cost money. Ours don&apos;t.
@@ -25,7 +25,7 @@ const ProblemSection = () => (
 
       <article className="bg-accent px-6 py-20 text-accent-foreground sm:px-10 lg:px-[max(3rem,calc((100vw-1440px)/2+3rem))] lg:py-28">
         <p className="mb-8 text-xs font-bold uppercase tracking-[0.2em]">
-          For brands / side B
+          For brands
         </p>
         <h2 className="font-display text-5xl uppercase leading-[0.9] tracking-[-0.04em] sm:text-7xl">
           Reach that leaves the screen.
