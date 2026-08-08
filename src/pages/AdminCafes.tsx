@@ -83,13 +83,15 @@ const CafeDetails = ({ record }: { record: CafeApplicationRecord }) => {
               Timeline: {details.timeline || "Not supplied"}
             </dd>
           </div>
-          <div>
-            <dt className="font-semibold text-primary">Exact private pin</dt>
-            <dd className="mt-1 font-mono text-xs text-muted-foreground">
-              {details.exactCoordinates[1].toFixed(6)},{" "}
-              {details.exactCoordinates[0].toFixed(6)}
-            </dd>
-          </div>
+          {details.exactCoordinates && (
+            <div>
+              <dt className="font-semibold text-primary">Exact private pin</dt>
+              <dd className="mt-1 font-mono text-xs text-muted-foreground">
+                {details.exactCoordinates[1].toFixed(6)},{" "}
+                {details.exactCoordinates[0].toFixed(6)}
+              </dd>
+            </div>
+          )}
         </dl>
 
         {(details.goals || details.customerBase) && (
@@ -112,22 +114,35 @@ const CafeDetails = ({ record }: { record: CafeApplicationRecord }) => {
         )}
       </div>
 
-      <div className="rounded-2xl border border-primary/15 bg-primary/5 p-5">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-primary">
-          <EyeOff className="h-4 w-4" />
-          Public preview
+      {record.publicLocation ? (
+        <div className="rounded-2xl border border-primary/15 bg-primary/5 p-5">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-primary">
+            <EyeOff className="h-4 w-4" />
+            Public preview
+          </div>
+          <p className="mt-3 font-bold text-primary">
+            {record.publicLocation.name}
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {record.publicLocation.address}
+          </p>
+          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+            The public coordinates are automatically offset. No private café or
+            contact fields are returned by the map API.
+          </p>
         </div>
-        <p className="mt-3 font-bold text-primary">
-          {record.publicLocation.name}
-        </p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {record.publicLocation.address}
-        </p>
-        <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-          The public coordinates are automatically offset. No private café or
-          contact fields are returned by the map API.
-        </p>
-      </div>
+      ) : (
+        <div className="rounded-2xl border border-primary/15 bg-primary/5 p-5">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-primary">
+            <EyeOff className="h-4 w-4" />
+            Internal application
+          </div>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            This application has no map pin and cannot be published as a public
+            marker.
+          </p>
+        </div>
+      )}
     </div>
   )
 }
@@ -318,7 +333,9 @@ const AdminCafes = () => {
                             type="button"
                             variant="outline"
                             className="gap-2 border-destructive/30 text-destructive hover:bg-destructive/5 hover:text-destructive"
-                            disabled={activeRecord === record.id}
+                            disabled={
+                              activeRecord === record.id || !record.publicLocation
+                            }
                             onClick={() => handleAction(record, "reject")}
                           >
                             <X className="h-4 w-4" />
@@ -335,7 +352,9 @@ const AdminCafes = () => {
                             ) : (
                               <Check className="h-4 w-4" />
                             )}
-                            Approve anonymous marker
+                            {record.publicLocation
+                              ? "Approve anonymous marker"
+                              : "Map location unavailable"}
                           </Button>
                         </div>
                       </Card>

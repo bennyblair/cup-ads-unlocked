@@ -13,7 +13,7 @@ export interface CafePrivateDetails {
   suburb: string
   state: AustralianState
   postcode: string
-  exactCoordinates: [longitude: number, latitude: number]
+  exactCoordinates?: [longitude: number, latitude: number]
   dailyCups: string
   openHours: string
   currentSupplier: string
@@ -21,7 +21,7 @@ export interface CafePrivateDetails {
   customerBase: string
   goals: string
   timeline: string
-  publicListingConsent: string
+  publicListingConsent?: string
 }
 
 export interface PublicCafeLocation extends NetworkLocation {
@@ -35,7 +35,7 @@ export interface CafeApplicationRecord {
   createdAt: string
   updatedAt: string
   privateDetails: CafePrivateDetails
-  publicLocation: PublicCafeLocation
+  publicLocation?: PublicCafeLocation
 }
 
 export interface PublicCafesResponse {

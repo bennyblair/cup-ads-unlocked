@@ -42,23 +42,18 @@ The café name, street address, contact details and exact coordinates are never
 returned by the public endpoint. Advertiser requests carry the internal café ID so
 CupSpace can identify the requested venue privately.
 
-## Automated café approval workflow
+## Café applications and existing map records
 
-1. A café submits `cafe-form`, including its exact private pin and consent to an
-   anonymous approximate marker.
-2. After Netlify verifies the submission, `cafe-submission.mts` saves a separate
-   pending record in the `cupspace-cafes` Netlify Blobs store.
-3. Netlify's existing form notification emails alert the CupSpace team.
-4. An administrator opens `/admin/cafes`, enters the private PIN and reviews the
-   application.
-5. Approving moves the record from pending to approved. The anonymous green map
-   marker becomes available through `/api/cafes` without a rebuild.
-6. Unpublishing returns a record to pending. Rejecting removes it from the approval
-   queue and stores it as rejected for an audit trail.
+The café form collects contact, address and operating details through Netlify
+Forms. It does not ask applicants to place a private map pin or consent to a public
+listing. New applications enter the internal review queue but cannot be published
+as map markers.
 
-In local Vite development, café records are simulated in browser local storage so
-the complete form → approval → green marker flow can be tested. The local preview
-PIN is `cupspace-preview`; this value is not accepted in production.
+Existing approved café records continue to appear through `/api/cafes`. The
+unlinked `/admin/cafes` page remains available for reviewing, unpublishing or
+rejecting legacy records already stored in the `cupspace-cafes` Netlify Blobs
+store. The local preview PIN is `cupspace-preview`; this value is not accepted in
+production.
 
 ### Required Netlify environment variable
 
@@ -105,10 +100,9 @@ Email recipients are configured in Netlify rather than committed to this reposit
 Deploy through the existing Netlify connection. After the first deployment:
 
 1. Confirm the `CUPSPACE_ADMIN_PIN` environment variable is available to Functions.
-2. Submit one realistic café application with the private pin set.
-3. Confirm the entry appears in Netlify Forms and notification emails reach both
-   recipients.
-4. Open `/admin/cafes`, approve the café and confirm an anonymous green marker
-   appears on `/locations`.
-5. Submit an advertiser request from that marker and confirm the internal café ID
+2. Submit one realistic café application.
+3. Confirm the submission appears in Netlify Forms and notification emails reach
+   both recipients.
+4. Confirm any existing approved café records still appear on `/locations`.
+5. Submit an advertiser request from a marker and confirm the internal café ID
    is present in the Netlify submission.

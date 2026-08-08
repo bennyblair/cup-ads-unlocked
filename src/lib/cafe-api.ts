@@ -60,7 +60,7 @@ export const getPublicCafeLocations = async (): Promise<
   if (import.meta.env.DEV) {
     return getDevelopmentRecords()
       .filter((record) => record.status === "approved")
-      .map((record) => record.publicLocation)
+      .flatMap((record) => (record.publicLocation ? [record.publicLocation] : []))
   }
 
   const response = await fetch("/api/cafes", {
@@ -114,6 +114,10 @@ export const updateCafeApplication = async ({
     const record = records.find((candidate) => candidate.id === id)
     if (!record) {
       throw new Error("Café application not found.")
+    }
+
+    if (action === "approve" && !record.publicLocation) {
+      throw new Error("This application has no map location to publish.")
     }
 
     if (action === "reject") {

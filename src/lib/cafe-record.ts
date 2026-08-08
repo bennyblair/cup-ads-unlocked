@@ -75,13 +75,18 @@ export const buildCafeApplicationRecord = ({
   createdAt: string
   data: Record<string, string>
 }): CafeApplicationRecord => {
-  const longitude = Number(readRequired(data, "exactLongitude", 24))
-  const latitude = Number(readRequired(data, "exactLatitude", 24))
+  const longitudeValue = readOptional(data, "exactLongitude", 24)
+  const latitudeValue = readOptional(data, "exactLatitude", 24)
+  const hasLegacyCoordinates = Boolean(longitudeValue && latitudeValue)
+  const longitude = Number(longitudeValue)
+  const latitude = Number(latitudeValue)
 
   if (
-    !Number.isFinite(longitude) ||
-    !Number.isFinite(latitude) ||
-    !coordinateIsInAustralia(longitude, latitude)
+    (longitudeValue || latitudeValue) &&
+    (!hasLegacyCoordinates ||
+      !Number.isFinite(longitude) ||
+      !Number.isFinite(latitude) ||
+      !coordinateIsInAustralia(longitude, latitude))
   ) {
     throw new Error("The café pin must be placed within Australia.")
   }
@@ -96,13 +101,15 @@ export const buildCafeApplicationRecord = ({
     throw new Error("Invalid Australian postcode.")
   }
 
-  const consent = readRequired(data, "publicListingConsent", 40)
-  if (!['anonymous-map', 'yes'].includes(consent)) {
-    throw new Error("Anonymous public map consent is required.")
+  const consent = readOptional(data, "publicListingConsent", 40)
+  if (consent && !["anonymous-map", "yes"].includes(consent)) {
+    throw new Error("Invalid anonymous public map consent value.")
   }
 
   const suburb = readRequired(data, "suburb", 90)
-  const exactCoordinates: [number, number] = [longitude, latitude]
+  const exactCoordinates: [number, number] | undefined = hasLegacyCoordinates
+    ? [longitude, latitude]
+    : undefined
 
   const privateDetails: CafePrivateDetails = {
     firstName: readRequired(data, "firstName", 80),
@@ -132,17 +139,19 @@ export const buildCafeApplicationRecord = ({
     createdAt,
     updatedAt: createdAt,
     privateDetails,
-    publicLocation: {
-      id,
-      kind: "cafe",
-      name: "Verified CupSpace café",
-      address: `Near ${suburb}, ${state}`,
-      suburb,
-      state,
-      coordinates: createApproximateCoordinates(id, exactCoordinates),
-      description:
-        "A verified CupSpace partner café. Exact venue details are shared after campaign confirmation.",
-      privacy: "approximate",
-    },
+    publicLocation: exactCoordinates
+      ? {
+          id,
+          kind: "cafe",
+          name: "Verified CupSpace café",
+          address: `Near ${suburb}, ${state}`,
+          suburb,
+          state,
+          coordinates: createApproximateCoordinates(id, exactCoordinates),
+          description:
+            "A verified CupSpace partner café. Exact venue details are shared after campaign confirmation.",
+          privacy: "approximate",
+        }
+      : undefined,
   }
 }

@@ -1,11 +1,4 @@
-import {
-  lazy,
-  Suspense,
-  type FormEvent,
-  useCallback,
-  useEffect,
-  useState,
-} from "react"
+import { type FormEvent, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { CheckCircle2 } from "lucide-react"
 
@@ -20,25 +13,9 @@ import { submitNetlifyForm } from "@/lib/netlify-forms"
 
 type SubmissionState = "idle" | "submitting" | "success" | "error"
 
-const CafeLocationPicker = lazy(
-  () => import("@/components/locations/CafeLocationPicker"),
-)
-
 const CafeForm = () => {
   const [submissionState, setSubmissionState] =
     useState<SubmissionState>("idle")
-  const [coordinates, setCoordinates] = useState<
-    [longitude: number, latitude: number] | null
-  >(null)
-  const [locationValidationError, setLocationValidationError] = useState("")
-
-  const handleCoordinatesChange = useCallback(
-    (nextCoordinates: [longitude: number, latitude: number]) => {
-      setCoordinates(nextCoordinates)
-      setLocationValidationError("")
-    },
-    [],
-  )
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -49,19 +26,11 @@ const CafeForm = () => {
     event.preventDefault()
     const form = event.currentTarget
 
-    if (!coordinates) {
-      setLocationValidationError(
-        "Please place the café pin before submitting your application.",
-      )
-      return
-    }
-
     setSubmissionState("submitting")
 
     try {
       await submitNetlifyForm("cafe-form", form)
       form.reset()
-      setCoordinates(null)
       setSubmissionState("success")
     } catch {
       setSubmissionState("error")
@@ -79,8 +48,7 @@ const CafeForm = () => {
             <span className="eyebrow mb-7">Network application / for cafés</span>
             <h1 className="heading-section max-w-4xl">Put your cup costs down.</h1>
             <p className="max-w-2xl text-lg font-medium leading-relaxed text-muted-foreground sm:text-xl">
-              Tell us about your café, weekly cup volume and location. We review
-              every application before anything appears on the public map.
+              Tell us about your café, weekly cup volume and location.
             </p>
           </div>
 
@@ -91,8 +59,8 @@ const CafeForm = () => {
                 Application received
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-                We will review your café details and contact you before anything
-                is published on the CupSpace map.
+                We will review your café details and contact you about the next
+                steps.
               </p>
               <Link
                 to="/"
@@ -265,25 +233,6 @@ const CafeForm = () => {
                   </div>
                 </div>
 
-                <Suspense
-                  fallback={
-                    <div className="flex h-[360px] items-center justify-center border-2 border-foreground bg-secondary text-sm font-bold uppercase tracking-[0.08em] text-primary">
-                      Loading the private pin map…
-                    </div>
-                  }
-                >
-                  <CafeLocationPicker
-                    coordinates={coordinates}
-                    onChange={handleCoordinatesChange}
-                  />
-                </Suspense>
-
-                {locationValidationError && (
-                  <p role="alert" className="text-sm font-medium text-destructive">
-                    {locationValidationError}
-                  </p>
-                )}
-
                 <div className="grid gap-6 md:grid-cols-2">
                   <div>
                     <Label htmlFor="dailyCups">Daily Cup Volume</Label>
@@ -354,19 +303,6 @@ const CafeForm = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="goals">
-                    What interests you about CupSpace?
-                  </Label>
-                  <Textarea
-                    id="goals"
-                    name="goals"
-                    placeholder="Reducing costs, trying new partnerships, or something else?"
-                    className="mt-2"
-                    rows={3}
-                  />
-                </div>
-
-                <div>
                   <Label htmlFor="timeline">When would you like to start?</Label>
                   <select
                     id="timeline"
@@ -380,22 +316,6 @@ const CafeForm = () => {
                     <option value="exploring">Just exploring options</option>
                   </select>
                 </div>
-
-                <label className="flex items-start gap-3 border-2 border-foreground bg-secondary/60 p-4 text-sm leading-relaxed">
-                  <input
-                    type="checkbox"
-                    name="publicListingConsent"
-                    value="anonymous-map"
-                    required
-                    className="mt-1 h-4 w-4 accent-primary"
-                  />
-                  <span>
-                    If approved as a partner, I agree that CupSpace may display
-                    an anonymous, approximate marker near this café. The public
-                    map will not show the café name, street address, contact
-                    details, or exact pin.
-                  </span>
-                </label>
 
                 <div className="pt-2">
                   <HeroButton

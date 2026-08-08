@@ -51,7 +51,11 @@ const fetchHandler = async (request: Request) => {
   if (request.method === "GET" && !wantsAdminView) {
     const approved = await listCafeRecords("approved")
     return jsonResponse(
-      { cafes: approved.map((record) => record.publicLocation) },
+      {
+        cafes: approved.flatMap((record) =>
+          record.publicLocation ? [record.publicLocation] : [],
+        ),
+      },
       200,
       "public, max-age=60, stale-while-revalidate=300",
     )
@@ -87,6 +91,13 @@ const fetchHandler = async (request: Request) => {
     const record = await getCafeRecord("pending", body.id)
     if (!record) {
       return jsonResponse({ error: "Pending café not found." }, 404)
+    }
+
+    if (body.action === "approve" && !record.publicLocation) {
+      return jsonResponse(
+        { error: "This application has no map location to publish." },
+        400,
+      )
     }
 
     const updated = await moveCafeRecord({

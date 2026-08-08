@@ -21,8 +21,8 @@ const Locations = () => {
               <h1 className="heading-section mb-0">Pick your patch.</h1>
             </div>
             <p className="max-w-xl text-lg font-medium leading-relaxed text-muted-foreground lg:pb-2">
-              Explore approximate, anonymous CupSpace coverage. Click a circle
-              to zoom, choose an area, or request the suburb your campaign needs.
+              Explore the CupSpace network. Click a circle to zoom, choose an
+              area, or request the suburb your campaign needs.
             </p>
           </div>
 

@@ -54,7 +54,7 @@ const CTASection = () => {
         <div className="mt-16 grid gap-10 border-t-2 border-foreground pt-12 lg:grid-cols-[0.75fr_1.25fr]">
           <div>
             <p className="font-display text-4xl uppercase leading-[0.95] sm:text-5xl">Not sure where you fit?</p>
-            <p className="mt-5 max-w-md text-lg leading-relaxed text-muted-foreground">Send a straight question. It goes to the CupSpace team through the existing Netlify form.</p>
+            <p className="mt-5 max-w-md text-lg leading-relaxed text-muted-foreground">Send a straight question. It goes to the CupSpace team.</p>
             <a className="mt-6 inline-block border-b-2 border-foreground text-sm font-bold" href="mailto:info@cupspace.com.au">info@cupspace.com.au</a>
           </div>
 
@@ -77,7 +77,6 @@ const CTASection = () => {
                   <div><Label htmlFor="email">Email</Label><Input id="email" name="email" type="email" autoComplete="email" className="mt-2" required /></div>
                   <div><Label htmlFor="company">Company</Label><Input id="company" name="company" autoComplete="organization" className="mt-2" /></div>
                 </div>
-                <div><Label htmlFor="interest">I&apos;m interested in</Label><select id="interest" name="interest" className="mt-2"><option value="">Select an option</option><option value="advertising">Advertising with CupSpace</option><option value="partnership">Partnering as a café</option><option value="general">General enquiry</option></select></div>
                 <div><Label htmlFor="message">Message</Label><Textarea id="message" name="message" className="mt-2" rows={4} required /></div>
                 <HeroButton type="submit" disabled={submissionState === "submitting"}>{submissionState === "submitting" ? "Sending..." : "Send it"}</HeroButton>
                 {submissionState === "error" && <p role="alert" className="text-sm font-bold text-destructive">We could not send this. Try again or email info@cupspace.com.au.</p>}

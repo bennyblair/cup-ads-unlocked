@@ -12,7 +12,7 @@ const isCafeSubmission = (data: Record<string, string>) => {
     return formName === "cafe-form"
   }
 
-  return Boolean(data.cafeName && data.exactLatitude && data.exactLongitude)
+  return Boolean(data.cafeName)
 }
 
 export default {

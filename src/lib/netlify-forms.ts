@@ -7,8 +7,8 @@ export const submitNetlifyForm = async (
   const formData = new FormData(form)
   formData.set("form-name", formName)
 
-  // Vite cannot emulate Netlify Forms locally. This keeps the complete UI flow
-  // testable while production and deploy previews still post to Netlify.
+  // Vite cannot emulate Netlify Forms locally. Production and deploy previews
+  // post to Netlify; local development simulates the successful UI state.
   if (import.meta.env.DEV) {
     if (formName === "cafe-form") {
       saveDevelopmentCafeSubmission(formData)
