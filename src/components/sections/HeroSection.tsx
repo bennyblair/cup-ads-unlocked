@@ -72,9 +72,13 @@ const HeroSection = () => (
     </div>
 
     <div className="overflow-hidden border-t-2 border-foreground bg-foreground py-3 text-background">
-      <div className="ticker-track flex gap-10 whitespace-nowrap font-display text-lg uppercase tracking-[-0.02em]">
+      <div className="ticker-track flex whitespace-nowrap font-display text-lg uppercase tracking-[-0.02em]">
         {[0, 1].map((copy) => (
-          <div key={copy} className="flex gap-10" aria-hidden={copy === 1}>
+          <div
+            key={copy}
+            className="flex shrink-0 gap-10 pr-10"
+            aria-hidden={copy === 1}
+          >
             <span>Local reach</span><span className="text-accent">✦</span>
             <span>Free café cups</span><span className="text-accent">✦</span>
             <span>Trackable QR</span><span className="text-accent">✦</span>

@@ -8,7 +8,7 @@ const SiteHeader = () => (
       <BrandMark />
 
       <nav
-        className="hidden items-center gap-7 text-xs font-bold uppercase tracking-[0.12em] md:flex"
+        className="hidden items-center gap-4 text-xs font-bold uppercase tracking-[0.1em] md:flex lg:gap-7 lg:tracking-[0.12em]"
         aria-label="Main navigation"
       >
         <Link className="transition hover:text-primary" to="/#solution">
@@ -16,6 +16,9 @@ const SiteHeader = () => (
         </Link>
         <Link className="transition hover:text-primary" to="/locations">
           Locations
+        </Link>
+        <Link className="transition hover:text-primary" to="/case-studies">
+          Case studies
         </Link>
         <Link className="transition hover:text-primary" to="/savings-calculator">
           Savings

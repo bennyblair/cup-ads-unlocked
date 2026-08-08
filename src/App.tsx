@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 const Locations = lazy(() => import("./pages/Locations"));
 const AdminCafes = lazy(() => import("./pages/AdminCafes"));
+const CaseStudies = lazy(() => import("./pages/CaseStudies"));
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -27,6 +28,20 @@ const App = () => (
           <Route path="/advertiser-form" element={<AdvertiserForm />} />
           <Route path="/cafe-form" element={<CafeForm />} />
           <Route path="/savings-calculator" element={<SavingsCalculator />} />
+          <Route
+            path="/case-studies"
+            element={
+              <Suspense
+                fallback={
+                  <div className="flex min-h-screen items-center justify-center text-primary">
+                    Loading case studies…
+                  </div>
+                }
+              >
+                <CaseStudies />
+              </Suspense>
+            }
+          />
           <Route
             path="/locations"
             element={
