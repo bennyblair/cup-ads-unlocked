@@ -72,7 +72,7 @@ const CaseStudies = () => {
                 <span className="eyebrow mb-8">
                   Campaign example / buyers agency
                 </span>
-                <h1 className="font-display text-[clamp(3.8rem,7.4vw,7.8rem)] uppercase leading-[0.9] tracking-[-0.05em]">
+                <h1 className="font-display text-[clamp(3rem,7.4vw,7.8rem)] uppercase leading-[0.95] tracking-[-0.05em] sm:leading-[0.9]">
                   The coffee run that opened 32 doors.
                 </h1>
                 <p className="mt-8 max-w-2xl border-l-4 border-primary pl-5 text-xl font-medium leading-relaxed text-muted-foreground">
@@ -91,21 +91,17 @@ const CaseStudies = () => {
           </header>
 
           <section className="border-b-2 border-foreground bg-foreground text-background">
-            <div className="container-custom grid sm:grid-cols-2 lg:grid-cols-4">
+            <div className="container-custom grid grid-cols-2 lg:grid-cols-4">
               {campaignMetrics.map(([value, label], index) => (
                 <div
                   key={label}
-                  className={`px-6 py-9 sm:px-8 ${
-                    index ? "border-t border-background/25" : ""
-                  } ${
-                    index % 2 ? "sm:border-l" : "sm:border-l-0"
-                  } ${
-                    index >= 2 ? "sm:border-t" : "sm:border-t-0"
-                  } ${
+                  className={`px-3 py-7 sm:px-8 sm:py-9 ${
+                    index % 2 ? "border-l border-background/25" : ""
+                  } ${index >= 2 ? "border-t border-background/25" : ""} ${
                     index ? "lg:border-l lg:border-t-0" : "lg:border-l-0"
                   }`}
                 >
-                  <p className="font-display text-5xl text-accent sm:text-6xl">
+                  <p className="font-display text-4xl text-accent sm:text-6xl">
                     {value}
                   </p>
                   <p className="mt-2 text-xs font-bold uppercase tracking-[0.14em] text-background/60">
@@ -117,7 +113,7 @@ const CaseStudies = () => {
           </section>
 
           <section className="section-padding border-b-2 border-foreground">
-            <div className="container-custom grid gap-14 lg:grid-cols-[0.65fr_1.35fr]">
+            <div className="container-custom grid gap-10 sm:gap-14 lg:grid-cols-[0.65fr_1.35fr]">
               <div>
                 <span className="eyebrow">The brief</span>
                 <dl className="mt-8 space-y-5 border-l-2 border-foreground pl-5 text-sm">
@@ -186,7 +182,7 @@ const CaseStudies = () => {
                 {journeySteps.map(({ Icon, title, body }, index) => (
                   <li
                     key={title}
-                    className={`p-7 sm:p-9 ${
+                    className={`p-6 sm:p-9 ${
                       index
                         ? "border-t-2 border-primary-foreground lg:border-l-2 lg:border-t-0"
                         : ""
@@ -218,7 +214,7 @@ const CaseStudies = () => {
                 {campaignSteps.map((step, index) => (
                   <article
                     key={step.number}
-                    className={`bg-card p-7 sm:p-9 ${
+                    className={`bg-card p-6 sm:p-9 ${
                       index
                         ? "border-t-2 border-foreground lg:border-l-2 lg:border-t-0"
                         : ""
@@ -240,7 +236,7 @@ const CaseStudies = () => {
           </section>
 
           <section className="section-padding border-b-2 border-foreground">
-            <div className="container-custom grid gap-14 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="container-custom grid gap-10 sm:gap-14 lg:grid-cols-[0.9fr_1.1fr]">
               <div>
                 <span className="eyebrow">The result</span>
                 <h2 className="heading-section mt-8">
@@ -264,7 +260,7 @@ const CaseStudies = () => {
                   ].map(([value, label]) => (
                     <div
                       key={label}
-                      className="grid grid-cols-[110px_1fr] items-baseline gap-4 border-b border-foreground/20 pb-5 last:border-0 last:pb-0"
+                      className="grid grid-cols-[82px_1fr] items-baseline gap-3 border-b border-foreground/20 pb-5 sm:grid-cols-[110px_1fr] sm:gap-4 last:border-0 last:pb-0"
                     >
                       <strong className="font-display text-4xl text-primary">
                         {value}
@@ -285,7 +281,7 @@ const CaseStudies = () => {
                 <span className="text-xs font-bold uppercase tracking-[0.18em]">
                   The success story
                 </span>
-                <p className="mt-7 max-w-5xl font-display text-4xl uppercase leading-[0.98] sm:text-6xl">
+                  <p className="mt-7 max-w-5xl font-display text-3xl uppercase leading-[1.02] sm:text-6xl sm:leading-[0.98]">
                   Two buyers scanned over weekend coffee, returned to the site
                   that night and booked the following week. Both went on to sign
                   buyer briefs and exchange on homes in their target areas within

@@ -4,11 +4,11 @@ import { ArrowUpRight } from "lucide-react"
 const ProblemSection = () => (
   <section id="problem" className="border-b-2 border-foreground">
     <div className="grid lg:grid-cols-2">
-      <article className="bg-primary px-6 py-20 text-primary-foreground sm:px-10 lg:px-[max(3rem,calc((100vw-1440px)/2+3rem))] lg:py-28">
+      <article className="bg-primary px-4 py-14 text-primary-foreground sm:px-10 sm:py-20 lg:px-[max(3rem,calc((100vw-1440px)/2+3rem))] lg:py-28">
         <p className="mb-8 text-xs font-bold uppercase tracking-[0.2em] text-accent">
           For cafés
         </p>
-        <h2 className="font-display text-5xl uppercase leading-[0.9] tracking-[-0.04em] sm:text-7xl">
+        <h2 className="font-display text-4xl uppercase leading-[0.95] tracking-[-0.04em] sm:text-7xl sm:leading-[0.9]">
           Cups cost money. Ours don&apos;t.
         </h2>
         <p className="mt-7 max-w-xl text-lg leading-relaxed text-primary-foreground/80">
@@ -23,11 +23,11 @@ const ProblemSection = () => (
         </Link>
       </article>
 
-      <article className="bg-accent px-6 py-20 text-accent-foreground sm:px-10 lg:px-[max(3rem,calc((100vw-1440px)/2+3rem))] lg:py-28">
+      <article className="bg-accent px-4 py-14 text-accent-foreground sm:px-10 sm:py-20 lg:px-[max(3rem,calc((100vw-1440px)/2+3rem))] lg:py-28">
         <p className="mb-8 text-xs font-bold uppercase tracking-[0.2em]">
           For brands
         </p>
-        <h2 className="font-display text-5xl uppercase leading-[0.9] tracking-[-0.04em] sm:text-7xl">
+        <h2 className="font-display text-4xl uppercase leading-[0.95] tracking-[-0.04em] sm:text-7xl sm:leading-[0.9]">
           Reach that leaves the screen.
         </h2>
         <p className="mt-7 max-w-xl text-lg leading-relaxed text-accent-foreground/80">

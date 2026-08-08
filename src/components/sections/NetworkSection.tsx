@@ -30,7 +30,7 @@ const NetworkSection = () => {
   return (
     <section ref={sectionRef} id="network" className="poster-grid section-padding border-b-2 border-foreground">
       <div className="container-custom">
-        <div className="mb-12 grid gap-8 lg:grid-cols-[1fr_0.72fr] lg:items-end">
+        <div className="mb-9 grid gap-6 sm:mb-12 sm:gap-8 lg:grid-cols-[1fr_0.72fr] lg:items-end">
           <div>
             <span className="eyebrow mb-7">The CupSpace network</span>
             <h2 className="heading-section mb-0 max-w-4xl">Pick your patch.</h2>
@@ -52,7 +52,7 @@ const NetworkSection = () => {
         {shouldLoadMap ? (
           <Suspense
             fallback={
-              <div className="flex min-h-[680px] items-center justify-center border-2 border-foreground bg-card text-sm font-bold uppercase tracking-[0.1em] text-primary shadow-elegant">
+              <div className="flex min-h-[420px] items-center justify-center border-2 border-foreground bg-card px-5 text-center text-sm font-bold uppercase tracking-[0.1em] text-primary shadow-elegant sm:min-h-[560px] lg:min-h-[680px]">
                 Loading the CupSpace map…
               </div>
             }
@@ -63,7 +63,7 @@ const NetworkSection = () => {
             />
           </Suspense>
         ) : (
-          <div className="flex min-h-[680px] items-center justify-center border-2 border-foreground bg-card text-sm font-bold uppercase tracking-[0.1em] text-primary shadow-elegant">
+          <div className="flex min-h-[420px] items-center justify-center border-2 border-foreground bg-card px-5 text-center text-sm font-bold uppercase tracking-[0.1em] text-primary shadow-elegant sm:min-h-[560px] lg:min-h-[680px]">
             Map loads as you approach this section
           </div>
         )}

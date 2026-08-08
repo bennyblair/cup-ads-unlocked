@@ -430,8 +430,8 @@ const LocationsExplorer = ({
         className,
       )}
     >
-      <div className="grid min-h-[680px] lg:h-[680px] lg:grid-cols-[minmax(0,1.65fr)_minmax(320px,0.75fr)]">
-        <div className="relative min-h-[430px] lg:min-h-[680px]">
+      <div className="grid lg:h-[680px] lg:grid-cols-[minmax(0,1.65fr)_minmax(320px,0.75fr)]">
+        <div className="relative min-h-[360px] sm:min-h-[430px] lg:min-h-[680px]">
           <div
             ref={mapContainerRef}
             className="absolute inset-0"
@@ -448,7 +448,7 @@ const LocationsExplorer = ({
         </div>
 
         <div className="flex min-h-0 flex-col bg-background">
-          <div className="border-b border-border p-5">
+          <div className="border-b border-border p-4 sm:p-5">
             <div className="flex items-center justify-between gap-4 border-2 border-foreground bg-primary p-4 text-primary-foreground">
               <span className="flex items-center gap-3">
                 <span className="flex h-10 w-10 items-center justify-center border border-primary-foreground bg-primary text-primary-foreground">
@@ -494,9 +494,9 @@ const LocationsExplorer = ({
             </Link>
           </div>
 
-          <div className="min-h-0 flex-1 overflow-y-auto p-5">
+          <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-5">
             {selectedArea ? (
-              <div className="mb-5 border-2 border-foreground bg-secondary p-5">
+              <div className="mb-4 border-2 border-foreground bg-secondary p-4 sm:mb-5 sm:p-5">
                 <div className="mb-3 flex items-center gap-2">
                   <Coffee className="h-5 w-5 text-primary" />
                   <span className="text-xs font-bold uppercase tracking-[0.16em] text-primary">

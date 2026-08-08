@@ -6,20 +6,20 @@ import { HeroButton } from "@/components/ui/hero-button"
 
 const HeroSection = () => (
   <section id="hero" className="paper-noise relative overflow-hidden border-b-2 border-foreground">
-    <div className="container-custom grid min-h-[calc(100svh-70px)] items-center gap-12 py-14 lg:grid-cols-[1.08fr_0.72fr] lg:gap-16 lg:py-20">
+    <div className="container-custom grid items-center gap-10 py-12 sm:gap-12 sm:py-14 lg:min-h-[calc(100svh-70px)] lg:grid-cols-[1.08fr_0.72fr] lg:gap-16 lg:py-20">
       <div className="relative z-10">
-        <span className="eyebrow mb-7">Australia&apos;s cup media network</span>
+        <span className="eyebrow mb-6 sm:mb-7">Australia&apos;s cup media network</span>
         <h1 className="heading-hero max-w-5xl">
           Cups for <span className="text-primary">cafés.</span>
           <br />
           Reach for <span className="text-accent [-webkit-text-stroke:2px_hsl(var(--foreground))]">brands.</span>
         </h1>
-        <p className="text-hero-sub mt-8 max-w-2xl border-l-4 border-primary pl-5">
+        <p className="text-hero-sub mt-6 max-w-2xl border-l-4 border-primary pl-4 sm:mt-8 sm:pl-5">
           Free branded takeaway cups for cafés. Local, trackable campaigns for
           advertisers. One useful piece of media, carried through the community.
         </p>
 
-        <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+        <div className="mt-7 flex flex-col gap-4 sm:mt-9 sm:flex-row">
           <Link to="/advertiser-form">
             <HeroButton size="lg" className="w-full sm:w-auto">
               Plan a campaign <ArrowRight className="ml-2 h-4 w-4" />
@@ -48,8 +48,8 @@ const HeroSection = () => (
         </div>
       </div>
 
-      <div className="relative mx-auto w-full max-w-[520px] lg:mr-2">
-        <div className="absolute -left-5 -top-5 h-full w-full border-2 border-foreground bg-accent sm:-left-8 sm:-top-8" />
+      <div className="relative mx-auto w-[calc(100%-1rem)] max-w-[340px] sm:max-w-[440px] lg:mr-2 lg:max-w-[520px]">
+        <div className="absolute -left-3 -top-3 h-full w-full border-2 border-foreground bg-accent sm:-left-8 sm:-top-8" />
         <figure className="relative border-2 border-foreground bg-primary p-3 shadow-[10px_10px_0_hsl(var(--foreground))]">
           <div className="relative aspect-[4/5] overflow-hidden bg-primary">
             <img
@@ -65,7 +65,7 @@ const HeroSection = () => (
           </figcaption>
         </figure>
 
-        <div className="absolute -right-3 top-12 rotate-3 border-2 border-foreground bg-background px-4 py-3 font-display text-xl uppercase leading-none shadow-[4px_4px_0_hsl(var(--foreground))] sm:-right-8 sm:text-2xl">
+        <div className="absolute -right-2 top-9 rotate-3 border-2 border-foreground bg-background px-3 py-2 font-display text-lg uppercase leading-none shadow-[4px_4px_0_hsl(var(--foreground))] sm:-right-8 sm:top-12 sm:px-4 sm:py-3 sm:text-2xl">
           Held.<br />Seen.<br /><span className="text-primary">Scanned.</span>
         </div>
       </div>

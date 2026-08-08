@@ -18,7 +18,7 @@ const specs = [
 
 const SolutionSection = () => (
   <section id="solution" className="poster-grid section-padding border-b-2 border-foreground">
-    <div className="container-custom grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+    <div className="container-custom grid gap-10 sm:gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
       <div className="lg:sticky lg:top-28">
         <span className="eyebrow mb-7">The model / no fluff</span>
         <h2 className="heading-section max-w-3xl">
@@ -35,9 +35,9 @@ const SolutionSection = () => (
         {specs.map((spec) => (
           <article
             key={spec.number}
-            className="grid gap-5 border-b-2 border-foreground py-8 sm:grid-cols-[100px_1fr] sm:py-10"
+            className="grid gap-3 border-b-2 border-foreground py-6 sm:grid-cols-[100px_1fr] sm:gap-5 sm:py-10"
           >
-            <span className="font-display text-6xl leading-none text-accent [-webkit-text-stroke:1.5px_hsl(var(--foreground))]">
+            <span className="font-display text-5xl leading-none text-accent [-webkit-text-stroke:1.5px_hsl(var(--foreground))] sm:text-6xl">
               {spec.number}
             </span>
             <div>

@@ -18,7 +18,7 @@ const About = () => {
         <section className="border-b-2 border-foreground bg-primary py-20 text-primary-foreground sm:py-28">
           <div className="container-custom">
             <span className="eyebrow mb-8">Our story / three mates</span>
-            <h1 className="max-w-6xl font-display text-[clamp(4rem,10vw,9rem)] uppercase leading-[0.82] tracking-[-0.055em]">
+            <h1 className="max-w-6xl font-display text-[clamp(3rem,10vw,9rem)] uppercase leading-[0.9] tracking-[-0.055em] sm:leading-[0.82]">
               A café closed. The idea opened.
             </h1>
             <p className="mt-9 max-w-2xl border-l-4 border-accent pl-5 text-xl leading-relaxed text-primary-foreground/75">
