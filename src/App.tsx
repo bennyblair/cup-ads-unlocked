@@ -14,7 +14,9 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 const Locations = lazy(() => import("./pages/Locations"));
 const AdminCafes = lazy(() => import("./pages/AdminCafes"));
-const CaseStudies = lazy(() => import("./pages/CaseStudies"));
+const CaseStudiesIndex = lazy(() => import("./pages/CaseStudiesIndex"));
+const BuyersAgentCaseStudy = lazy(() => import("./pages/CaseStudies"));
+const EmetCapitalCaseStudy = lazy(() => import("./pages/EmetCapitalCaseStudy"));
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -38,7 +40,35 @@ const App = () => (
                   </div>
                 }
               >
-                <CaseStudies />
+                <CaseStudiesIndex />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/case-studies/buyers-agent"
+            element={
+              <Suspense
+                fallback={
+                  <div className="flex min-h-screen items-center justify-center text-primary">
+                    Loading case study…
+                  </div>
+                }
+              >
+                <BuyersAgentCaseStudy />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/case-studies/emet-capital"
+            element={
+              <Suspense
+                fallback={
+                  <div className="flex min-h-screen items-center justify-center text-primary">
+                    Loading case study…
+                  </div>
+                }
+              >
+                <EmetCapitalCaseStudy />
               </Suspense>
             }
           />

@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import {
+  ArrowLeft,
   ArrowRight,
   CheckCircle2,
   Coffee,
@@ -68,6 +69,12 @@ const CaseStudies = () => {
         <article>
           <header className="paper-noise border-b-2 border-foreground">
             <div className="container-custom py-14 lg:py-20">
+              <Link
+                to="/case-studies"
+                className="mb-8 inline-flex min-h-11 items-center gap-2 border-b-2 border-foreground text-xs font-bold uppercase tracking-[0.1em] transition hover:border-primary hover:text-primary"
+              >
+                <ArrowLeft className="h-4 w-4" /> All case studies
+              </Link>
               <div className="max-w-6xl">
                 <span className="eyebrow mb-8">
                   Campaign example / buyers agency
@@ -282,10 +289,8 @@ const CaseStudies = () => {
                   The success story
                 </span>
                   <p className="mt-7 max-w-5xl font-display text-3xl uppercase leading-[1.02] sm:text-6xl sm:leading-[0.98]">
-                  Two buyers scanned over weekend coffee, returned to the site
-                  that night and booked the following week. Both went on to sign
-                  buyer briefs and exchange on homes in their target areas within
-                  seven weeks.
+                  Weekend scans became Monday calls. Two buyers signed briefs
+                  and exchanged on homes within seven weeks.
                 </p>
               </div>
               <p className="border-l-4 border-foreground pl-5 text-lg leading-relaxed text-accent-foreground/75">
