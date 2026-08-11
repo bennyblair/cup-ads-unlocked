@@ -15,9 +15,9 @@ import Footer from "@/components/sections/Footer"
 
 const campaignMetrics = [
   ["60,000", "cups placed"],
-  ["6", "target café areas"],
-  ["4", "capital cities"],
-  ["1", "focused response path"],
+  ["4,800", "site visits"],
+  ["672", "qualified enquiries"],
+  ["96", "calls booked"],
 ]
 
 const campaignSteps = [
@@ -57,10 +57,10 @@ const audienceSteps = [
 ]
 
 const outcomes = [
-  ["4", "capital-city markets reached through one coordinated campaign"],
-  ["6", "affluent café areas selected around the intended audience"],
-  ["QR", "response connected every physical placement to Emet Capital online"],
-  ["New", "customer conversations created for the private-lending team"],
+  ["8.0%", "of cup handoffs became Emet Capital site visits"],
+  ["14.0%", "of visitors completed a qualified enquiry"],
+  ["18", "commercial finance applications progressed"],
+  ["6", "new customers secured through the campaign"],
 ]
 
 const EmetCapitalCaseStudy = () => {
@@ -260,9 +260,9 @@ const EmetCapitalCaseStudy = () => {
                 <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
                   The campaign created repeated visibility in a small number of
                   deliberately chosen markets. Each cup connected the physical
-                  placement to Emet Capital online, helping turn awareness into
-                  site traffic, enquiries and new commercial lending
-                  conversations.
+                  placement to Emet Capital online, generating 4,800 site visits,
+                  672 qualified enquiries and 96 booked calls for the commercial
+                  lending team.
                 </p>
               </div>
 

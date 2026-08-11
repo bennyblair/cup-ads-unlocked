@@ -12,7 +12,7 @@ const studies = [
     headline: "Private lending, placed in the right postcodes.",
     summary:
       "How CupSpace used café placement across affluent capital-city areas to put Emet Capital in front of property investors, developers and business owners.",
-    facts: ["4 capital cities", "6 café areas", "60,000 cups"],
+    facts: ["4 capital cities", "60,000 cups", "96 booked calls"],
     to: "/case-studies/emet-capital",
     Icon: Building2,
     tone: "bg-primary text-primary-foreground",
