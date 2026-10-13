@@ -1,11 +1,23 @@
 import { useEffect } from "react"
-import { ArrowRight, Building2, Home } from "lucide-react"
+import { ArrowRight, Building2, Home, ScanLine } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import SiteHeader from "@/components/layout/SiteHeader"
 import Footer from "@/components/sections/Footer"
+import krakenCup from "@/assets/kraken-campaign-cup.png"
 
 const studies = [
+  {
+    category: "Crypto / café campaign",
+    title: "Kraken",
+    headline: "A global brand. A daily ritual.",
+    summary: "How a Kraken-branded coffee cup connected a familiar café moment with a digital next step. See the campaign out in the city.",
+    facts: [],
+    to: "/case-studies/kraken",
+    Icon: ScanLine,
+    tone: "bg-[#7132f5] text-white",
+    image: krakenCup,
+  },
   {
     category: "Private lending / capital cities",
     title: "Emet Capital",
@@ -57,18 +69,15 @@ const CaseStudiesIndex = () => {
 
         <section className="poster-grid section-padding border-b-2 border-foreground">
           <div className="container-custom">
-            <div className="grid border-2 border-foreground lg:grid-cols-2">
+            <div className="grid gap-[2px] border-2 border-foreground bg-foreground lg:grid-cols-2">
               {studies.map((study, index) => (
                 <article
                   key={study.to}
                   className={`flex min-h-full flex-col p-6 sm:p-10 lg:p-12 ${
                     study.tone
-                  } ${
-                    index
-                      ? "border-t-2 border-foreground lg:border-l-2 lg:border-t-0"
-                      : ""
-                  }`}
+                  } ${index === 0 ? "lg:col-span-2" : ""}`}
                 >
+                  {study.image && <div className="mb-8 h-64 overflow-hidden border-2 border-white/40 sm:h-80"><img src={study.image} alt="Kraken campaign cup with logo and QR code on a city street" width={1200} height={1600} className="h-full w-full object-cover object-[42%_72%]" /></div>}
                   <div className="flex items-start justify-between gap-6">
                     <span className="text-xs font-bold uppercase tracking-[0.16em] opacity-70">
                       {study.category}
@@ -88,7 +97,7 @@ const CaseStudiesIndex = () => {
                     {study.summary}
                   </p>
 
-                  <ul className="mt-9 flex flex-wrap gap-2" aria-label="Campaign facts">
+                  {study.facts.length > 0 && <ul className="mt-9 flex flex-wrap gap-2" aria-label="Campaign facts">
                     {study.facts.map((fact) => (
                       <li
                         key={fact}
@@ -97,7 +106,7 @@ const CaseStudiesIndex = () => {
                         {fact}
                       </li>
                     ))}
-                  </ul>
+                  </ul>}
 
                   <Link
                     to={study.to}

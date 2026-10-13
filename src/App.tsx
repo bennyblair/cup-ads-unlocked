@@ -17,6 +17,7 @@ const AdminCafes = lazy(() => import("./pages/AdminCafes"));
 const CaseStudiesIndex = lazy(() => import("./pages/CaseStudiesIndex"));
 const BuyersAgentCaseStudy = lazy(() => import("./pages/CaseStudies"));
 const EmetCapitalCaseStudy = lazy(() => import("./pages/EmetCapitalCaseStudy"));
+const KrakenCaseStudy = lazy(() => import("./pages/KrakenCaseStudy"));
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/advertiser-form" element={<AdvertiserForm />} />
           <Route path="/cafe-form" element={<CafeForm />} />
           <Route path="/savings-calculator" element={<SavingsCalculator />} />
+          <Route path="/case-studies/kraken" element={<Suspense fallback={<div className="flex min-h-screen items-center justify-center text-primary">Loading case study…</div>}><KrakenCaseStudy /></Suspense>} />
           <Route
             path="/case-studies"
             element={
