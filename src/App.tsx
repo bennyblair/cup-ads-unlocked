@@ -17,6 +17,7 @@ const AdminCafes = lazy(() => import("./pages/AdminCafes"));
 const CaseStudiesIndex = lazy(() => import("./pages/CaseStudiesIndex"));
 const BuyersAgentCaseStudy = lazy(() => import("./pages/CaseStudies"));
 const EmetCapitalCaseStudy = lazy(() => import("./pages/EmetCapitalCaseStudy"));
+const SeoGuidePage = lazy(() => import("./pages/SeoGuidePage"));
 const KrakenCaseStudy = lazy(() => import("./pages/KrakenCaseStudy"));
 
 const App = () => (
@@ -102,6 +103,10 @@ const App = () => (
               </Suspense>
             }
           />
+          <Route path="/coffee-cup-advertising-sydney" element={<Suspense fallback={<div className="flex min-h-screen items-center justify-center text-primary">Loading…</div>}><SeoGuidePage slug="coffee-cup-advertising-sydney" /></Suspense>} />
+          <Route path="/real-estate-agent-marketing-ideas" element={<Suspense fallback={<div className="flex min-h-screen items-center justify-center text-primary">Loading…</div>}><SeoGuidePage slug="real-estate-agent-marketing-ideas" /></Suspense>} />
+          <Route path="/branded-promotional-coffee-cups" element={<Suspense fallback={<div className="flex min-h-screen items-center justify-center text-primary">Loading…</div>}><SeoGuidePage slug="branded-promotional-coffee-cups" /></Suspense>} />
+          <Route path="/small-business-advertising-ideas" element={<Suspense fallback={<div className="flex min-h-screen items-center justify-center text-primary">Loading…</div>}><SeoGuidePage slug="small-business-advertising-ideas" /></Suspense>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
