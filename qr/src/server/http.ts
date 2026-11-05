@@ -419,6 +419,10 @@ export const handleApi = async (request: Request, deps: AppDependencies) => {
     }
 
     if (id && request.method === "DELETE") {
+      const body = await readJson(request)
+      if (!isRecord(body) || body.confirm !== "DELETE") {
+        throw new HttpError("Type DELETE to confirm this permanent removal.", 400)
+      }
       const deleted = await deps.store.delete(id)
       if (!deleted) throw new HttpError("Campaign not found.", 404)
       await deps.analytics?.delete(id).catch(() => undefined)

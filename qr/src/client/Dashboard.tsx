@@ -454,12 +454,14 @@ const DeleteForm = ({
   onClose: () => void
   onConfirm: () => Promise<void>
 }) => {
+  const [phrase, setPhrase] = useState("")
   const [error, setError] = useState("")
   const [pending, setPending] = useState(false)
   const lock = useRef(false)
+  const confirmed = phrase === "DELETE"
 
   const confirm = async () => {
-    if (lock.current) return
+    if (lock.current || phrase !== "DELETE") return
     lock.current = true
     setPending(true)
     setError("")
@@ -473,11 +475,22 @@ const DeleteForm = ({
   }
 
   return (
-    <Dialog title="Delete campaign?" onClose={onClose}>
+    <Dialog title="Delete campaign permanently?" onClose={onClose}>
       <p>
-        Deleting <strong>{campaign.name}</strong> removes its visit count and stops the QR code from working. Printed
-        codes will no longer redirect.
+        This deletes <strong>{campaign.name}</strong>. Printed QR codes for this campaign stop working permanently.
+        The visit count is removed and the tracking link no longer redirects.
       </p>
+      <label htmlFor="delete-confirm">Type DELETE to confirm</label>
+      <input
+        id="delete-confirm"
+        data-testid="delete-confirm"
+        value={phrase}
+        onChange={(event) => setPhrase(event.target.value)}
+        autoCapitalize="characters"
+        autoCorrect="off"
+        spellCheck={false}
+        autoComplete="off"
+      />
       {error ? (
         <p className="form-error" role="alert">
           {error}
@@ -487,8 +500,14 @@ const DeleteForm = ({
         <button type="button" className="ghost-button" onClick={onClose}>
           Cancel
         </button>
-        <button type="button" className="danger-button" disabled={pending} onClick={() => void confirm()}>
-          {pending ? "Deleting…" : "Delete campaign"}
+        <button
+          type="button"
+          className="danger-button"
+          data-testid="confirm-delete"
+          disabled={!confirmed || pending}
+          onClick={() => void confirm()}
+        >
+          {pending ? "Deleting…" : "Delete permanently"}
         </button>
       </div>
     </Dialog>
