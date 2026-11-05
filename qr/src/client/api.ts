@@ -86,7 +86,11 @@ export const updateCampaign = async (id: string, input: { name: string; destinat
   return body.campaign
 }
 
-export const deleteCampaign = (id: string) => request(`/api/campaigns/${id}`, { method: "DELETE" })
+export const deleteCampaign = (id: string) =>
+  request(`/api/campaigns/${id}`, {
+    method: "DELETE",
+    body: JSON.stringify({ confirm: "DELETE" }),
+  })
 
 export const campaignStats = async (id: string) => {
   const body = await request(`/api/campaigns/${id}/stats`)

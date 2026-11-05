@@ -262,7 +262,11 @@ describe("http API", () => {
       "visits",
     ])
 
-    assert.equal((await api(deps, `/api/campaigns/${campaign.id}`, { method: "DELETE", headers: { cookie: header } })).status, 200)
+    assert.equal((await api(deps, `/api/campaigns/${campaign.id}`, {
+      method: "DELETE",
+      headers: { cookie: header },
+      body: JSON.stringify({ confirm: "DELETE" }),
+    })).status, 200)
     assert.equal((await handleVisit(new Request(`http://127.0.0.1/c/${campaign.id}`), deps.store)).status, 404)
 
     const loggedOut = await api(deps, "/api/logout", { method: "POST", headers: { cookie: header } })
@@ -591,10 +595,55 @@ describe("scan details", () => {
     const removed = await api(deps, `/api/campaigns/${created.id}`, {
       method: "DELETE",
       headers: { cookie: header },
+      body: JSON.stringify({ confirm: "DELETE" }),
     })
     assert.equal(removed.status, 200)
     assert.equal(await analytics.get(created.id), null)
     assert.equal(await store.get(created.id), null)
+  })
+})
+
+describe("delete confirmation", () => {
+  it("keeps the fixture unless DELETE is typed, and ignores a restore without its phrase", async () => {
+    const deps = app()
+    const created = await deps.store.create({ name: "Fixture cups", destination: "https://example.com/keep" })
+    const denied = await api(deps, `/api/campaigns/${created.id}`, {
+      method: "DELETE",
+      body: JSON.stringify({ confirm: "DELETE" }),
+    })
+    assert.equal(denied.status, 401)
+    assert.equal((await deps.store.get(created.id))?.name, "Fixture cups")
+
+    const signedIn = await api(deps, "/api/login", {
+      method: "POST",
+      body: JSON.stringify({ password: PASSWORD }),
+    })
+    const header = cookieHeader(signedIn)
+    for (const body of [undefined, { confirm: "" }, { confirm: "delete" }, { confirm: "REMOVE" }]) {
+      const response = await api(deps, `/api/campaigns/${created.id}`, {
+        method: "DELETE",
+        headers: { cookie: header },
+        body: body === undefined ? undefined : JSON.stringify(body),
+      })
+      assert.equal(response.status, 400)
+      assert.equal((await deps.store.get(created.id))?.destination, "https://example.com/keep")
+    }
+
+    const unconfirmedRestore = await api(deps, "/api/import", {
+      method: "POST",
+      headers: { cookie: header },
+      body: JSON.stringify({ campaigns: [] }),
+    })
+    assert.equal(unconfirmedRestore.status, 400)
+    assert.equal((await deps.store.get(created.id))?.visits, 0)
+
+    const removed = await api(deps, `/api/campaigns/${created.id}`, {
+      method: "DELETE",
+      headers: { cookie: header },
+      body: JSON.stringify({ confirm: "DELETE" }),
+    })
+    assert.equal(removed.status, 200)
+    assert.equal(await deps.store.get(created.id), null)
   })
 })
 
