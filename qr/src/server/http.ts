@@ -1,6 +1,7 @@
 import { isCampaignId, trackingUrl, StoreError, type Campaign } from "../shared/campaign"
 import { normalizeDestination, normalizeName } from "../shared/destination"
 import { decideGate } from "../shared/gate"
+import { authEnvPresence, readAuthEnv } from "../shared/runtime-env"
 import {
   authConfigured,
   clearSessionCookie,
@@ -15,11 +16,13 @@ import { qrPng, qrSvg } from "./qr-image"
 
 export class HttpError extends Error {
   status: number
+  details?: Record<string, unknown>
 
-  constructor(message: string, status: number) {
+  constructor(message: string, status: number, details?: Record<string, unknown>) {
     super(message)
     this.name = "HttpError"
     this.status = status
+    this.details = details
   }
 }
 
@@ -254,7 +257,9 @@ export const handleVisit = async (request: Request, store: CampaignStore) => {
 const handleLogin = async (request: Request, deps: AppDependencies) => {
   if (!sameOriginMutation(request)) throw new HttpError("Sign-in was rejected.", 403)
   if (!authConfigured(deps.password, deps.sessionSecret)) {
-    throw new HttpError("QR Studio sign-in is not configured yet.", 503)
+    throw new HttpError("QR Studio sign-in is not configured yet.", 503, {
+      configuration: authEnvPresence(),
+    })
   }
 
   const ip = clientIp(request)
@@ -389,7 +394,9 @@ export const handleApi = async (request: Request, deps: AppDependencies) => {
 
     return json({ error: "Not found." }, 404)
   } catch (error) {
-    if (error instanceof HttpError) return json({ error: error.message }, error.status)
+    if (error instanceof HttpError) {
+      return json({ error: error.message, ...(error.details ?? {}) }, error.status)
+    }
     if (error instanceof StoreError) return json({ error: error.message }, error.status)
     console.error("qr api failed")
     return json({ error: "Something went wrong." }, 500)
@@ -407,6 +414,14 @@ const HTML_HEADERS = {
   "Content-Security-Policy":
     "default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
 }
+
+// Production login reads the process and Netlify env here. Callers must not
+// pass a password in from anywhere else.
+export const handleNetlifyRequest = (
+  request: Request,
+  store: CampaignStore,
+  limiter: LoginLimiter = createLoginLimiter(),
+) => handleApi(request, { store, limiter, ...readAuthEnv() })
 
 export const handleRequest = async (request: Request, deps: AppDependencies) => {
   const url = new URL(request.url)
