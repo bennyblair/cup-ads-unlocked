@@ -1,9 +1,8 @@
 // Netlify edge functions are bundled by Deno. Relative imports must include
 // the .ts extension or the bundler looks up the path with no extension and fails.
 import { decideGate } from "../../src/shared/gate.ts"
+import { readAuthEnv } from "../../src/shared/runtime-env.ts"
 import { hasValidSession } from "../../src/shared/session.ts"
-
-declare const Netlify: { env: { get(name: string): string | undefined } }
 
 type EdgeContext = { next: () => Promise<Response> | Response }
 
@@ -20,9 +19,8 @@ const redirect = (request: Request, to: string) =>
 export default async (request: Request, context: EdgeContext) => {
   const pathname = new URL(request.url).pathname
   try {
-    const secret = Netlify.env.get("QR_SESSION_SECRET") ?? ""
-    const password = Netlify.env.get("QR_ADMIN_PASSWORD") ?? ""
-    const authenticated = await hasValidSession(request, secret, password)
+    const { password, sessionSecret } = readAuthEnv()
+    const authenticated = await hasValidSession(request, sessionSecret, password)
     const decision = decideGate({ method: request.method, pathname, authenticated })
     if (decision.type === "redirect") return redirect(request, decision.to)
     if (decision.type === "unauthorized") {

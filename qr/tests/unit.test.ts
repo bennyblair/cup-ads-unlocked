@@ -13,6 +13,7 @@ import { createMemoryStore } from "../src/server/memory-store"
 import {
   createLoginLimiter,
   handleApi,
+  handleNetlifyRequest,
   handleRequest,
   handleVisit,
   type AppDependencies,
@@ -325,6 +326,118 @@ describe("http API", () => {
       body: JSON.stringify({ password: "short" }),
     })).status, 503)
     assert.throws(() => parseCampaign({ id: "no" }, 400), /invalid/i)
+  })
+})
+
+describe("Netlify runtime env", () => {
+  const previous = {
+    password: process.env.QR_ADMIN_PASSWORD,
+    secret: process.env.QR_SESSION_SECRET,
+    netlify: (globalThis as { Netlify?: unknown }).Netlify,
+  }
+
+  const restore = () => {
+    if (previous.password === undefined) delete process.env.QR_ADMIN_PASSWORD
+    else process.env.QR_ADMIN_PASSWORD = previous.password
+    if (previous.secret === undefined) delete process.env.QR_SESSION_SECRET
+    else process.env.QR_SESSION_SECRET = previous.secret
+    if (previous.netlify === undefined) delete (globalThis as { Netlify?: unknown }).Netlify
+    else (globalThis as { Netlify?: unknown }).Netlify = previous.netlify
+  }
+
+  const clearRuntime = () => {
+    delete process.env.QR_ADMIN_PASSWORD
+    delete process.env.QR_SESSION_SECRET
+    delete (globalThis as { Netlify?: unknown }).Netlify
+  }
+
+  const setNetlify = (values: Record<string, string | undefined>) => {
+    ;(globalThis as { Netlify?: { env: { get(name: string): string | undefined } } }).Netlify = {
+      env: { get: (name) => values[name] },
+    }
+  }
+
+  const login = (password: string) =>
+    handleNetlifyRequest(
+      new Request("http://127.0.0.1/api/login", {
+        method: "POST",
+        headers: {
+          origin: "http://127.0.0.1",
+          "content-type": "application/json",
+          "x-cupspace-qr": "1",
+        },
+        body: JSON.stringify({ password }),
+      }),
+      createMemoryStore(),
+    )
+
+  it("reports missing production env without echoing secrets", async () => {
+    clearRuntime()
+    try {
+      const response = await login("not-the-configured-password")
+      const body = await response.text()
+      assert.equal(response.status, 503)
+      assert.equal(body.includes(PASSWORD), false)
+      assert.equal(body.includes(SECRET), false)
+      const parsed = JSON.parse(body) as {
+        configuration: {
+          password: { fromProcess: boolean; fromNetlify: boolean; valid: boolean }
+          sessionSecret: { fromProcess: boolean; fromNetlify: boolean; valid: boolean }
+        }
+      }
+      assert.equal(parsed.configuration.password.valid, false)
+      assert.equal(parsed.configuration.password.fromProcess, false)
+      assert.equal(parsed.configuration.password.fromNetlify, false)
+      assert.equal(parsed.configuration.sessionSecret.valid, false)
+    } finally {
+      restore()
+    }
+  })
+
+  it("reads a valid Node function env when Netlify.env is empty", async () => {
+    clearRuntime()
+    process.env.QR_ADMIN_PASSWORD = PASSWORD
+    process.env.QR_SESSION_SECRET = SECRET
+    setNetlify({ QR_ADMIN_PASSWORD: "", QR_SESSION_SECRET: "" })
+    try {
+      const response = await login("not-the-configured-password")
+      const body = await response.text()
+      assert.equal(response.status, 401)
+      assert.match(body, /Incorrect password/)
+      assert.equal(body.includes(PASSWORD), false)
+      assert.equal(body.includes(SECRET), false)
+    } finally {
+      restore()
+    }
+  })
+
+  it("reads a valid edge env when process.env is unset", async () => {
+    clearRuntime()
+    setNetlify({ QR_ADMIN_PASSWORD: PASSWORD, QR_SESSION_SECRET: SECRET })
+    try {
+      const response = await login("not-the-configured-password")
+      assert.equal(response.status, 401)
+    } finally {
+      restore()
+    }
+  })
+
+  it("rejects values that are present but shorter than the required minimum", async () => {
+    clearRuntime()
+    process.env.QR_ADMIN_PASSWORD = "short-password"
+    process.env.QR_SESSION_SECRET = "short-secret"
+    try {
+      const response = await login("short-password")
+      const body = JSON.parse(await response.text()) as {
+        configuration: { password: { fromProcess: boolean; valid: boolean }; sessionSecret: { valid: boolean } }
+      }
+      assert.equal(response.status, 503)
+      assert.equal(body.configuration.password.fromProcess, true)
+      assert.equal(body.configuration.password.valid, false)
+      assert.equal(body.configuration.sessionSecret.valid, false)
+    } finally {
+      restore()
+    }
   })
 })
 
