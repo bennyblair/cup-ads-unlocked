@@ -11,8 +11,10 @@ import {
   requestIsSecure,
   sessionCookie,
 } from "../shared/session"
+import type { AnalyticsStore } from "./analytics-store"
 import type { CampaignStore } from "./document-store"
 import { qrPng, qrSvg } from "./qr-image"
+import { scanFromRequest } from "../shared/scan"
 
 export class HttpError extends Error {
   status: number
@@ -34,6 +36,7 @@ export type LoginLimiter = {
 
 export type AppDependencies = {
   store: CampaignStore
+  analytics?: AnalyticsStore
   password: string
   sessionSecret: string
   limiter: LoginLimiter
@@ -221,7 +224,11 @@ const safeDestination = (value: string) => {
   return parsed.ok ? parsed.value : null
 }
 
-export const handleVisit = async (request: Request, store: CampaignStore) => {
+export const handleVisit = async (
+  request: Request,
+  store: CampaignStore,
+  analytics?: AnalyticsStore,
+) => {
   const id = visitIdFromRequest(request)
   if (!id) return text("This QR code is not active.", 404)
 
@@ -240,15 +247,25 @@ export const handleVisit = async (request: Request, store: CampaignStore) => {
   if (request.method === "HEAD") return redirectTo(destination)
   if (request.method !== "GET") return text("Method not allowed.", 405)
 
+  let counted = false
   try {
     const result = await store.incrementVisits(id)
     if (result.status === "missing") return text("This QR code is not active.", 404)
+    counted = result.status === "counted"
     if (result.destination) {
       const latest = safeDestination(result.destination)
       if (latest) destination = latest
     }
   } catch {
     console.error("qr visit count failed")
+  }
+
+  if (counted && analytics) {
+    try {
+      await analytics.record(id, scanFromRequest(request))
+    } catch {
+      console.error("qr scan details failed")
+    }
   }
 
   return redirectTo(destination)
@@ -370,6 +387,7 @@ export const handleApi = async (request: Request, deps: AppDependencies) => {
         throw new HttpError("Type REPLACE ALL CAMPAIGNS to restore a backup.", 400)
       }
       const replaced = await deps.store.replaceAll(body.campaigns)
+      await deps.analytics?.retain(replaced.map((campaign) => campaign.id)).catch(() => undefined)
       return json({ campaigns: replaced.map(publicCampaign) })
     }
 
@@ -377,6 +395,20 @@ export const handleApi = async (request: Request, deps: AppDependencies) => {
     if (qrMatch && isCampaignId(qrMatch[1])) {
       if (request.method !== "GET") return json({ error: "Method not allowed." }, 405)
       return await qrResponse(qrMatch[1], qrMatch[2] as "svg" | "png", deps.store)
+    }
+
+    const statsId = campaignIdFromPath(pathname, "/stats")
+    if (statsId && request.method === "GET") {
+      const campaign = await deps.store.get(statsId)
+      if (!campaign) throw new HttpError("Campaign not found.", 404)
+      const stats = (await deps.analytics?.get(statsId)) ?? {
+        recorded: 0,
+        recent: [],
+        countries: [],
+        devices: [],
+        browsers: [],
+      }
+      return json({ stats })
     }
 
     const id = campaignIdFromPath(pathname)
@@ -389,6 +421,7 @@ export const handleApi = async (request: Request, deps: AppDependencies) => {
     if (id && request.method === "DELETE") {
       const deleted = await deps.store.delete(id)
       if (!deleted) throw new HttpError("Campaign not found.", 404)
+      await deps.analytics?.delete(id).catch(() => undefined)
       return json({ ok: true })
     }
 
@@ -421,11 +454,12 @@ export const handleNetlifyRequest = (
   request: Request,
   store: CampaignStore,
   limiter: LoginLimiter = createLoginLimiter(),
-) => handleApi(request, { store, limiter, ...readAuthEnv() })
+  analytics?: AnalyticsStore,
+) => handleApi(request, { store, analytics, limiter, ...readAuthEnv() })
 
 export const handleRequest = async (request: Request, deps: AppDependencies) => {
   const url = new URL(request.url)
-  if (url.pathname.startsWith("/c/")) return handleVisit(request, deps.store)
+  if (url.pathname.startsWith("/c/")) return handleVisit(request, deps.store, deps.analytics)
   if (url.pathname.startsWith("/api/") || url.pathname === "/.netlify/functions/api") {
     return handleApi(request, deps)
   }

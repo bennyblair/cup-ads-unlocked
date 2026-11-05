@@ -1,3 +1,19 @@
+export type ScanEventView = {
+  at: string
+  city: string
+  country: string
+  device: string
+  browser: string
+}
+
+export type CampaignStats = {
+  recorded: number
+  recent: ScanEventView[]
+  countries: { label: string; count: number }[]
+  devices: { label: string; count: number }[]
+  browsers: { label: string; count: number }[]
+}
+
 export type CampaignView = {
   id: string
   name: string
@@ -17,7 +33,13 @@ export class AuthError extends Error {
 const parseJson = async (response: Response) => {
   const type = response.headers.get("content-type") ?? ""
   if (!type.includes("json")) return null
-  return (await response.json()) as { error?: unknown; campaigns?: CampaignView[]; campaign?: CampaignView; ok?: boolean }
+  return (await response.json()) as {
+    error?: unknown
+    campaigns?: CampaignView[]
+    campaign?: CampaignView
+    ok?: boolean
+    stats?: CampaignStats
+  }
 }
 
 const request = async (path: string, init?: RequestInit) => {
@@ -65,6 +87,12 @@ export const updateCampaign = async (id: string, input: { name: string; destinat
 }
 
 export const deleteCampaign = (id: string) => request(`/api/campaigns/${id}`, { method: "DELETE" })
+
+export const campaignStats = async (id: string) => {
+  const body = await request(`/api/campaigns/${id}/stats`)
+  if (!body?.stats) throw new Error("Scan details are unavailable.")
+  return body.stats
+}
 
 export const downloadQr = async (campaign: CampaignView, format: "svg" | "png") => {
   const response = await fetch(`/api/campaigns/${campaign.id}/qr.${format}`, {

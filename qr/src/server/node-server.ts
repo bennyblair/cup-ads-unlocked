@@ -3,6 +3,7 @@ import { existsSync, statSync } from "node:fs"
 import { readFile } from "node:fs/promises"
 import { extname, join, normalize, sep } from "node:path"
 
+import { createMemoryAnalytics } from "./analytics-store"
 import { createLoginLimiter, handleRequest, type AppDependencies } from "./http"
 import { createMemoryStore } from "./memory-store"
 
@@ -99,11 +100,13 @@ export const startServer = async (options: {
   sessionSecret: string
   staticDir: string
   store?: AppDependencies["store"]
+  analytics?: AppDependencies["analytics"]
   limiter?: AppDependencies["limiter"]
 }) => {
   const store = options.store ?? createMemoryStore()
   const deps: AppDependencies = {
     store,
+    analytics: options.analytics ?? createMemoryAnalytics(),
     password: options.password,
     sessionSecret: options.sessionSecret,
     limiter: options.limiter ?? createLoginLimiter(),

@@ -9,6 +9,7 @@ import { normalizeDestination, normalizeName } from "../src/shared/destination"
 import { decideGate } from "../src/shared/gate"
 import { hasValidSession, issueSessionToken, passwordMatches } from "../src/shared/session"
 import { createBlobsCampaignStore, blobStoreName, type BlobClient } from "../src/server/blobs-store"
+import { createMemoryAnalytics } from "../src/server/analytics-store"
 import { createMemoryStore } from "../src/server/memory-store"
 import {
   createLoginLimiter,
@@ -36,7 +37,7 @@ const cookieHeader = (response: Response) => {
   return cookie.split(";")[0]
 }
 
-const app = (store = createMemoryStore(), limiter = createLoginLimiter()) =>
+const app = (store = createMemoryStore(), limiter = createLoginLimiter()): AppDependencies =>
   ({
     store,
     password: PASSWORD,
@@ -147,6 +148,13 @@ describe("campaign store", () => {
         raw = JSON.stringify(data)
         etag = `v${writes}`
         return { modified: true }
+      },
+      async delete() {
+        raw = null
+        etag = null
+      },
+      async list() {
+        return raw ? ["campaigns"] : []
       },
     }
     const firstInstance = createBlobsCampaignStore(client)
@@ -453,6 +461,140 @@ describe("Netlify runtime env", () => {
     } finally {
       restore()
     }
+  })
+})
+
+describe("scan details", () => {
+  const geo = Buffer.from(
+    JSON.stringify({
+      city: "Sydney",
+      country: { code: "AU", name: "Australia" },
+      latitude: -33.86,
+      longitude: 151.2,
+      postalCode: "2000",
+    }),
+  ).toString("base64")
+
+  const visit = (store: ReturnType<typeof createMemoryStore>, analytics: ReturnType<typeof createMemoryAnalytics>, id: string, headers?: HeadersInit) =>
+    handleVisit(
+      new Request(`http://127.0.0.1/c/${id}`, { headers }),
+      store,
+      analytics,
+    )
+
+  it("counts every GET once, skips HEAD, and keeps campaign records unchanged", async () => {
+    const store = createMemoryStore()
+    const analytics = createMemoryAnalytics()
+    const created = await store.create({ name: "Harbour", destination: "https://example.com/land" })
+    await Promise.all(
+      Array.from({ length: 20 }, () =>
+        visit(store, analytics, created.id, {
+          "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit Safari",
+          "x-nf-geo": geo,
+          "x-nf-client-connection-ip": "203.0.113.10",
+        }),
+      ),
+    )
+    const head = await handleVisit(
+      new Request(`http://127.0.0.1/c/${created.id}`, { method: "HEAD" }),
+      store,
+      analytics,
+    )
+    assert.equal(head.status, 302)
+    const campaign = await store.get(created.id)
+    assert.equal(campaign?.visits, 20)
+    assert.deepEqual(Object.keys(campaign ?? {}).sort(), ["createdAt", "destination", "id", "name", "visits"])
+    const stats = await analytics.get(created.id)
+    assert.equal(stats?.recorded, 20)
+    assert.equal(stats?.recent.length, 20)
+    assert.equal(stats?.recent[0]?.city, "Sydney")
+    assert.equal(stats?.recent[0]?.country, "Australia")
+    assert.equal(stats?.devices.some((item) => item.label === "phone"), true)
+    const stored = JSON.stringify(stats)
+    assert.equal(stored.includes("203.0.113.10"), false)
+    assert.equal(stored.includes("latitude"), false)
+    assert.equal(stored.includes("iPhone"), false)
+  })
+
+  it("still redirects when scan details fail and records nothing for a failed count", async () => {
+    const store = createMemoryStore()
+    const created = await store.create({ name: "Harbour", destination: "https://example.com/land" })
+    const analytics = {
+      async record() {
+        throw new Error("analytics unavailable")
+      },
+      async get() {
+        return null
+      },
+      async delete() {
+        return undefined
+      },
+      async retain() {
+        return undefined
+      },
+    }
+    const response = await handleVisit(
+      new Request(`http://127.0.0.1/c/${created.id}`),
+      store,
+      analytics,
+    )
+    assert.equal(response.status, 302)
+    assert.equal(response.headers.get("location"), "https://example.com/land")
+    assert.equal((await store.get(created.id))?.visits, 1)
+  })
+
+  it("stores Unknown for missing or spoofed place data and does not keep the raw browser string", async () => {
+    const store = createMemoryStore()
+    const analytics = createMemoryAnalytics()
+    const created = await store.create({ name: "Harbour", destination: "https://example.com/land" })
+    const marker = "secret-browser-token-should-not-be-stored"
+    await handleVisit(
+      new Request(`http://127.0.0.1/c/${created.id}`, {
+        headers: {
+          "user-agent": `Mozilla/5.0 ${marker}`,
+          "x-city": "<script>alert(1)</script>",
+          "x-country": "ZZ",
+          "x-nf-geo": Buffer.from(JSON.stringify({ city: "<script>", country: { code: "XX" } })).toString("base64"),
+          "x-nf-client-connection-ip": "198.51.100.20",
+        },
+      }),
+      store,
+      analytics,
+    )
+    const stats = await analytics.get(created.id)
+    assert.equal(stats?.recent[0]?.city, "Unknown")
+    assert.equal(stats?.recent[0]?.country, "Unknown")
+    const stored = JSON.stringify(stats)
+    assert.equal(stored.includes(marker), false)
+    assert.equal(stored.includes("<script>"), false)
+    assert.equal(stored.includes("198.51.100.20"), false)
+  })
+
+  it("hides scan details from signed-out requests and removes them with the campaign", async () => {
+    const store = createMemoryStore()
+    const analytics = createMemoryAnalytics()
+    const deps = app(store)
+    deps.analytics = analytics
+    const created = await store.create({ name: "Harbour", destination: "https://example.com/land" })
+    await handleVisit(new Request(`http://127.0.0.1/c/${created.id}`), store, analytics)
+    const hidden = await handleApi(new Request(`http://127.0.0.1/api/campaigns/${created.id}/stats`), deps)
+    assert.equal(hidden.status, 401)
+    const signedIn = await api(deps, "/api/login", {
+      method: "POST",
+      body: JSON.stringify({ password: PASSWORD }),
+    })
+    const header = cookieHeader(signedIn)
+    const visible = await api(deps, `/api/campaigns/${created.id}/stats`, { headers: { cookie: header } })
+    assert.equal(visible.status, 200)
+    const body = await visible.json()
+    assert.equal(body.stats.recorded, 1)
+    const removed = await api(deps, `/api/campaigns/${created.id}`, {
+      method: "DELETE",
+      headers: { cookie: header },
+    })
+    assert.equal(removed.status, 200)
+    assert.equal(await analytics.get(created.id), null)
+    assert.equal(await store.get(created.id), null)
   })
 })
 

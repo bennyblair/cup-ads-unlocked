@@ -216,6 +216,46 @@ h1 {
 
 .campaign-row h3 { font-size: 1.05rem; }
 
+.scan-details {
+  grid-column: 1 / -1;
+  background: #f7faf6;
+  border-radius: 16px;
+  padding: 0.9rem;
+}
+
+.scan-details h4 { margin: 0.8rem 0 0.3rem; }
+
+.breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breakdown li,
+.recent-scans li {
+  background: #fff;
+  border: 1px solid #e1e8dc;
+  border-radius: 12px;
+  padding: 0.45rem 0.7rem;
+}
+
+.recent-scans {
+  display: grid;
+  gap: 0.45rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.recent-scans li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.8rem;
+}
+
 .tracking,
 .destination {
   margin: 0.25rem 0;
