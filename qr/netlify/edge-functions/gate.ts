@@ -1,5 +1,7 @@
-import { decideGate } from "../../src/shared/gate"
-import { hasValidSession } from "../../src/shared/session"
+// Netlify edge functions are bundled by Deno. Relative imports must include
+// the .ts extension or the bundler looks up the path with no extension and fails.
+import { decideGate } from "../../src/shared/gate.ts"
+import { hasValidSession } from "../../src/shared/session.ts"
 
 declare const Netlify: { env: { get(name: string): string | undefined } }
 
