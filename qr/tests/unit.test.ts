@@ -422,12 +422,27 @@ describe("Netlify runtime env", () => {
     }
   })
 
+  it("accepts an 8 character password when the session secret is valid", async () => {
+    clearRuntime()
+    process.env.QR_ADMIN_PASSWORD = "eightchr"
+    process.env.QR_SESSION_SECRET = SECRET
+    try {
+      const response = await login("not-the-configured-password")
+      const body = await response.text()
+      assert.equal(response.status, 401)
+      assert.match(body, /Incorrect password/)
+      assert.equal(body.includes(SECRET), false)
+    } finally {
+      restore()
+    }
+  })
+
   it("rejects values that are present but shorter than the required minimum", async () => {
     clearRuntime()
-    process.env.QR_ADMIN_PASSWORD = "short-password"
+    process.env.QR_ADMIN_PASSWORD = "sevench"
     process.env.QR_SESSION_SECRET = "short-secret"
     try {
-      const response = await login("short-password")
+      const response = await login("sevench")
       const body = JSON.parse(await response.text()) as {
         configuration: { password: { fromProcess: boolean; valid: boolean }; sessionSecret: { valid: boolean } }
       }
