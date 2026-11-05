@@ -1,8 +1,10 @@
 import { type FormEvent, useEffect, useRef, useState } from "react"
 
 import { normalizeDestination, normalizeName } from "../shared/destination"
+import { locationLabel } from "../shared/scan"
 import {
   AuthError,
+  campaignStats,
   createCampaign,
   deleteCampaign,
   downloadBackup,
@@ -11,6 +13,7 @@ import {
   logout,
   restoreBackup,
   updateCampaign,
+  type CampaignStats,
   type CampaignView,
 } from "./api"
 import { BrandHeader } from "./Brand"
@@ -20,6 +23,10 @@ const dateFormat = new Intl.DateTimeFormat("en-AU", {
   day: "numeric",
   month: "short",
   year: "numeric",
+})
+const scanTimeFormat = new Intl.DateTimeFormat("en-AU", {
+  dateStyle: "medium",
+  timeStyle: "short",
 })
 const numberFormat = new Intl.NumberFormat("en-AU")
 
@@ -119,6 +126,7 @@ export default function Dashboard() {
         </div>
         <p className="fine-print">
           Visits count every open of a tracking link, including repeat visits. They are not unique people.
+          Place and device are recorded only for visits after scan details were added.
         </p>
         {status ? (
           <p className="form-error" role="status">
@@ -226,6 +234,9 @@ const CampaignRow = ({
   onError: (message: string) => void
 }) => {
   const [busy, setBusy] = useState<"svg" | "png" | null>(null)
+  const [detailsOpen, setDetailsOpen] = useState(false)
+  const [stats, setStats] = useState<CampaignStats | null>(null)
+  const [detailsLoading, setDetailsLoading] = useState(false)
   const lock = useRef(false)
 
   const download = async (format: "svg" | "png") => {
@@ -242,7 +253,24 @@ const CampaignRow = ({
     }
   }
 
+  const toggleDetails = async () => {
+    if (detailsOpen) {
+      setDetailsOpen(false)
+      return
+    }
+    setDetailsLoading(true)
+    try {
+      setStats(await campaignStats(campaign.id))
+      setDetailsOpen(true)
+    } catch (error) {
+      if (!handleAuth(error)) onError(error instanceof Error ? error.message : "Could not load scan details.")
+    } finally {
+      setDetailsLoading(false)
+    }
+  }
+
   return (
+    <>
     <article className="campaign-row">
       <div>
         <h3>{campaign.name}</h3>
@@ -261,6 +289,9 @@ const CampaignRow = ({
         {numberFormat.format(campaign.visits)}
       </p>
       <div className="row-actions">
+        <button type="button" className="ghost-button" onClick={() => void toggleDetails()}>
+          {detailsLoading ? "Loading…" : detailsOpen ? "Hide details" : "Scan details"}
+        </button>
         <button type="button" className="ghost-button" disabled={busy !== null} onClick={() => void download("svg")}>
           {busy === "svg" ? "Downloading…" : "SVG"}
         </button>
@@ -275,8 +306,50 @@ const CampaignRow = ({
         </button>
       </div>
     </article>
+    {detailsOpen && stats ? (
+      <section className="scan-details">
+        <p className="fine-print">
+          {numberFormat.format(stats.recorded)} visits have place and device details. The visit total includes every
+          visit, including older ones and repeat visits. It is not a count of unique people. Place is approximate and
+          shown as Unknown when the network does not provide it.
+        </p>
+        <Breakdown title="Countries" items={stats.countries} />
+        <Breakdown title="Devices" items={stats.devices} />
+        <Breakdown title="Browsers" items={stats.browsers} />
+        <h4>Recent scans</h4>
+        {stats.recent.length === 0 ? <p className="muted">No scan details yet.</p> : (
+          <ul className="recent-scans">
+            {stats.recent.map((event, index) => (
+              <li key={`${event.at}-${index}`}>
+                <time dateTime={event.at}>{scanTimeFormat.format(new Date(event.at))}</time>
+                <span>{locationLabel(event)}</span>
+                <span>{deviceLabel(event.device)} · {event.browser}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    ) : null}
+    </>
   )
 }
+
+const deviceLabel = (value: string) => value.charAt(0).toUpperCase() + value.slice(1)
+
+const Breakdown = ({ title, items }: { title: string; items: { label: string; count: number }[] }) => (
+  <div>
+    <h4>{title}</h4>
+    {items.length === 0 ? <p className="muted">None recorded yet.</p> : (
+      <ul className="breakdown">
+        {items.map((item) => (
+          <li key={item.label}>
+            {title === "Devices" ? deviceLabel(item.label) : item.label} · {numberFormat.format(item.count)}
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+)
 
 const CampaignForm = ({
   title,

@@ -37,6 +37,15 @@ screenshot is the phone's browser, not part of this app.
   running and draw compute credits. Blobs are enough for this many small
   records and do not need another account.
 
+Each counted visit can also store a short scan record: time, approximate city and
+country when Netlify provides them, plus a coarse device and browser. Raw IP
+addresses, the raw browser string, visitor cookies and any visitor identifier
+are not stored. Older visits keep their count and have no place or device.
+Each campaign keeps the latest 30 scan records. Country totals stop at 40
+named places and then count as Other. Device and browser totals use a fixed
+list. These records are removed when the campaign is deleted. There is no
+separate charge for this; it uses the same Netlify Blobs store.
+
 Sign-in is one shared password (`QR_ADMIN_PASSWORD`) plus a signing secret
 (`QR_SESSION_SECRET`). The session cookie is HttpOnly. Changing the password
 signs everyone out. The password is never stored in this repository.

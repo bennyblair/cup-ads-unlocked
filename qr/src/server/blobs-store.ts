@@ -16,6 +16,8 @@ export type BlobClient = {
     data: unknown,
     options: { onlyIfMatch?: string; onlyIfNew?: boolean },
   ): Promise<{ modified: boolean }>
+  delete(key: string): Promise<void>
+  list(prefix: string): Promise<string[]>
 }
 
 export const blobStoreName = (context = process.env.CONTEXT) => {
@@ -63,5 +65,10 @@ export const netlifyCampaignStore = () => {
       options.onlyIfMatch
         ? store.setJSON(key, data, { onlyIfMatch: options.onlyIfMatch })
         : store.setJSON(key, data, { onlyIfNew: true }),
+    delete: (key) => store.delete(key),
+    list: async (prefix) => {
+      const listed = await store.list({ prefix })
+      return listed.blobs.map((blob) => blob.key)
+    },
   })
 }
