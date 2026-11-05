@@ -95,6 +95,14 @@ Email recipients are configured in Netlify rather than committed to this reposit
 5. Apply both recipients to `cafe-form`, `advertiser-form`, and `contact-form`, or
    select all form submissions.
 
+## QR campaign tracker
+
+Trackable campaign QR codes live in the separate `qr/` app and are deployed as
+their own Netlify site at `qr.cupspace.com.au`. Leave this marketing site's
+build, redirects and café functions as they are, and do not change the email
+DNS records on `cupspace.com.au`. Setup, backup and sign-in steps are in
+`qr/README.md`.
+
 ## Deployment checks
 
 Deploy through the existing Netlify connection. After the first deployment:

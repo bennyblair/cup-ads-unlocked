@@ -1,0 +1,26 @@
+# CupSpace QR Studio.
+# Create a NEW Netlify site with base directory "qr".
+# Do not point the existing cupspace.com.au site at this directory.
+[build]
+  command = "npm run build"
+  publish = "dist"
+  # Skip this site's rebuild when a commit does not touch qr/.
+  # Netlify runs the command from the base directory. A failure still builds.
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF ."
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[edge_functions]]
+  function = "gate"
+  path = "/*"
+
+# /api/* and /c/:id are handled by function config paths, which win over this fallback.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
