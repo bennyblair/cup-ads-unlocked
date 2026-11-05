@@ -49,7 +49,7 @@ npm install
 npm run build
 ```
 
-Create `qr/.env` (it is gitignored) with a password of at least 16 characters
+Create `qr/.env` (it is gitignored) with a password of at least 8 characters
 and a secret of at least 32 characters. Generate the secret with
 `openssl rand -base64 32`. Then:
 
@@ -79,7 +79,7 @@ DNS zone can gain one record. Do not edit the existing site's build settings.
    (Netlify shows this as `dist` once the base directory is `qr`).
 3. Add environment variables, available to **Functions** and **Runtime**
    (edge). Do not add them to the cupspace.com.au site:
-   - `QR_ADMIN_PASSWORD` — at least 16 characters
+   - `QR_ADMIN_PASSWORD` — at least 8 characters
    - `QR_SESSION_SECRET` — at least 32 characters (`openssl rand -base64 32`)
 4. Deploy, then add the custom domain `qr.cupspace.com.au`.
 5. When Netlify offers a DNS record, add only the `qr` host. It should be a

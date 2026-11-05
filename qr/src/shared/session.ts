@@ -5,7 +5,7 @@ const MAX_SESSION_MS = 8 * 24 * 60 * 60 * 1000
 const encoder = new TextEncoder()
 const keys = new Map<string, CryptoKey>()
 
-export const MIN_PASSWORD_LENGTH = 16
+export const MIN_PASSWORD_LENGTH = 8
 export const MIN_SECRET_LENGTH = 32
 
 export const authConfigured = (password: string, secret: string) =>

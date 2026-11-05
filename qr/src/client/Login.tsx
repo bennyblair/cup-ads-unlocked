@@ -42,7 +42,7 @@ export const Login = () => {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             required
-            minLength={16}
+            minLength={8}
             maxLength={200}
           />
           {error ? (
