@@ -225,6 +225,41 @@ h1 {
 
 .scan-details h4 { margin: 0.8rem 0 0.3rem; }
 
+.report-heading,
+.report-actions,
+.report-range {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  align-items: end;
+  justify-content: space-between;
+}
+
+.report-range label,
+.report-metrics p {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.report-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.6rem;
+  margin: 0.8rem 0;
+}
+
+.report-metrics p {
+  background: #fff;
+  border: 1px solid #e1e8dc;
+  border-radius: 12px;
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+}
+
+.report-metrics strong { color: #1a4034; font-size: 1.05rem; }
+
+.utm-hint { margin-top: 0.8rem; }
+
 .breakdown {
   display: flex;
   flex-wrap: wrap;
@@ -389,4 +424,21 @@ dialog::backdrop { background: rgba(20, 42, 34, 0.48); }
   .heading-actions { width: 100%; }
   .stats { gap: 0.6rem; }
   .card { padding: 0.95rem; }
+}
+
+@media print {
+  body { background: white; }
+  .topbar,
+  .stats,
+  .row-actions,
+  .hero,
+  .heading-actions,
+  .campaign-head,
+  .campaign-row,
+  .no-print,
+  .dialog { display: none !important; }
+  .scan-details {
+    background: white;
+    break-inside: avoid;
+  }
 }

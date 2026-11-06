@@ -28,8 +28,9 @@ screenshot is the phone's browser, not part of this app.
   `campaigns`. Production deploys share that store. Deploy previews use a
   separate store so they cannot edit live campaigns.
 - **Fields stored:** campaign id, name, destination URL, visit count, created
-  date. Nothing else. Repeat visits are counted. There are no cookies on the
-  public link, no location data, and no client logins.
+  date. An optional cafe label and an optional timezone can be saved later.
+  They do not change the id or the printed QR link. Repeat visits are counted.
+  There are no client logins.
 - **Visit counting:** a strongly consistent compare-and-swap on that document.
   HEAD requests are not counted. If the counter cannot be updated, the visitor
   is still redirected.
@@ -39,12 +40,31 @@ screenshot is the phone's browser, not part of this app.
 
 Each counted visit can also store a short scan record: time, approximate city and
 country when Netlify provides them, plus a coarse device and browser. Raw IP
-addresses, the raw browser string, visitor cookies and any visitor identifier
-are not stored. Older visits keep their count and have no place or device.
-Each campaign keeps the latest 30 scan records. Country totals stop at 40
-named places and then count as Other. Device and browser totals use a fixed
-list. These records are removed when the campaign is deleted. There is no
-separate charge for this; it uses the same Netlify Blobs store.
+addresses, hashed IP addresses, and the raw browser string are not stored.
+Each campaign keeps the latest 30 individual scans. Daily totals are stored
+separately for up to 400 days, so a date-range report still works after those
+30 scans roll off. Older visits that happened before daily reporting keep their
+count and are not rebuilt into days. Country totals stop at 40 named places
+and then count as Other. Device and browser totals use a fixed list. City
+totals keep about 20 names per day and then count as Other. These records are
+removed when the campaign is deleted. There is no separate charge for this; it
+uses the same Netlify Blobs store.
+
+Reports use the campaign timezone. Sydney is the default. Darwin and Brisbane
+(Townsville) do not use daylight saving, so choose those when the dates and
+hours should follow that city. Changing the timezone applies to later scans.
+
+A repeat-browser estimate uses one first-party cookie per campaign,
+`cs_<campaign id>`. The value is a random 16-character token, HttpOnly,
+SameSite=Lax, kept for 30 days, and only on this site. It is not an IP address,
+not shared across campaigns, and not a count of people. A scan is a repeat only
+when the browser sends that cookie back. If the cookie is missing, blocked, or
+expired, the scan stays "uniqueness unknown" and is not treated as a new person.
+The server keeps at most 2,000 unexpired tokens per campaign and drops them
+when they expire. Clear automated browser names are labelled and stay inside
+the visit total. Enquiry conversions are not known from a redirect and are
+shown as not connected. An optional UTM suggestion is display-only until you
+paste it into the destination and save.
 
 Sign-in is one shared password (`QR_ADMIN_PASSWORD`) plus a signing secret
 (`QR_SESSION_SECRET`). The session cookie is HttpOnly. Changing the password
@@ -108,7 +128,8 @@ The public dashboard URL is `https://qr.cupspace.com.au/`. It redirects to
 
 ## Backups
 
-Use **Backup** in QR Studio. The file is JSON with the five stored fields.
+Use **Backup** in QR Studio. The file is JSON. Older backups have the original
+five fields. A cafe label or timezone is included only after you save one.
 Keep a copy somewhere outside Netlify. **Restore** replaces every campaign, so
 it asks you to type `REPLACE ALL CAMPAIGNS`.
 
@@ -124,6 +145,8 @@ current Free plan that pool is 300 credits per month; Personal is USD $9 for
 Roughly: a production deploy is 15 credits, 10,000 web requests are 2 credits,
 and 1 GB of bandwidth is 20 credits. A redirect is a few hundred bytes, so
 tens of thousands of scans stay well inside a few credits. The larger effect
-is a second production deploy whenever this directory changes. The QR site
-skips rebuilds when a commit does not touch `qr/`. If the shared credit pool
+is a second production deploy whenever this directory changes. If the shared credit pool
 is already tight, move the team to Personal rather than adding a database.
+Do not set a Netlify `build.ignore` command for this site. An empty cached
+commit makes that command look like there is nothing to build, and the deploy
+stops before the edge function is bundled.

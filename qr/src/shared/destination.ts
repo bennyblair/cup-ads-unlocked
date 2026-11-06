@@ -22,6 +22,19 @@ export const normalizeName = (input: string): ParsedField => {
   return { ok: true, value: name }
 }
 
+export const normalizePlaceLabel = (input: string): ParsedField => {
+  if (typeof input !== "string") return { ok: false, error: "Cafe label is invalid." }
+  const label = input.trim().replace(/\s+/g, " ")
+  if (!label) return { ok: true, value: "" }
+  if (label.length > MAX_NAME_LENGTH) {
+    return { ok: false, error: "Cafe label must be 80 characters or fewer." }
+  }
+  if (/[\u0000-\u001F\u007F]/.test(label)) {
+    return { ok: false, error: "Cafe label cannot include control characters." }
+  }
+  return { ok: true, value: label }
+}
+
 export const normalizeDestination = (input: string): ParsedField => {
   if (typeof input !== "string") {
     return { ok: false, error: "Enter a destination URL." }

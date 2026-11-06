@@ -18,7 +18,14 @@ export type ScanEvent = {
   country: string
   device: DeviceType
   browser: BrowserName
+  uniqueness: "repeat" | "unknown"
+  automated: boolean
 }
+
+const AUTOMATED_AGENT =
+  /bot|spider|crawler|preview|facebookexternalhit|whatsapp|slackbot|twitterbot|linkedinbot|discordbot|telegrambot|curl\/|wget\/|python-requests|headlesschrome|petalbot|bingbot|googlebot|applebot|ia_archiver/i
+
+export const isAutomatedAgent = (userAgent: string | null) => AUTOMATED_AGENT.test((userAgent ?? "").slice(0, 400))
 
 export const UNKNOWN_PLACE = "Unknown"
 
@@ -111,6 +118,8 @@ export const scanFromRequest = (request: Request, now = new Date()): ScanEvent =
     country: place.country,
     device: client.device,
     browser: client.browser,
+    uniqueness: "unknown",
+    automated: isAutomatedAgent(request.headers.get("user-agent")),
   }
 }
 

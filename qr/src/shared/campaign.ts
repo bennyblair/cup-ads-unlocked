@@ -1,4 +1,5 @@
-import { normalizeDestination, normalizeName } from "./destination"
+import { normalizeDestination, normalizeName, normalizePlaceLabel } from "./destination"
+import { isCampaignTimezone, type CampaignTimezone } from "./timezone"
 
 export const PUBLIC_ORIGIN = "https://qr.cupspace.com.au"
 export const CAMPAIGN_ID_PATTERN = /^[2-9a-hj-km-np-z]{8}$/
@@ -10,6 +11,8 @@ export type Campaign = {
   destination: string
   visits: number
   createdAt: string
+  placeLabel?: string
+  timezone?: CampaignTimezone
 }
 
 export const isCampaignId = (value: string) =>
@@ -84,19 +87,32 @@ export const parseCampaign = (input: unknown, status = 400): Campaign => {
     throw new StoreError("A created date is invalid.", status)
   }
 
-  return {
+  const campaign: Campaign = {
     id,
     name: parsedName.value,
     destination: parsedDestination.value,
     visits,
     createdAt,
   }
+  if (typeof input.placeLabel === "string") {
+    const label = normalizePlaceLabel(input.placeLabel)
+    if (label.ok && label.value) campaign.placeLabel = label.value
+  }
+  if (typeof input.timezone === "string" && isCampaignTimezone(input.timezone)) {
+    campaign.timezone = input.timezone
+  }
+  return campaign
 }
 
-export const cloneCampaign = (campaign: Campaign): Campaign => ({
-  id: campaign.id,
-  name: campaign.name,
-  destination: campaign.destination,
-  visits: campaign.visits,
-  createdAt: campaign.createdAt,
-})
+export const cloneCampaign = (campaign: Campaign): Campaign => {
+  const clone: Campaign = {
+    id: campaign.id,
+    name: campaign.name,
+    destination: campaign.destination,
+    visits: campaign.visits,
+    createdAt: campaign.createdAt,
+  }
+  if (campaign.placeLabel) clone.placeLabel = campaign.placeLabel
+  if (campaign.timezone) clone.timezone = campaign.timezone
+  return clone
+}
