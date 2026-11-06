@@ -5,11 +5,13 @@ import { PNG } from "pngjs"
 import jsQR from "jsqr"
 
 import { parseCampaign, PUBLIC_ORIGIN, trackingUrl } from "../src/shared/campaign"
+import { addDays, zonedStamp } from "../src/shared/timezone"
+import { suggestedDestination } from "../src/shared/utm"
 import { normalizeDestination, normalizeName } from "../src/shared/destination"
 import { decideGate } from "../src/shared/gate"
 import { hasValidSession, issueSessionToken, passwordMatches } from "../src/shared/session"
 import { createBlobsCampaignStore, blobStoreName, type BlobClient } from "../src/server/blobs-store"
-import { createMemoryAnalytics } from "../src/server/analytics-store"
+import { createBlobsAnalyticsStore, createMemoryAnalytics } from "../src/server/analytics-store"
 import { createMemoryStore } from "../src/server/memory-store"
 import {
   createLoginLimiter,
@@ -536,6 +538,9 @@ describe("scan details", () => {
       async retain() {
         return undefined
       },
+      async report() {
+        return null
+      },
     }
     const response = await handleVisit(
       new Request(`http://127.0.0.1/c/${created.id}`),
@@ -644,6 +649,309 @@ describe("delete confirmation", () => {
     })
     assert.equal(removed.status, 200)
     assert.equal(await deps.store.get(created.id), null)
+  })
+})
+
+describe("reports", () => {
+  const windowStart = addDays(zonedStamp(new Date().toISOString(), "Australia/Brisbane").date, -1)
+  const windowEnd = addDays(windowStart, 40)
+  const eventAt = (at: string, city = "Sydney", agent = "Mozilla/5.0 Chrome") => ({
+    at,
+    city,
+    country: "Australia",
+    device: "desktop" as const,
+    browser: agent.includes("Chrome") ? ("Chrome" as const) : ("Other" as const),
+    uniqueness: "unknown" as const,
+    automated: /bot|curl/i.test(agent),
+  })
+
+  it("keeps Darwin and Townsville dates off Sydney daylight saving", () => {
+    const summerSydney = zonedStamp("2026-01-15T13:30:00.000Z", "Australia/Sydney")
+    const summerDarwin = zonedStamp("2026-01-15T13:30:00.000Z", "Australia/Darwin")
+    const summerTownsville = zonedStamp("2026-01-15T13:30:00.000Z", "Australia/Brisbane")
+    assert.equal(summerSydney.date, "2026-01-16")
+    assert.equal(summerSydney.hour, 0)
+    assert.equal(summerDarwin.date, "2026-01-15")
+    assert.equal(summerDarwin.hour, 23)
+    assert.equal(summerTownsville.date, "2026-01-15")
+    assert.equal(summerTownsville.hour, 23)
+
+    const winterSydney = zonedStamp("2026-07-15T14:00:00.000Z", "Australia/Sydney")
+    const winterDarwin = zonedStamp("2026-07-15T14:00:00.000Z", "Australia/Darwin")
+    const winterTownsville = zonedStamp("2026-07-15T14:00:00.000Z", "Australia/Brisbane")
+    assert.equal(winterSydney.date, "2026-07-16")
+    assert.equal(winterSydney.hour, 0)
+    assert.equal(winterDarwin.date, "2026-07-15")
+    assert.equal(winterDarwin.hour, 23)
+    assert.equal(winterTownsville.date, "2026-07-16")
+    assert.equal(winterTownsville.hour, 0)
+
+    const beforeChange = zonedStamp("2026-10-03T15:30:00.000Z", "Australia/Sydney")
+    const afterChange = zonedStamp("2026-10-03T16:30:00.000Z", "Australia/Sydney")
+    assert.equal(beforeChange.date, "2026-10-04")
+    assert.equal(beforeChange.hour, 1)
+    assert.equal(afterChange.date, "2026-10-04")
+    assert.equal(afterChange.hour, 3)
+  })
+
+  it("stores the scan on the campaign timezone day and keeps daily totals past the latest 30", async () => {
+    const analytics = createMemoryAnalytics()
+    const id = "23456789"
+    await analytics.record(id, eventAt("2026-01-15T13:30:00.000Z", "Darwin"), undefined, "Australia/Darwin")
+    const darwin = await analytics.report(id, "Australia/Darwin", "2026-01-15", "2026-01-16")
+    assert.equal(darwin?.days.find((day) => day.date === "2026-01-15")?.scans, 1)
+    assert.equal(darwin?.days.find((day) => day.date === "2026-01-16")?.scans, 0)
+    assert.equal(darwin?.hours.find((hour) => hour.hour === 23)?.count, 1)
+    assert.equal(darwin?.enquiries, "not-tracked")
+
+    for (let index = 0; index < 35; index += 1) {
+      const day = String((index % 28) + 1).padStart(2, "0")
+      await analytics.record(
+        id,
+        eventAt(`2026-03-${day}T01:00:00.000Z`, "Darwin"),
+        undefined,
+        "Australia/Darwin",
+      )
+    }
+    const stats = await analytics.get(id)
+    const report = await analytics.report(id, "Australia/Darwin", "2026-01-01", "2026-03-31")
+    assert.equal(stats?.recent.length, 30)
+    assert.equal(report?.scans, 36)
+    assert.equal(JSON.stringify(report).includes("token"), false)
+  })
+
+  it("counts a repeat only when the same campaign cookie comes back", async () => {
+    const store = createMemoryStore()
+    const analytics = createMemoryAnalytics()
+    const created = await store.create({
+      name: "=1+1",
+      destination: "https://example.com/land",
+      placeLabel: "+Townsville",
+      timezone: "Australia/Brisbane",
+    })
+    const other = await store.create({ name: "Other cafe", destination: "https://example.com/other" })
+    assert.equal(created.placeLabel, "+Townsville")
+    assert.equal(created.timezone, "Australia/Brisbane")
+    const saved = await store.update(created.id, {
+      name: "=1+1",
+      destination: "https://example.com/next",
+      placeLabel: "+Townsville",
+      timezone: "Australia/Brisbane",
+    })
+    assert.equal(saved?.id, created.id)
+    assert.equal(trackingUrl(saved?.id ?? ""), trackingUrl(created.id))
+    assert.equal(suggestedDestination("https://example.com/next", "=1+1")?.includes("utm_medium=qr"), true)
+    assert.equal((await store.get(created.id))?.destination, "https://example.com/next")
+
+    const first = await handleVisit(
+      new Request(`https://qr.cupspace.com.au/c/${created.id}`, {
+        headers: { "user-agent": "Mozilla/5.0 Chrome", "x-nf-client-connection-ip": "203.0.113.50" },
+      }),
+      store,
+      analytics,
+    )
+    const issued = first.headers.get("set-cookie") ?? ""
+    assert.match(issued, new RegExp(`cs_${created.id}=[2-9a-hj-km-np-z]{16}`))
+    assert.match(issued, /HttpOnly/)
+    assert.match(issued, /Secure/)
+    assert.equal(issued.includes("203.0.113.50"), false)
+    const token = issued.split(";")[0]?.split("=")[1] ?? ""
+    const open = await analytics.report(created.id, "Australia/Brisbane", windowStart, windowEnd)
+    assert.equal(open?.repeats, 0)
+    assert.equal(open?.uniquenessUnknown, 1)
+    assert.equal(open?.recognizedBrowsers, 0)
+    assert.equal(JSON.stringify(open).includes(token), false)
+
+    const repeat = await handleVisit(
+      new Request(`https://qr.cupspace.com.au/c/${created.id}`, {
+        headers: { cookie: `cs_${created.id}=${token}`, "user-agent": "Mozilla/5.0 Chrome" },
+      }),
+      store,
+      analytics,
+    )
+    assert.equal(repeat.headers.get("set-cookie"), null)
+    const again = await handleVisit(
+      new Request(`https://qr.cupspace.com.au/c/${created.id}`, {
+        headers: { cookie: `cs_${created.id}=${token}` },
+      }),
+      store,
+      analytics,
+    )
+    assert.equal(again.status, 302)
+    const recognized = await analytics.report(created.id, "Australia/Brisbane", windowStart, windowEnd)
+    assert.equal(recognized?.scans, 3)
+    assert.equal(recognized?.repeats, 2)
+    assert.equal(recognized?.recognizedBrowsers, 1)
+    assert.equal(recognized?.uniquenessUnknown, 1)
+
+    const blocked = await handleVisit(
+      new Request(`http://127.0.0.1/c/${created.id}`),
+      store,
+      analytics,
+    )
+    assert.match(blocked.headers.get("set-cookie") ?? "", /cs_/)
+    assert.equal((await analytics.report(created.id, "Australia/Brisbane", windowStart, windowEnd))?.recognizedBrowsers, 1)
+
+    const spoof = "2222222222222222"
+    await handleVisit(
+      new Request(`http://127.0.0.1/c/${created.id}`, { headers: { cookie: `cs_${created.id}=${spoof}` } }),
+      store,
+      analytics,
+    )
+    const stored = JSON.stringify(analytics.snapshot(created.id))
+    assert.equal(stored.includes(spoof), false)
+    assert.equal(stored.includes("203.0.113.50"), false)
+
+    const crossed = await handleVisit(
+      new Request(`http://127.0.0.1/c/${other.id}`, {
+        headers: { cookie: `cs_${other.id}=${token}` },
+      }),
+      store,
+      analytics,
+    )
+    assert.match(crossed.headers.get("set-cookie") ?? "", new RegExp(`cs_${other.id}=`))
+    assert.equal((await analytics.report(other.id, "Australia/Sydney", windowStart, windowEnd))?.repeats, 0)
+
+    const head = await handleVisit(
+      new Request(`http://127.0.0.1/c/${created.id}`, { method: "HEAD", headers: { cookie: `cs_${created.id}=${token}` } }),
+      store,
+      analytics,
+    )
+    assert.equal(head.headers.get("set-cookie"), null)
+    assert.equal((await store.get(created.id))?.visits, 5)
+
+    const expired = await analytics.record(
+      created.id,
+      eventAt("2027-01-15T00:00:00.000Z"),
+      token,
+      "Australia/Brisbane",
+    )
+    assert.ok(expired?.token)
+    assert.notEqual(expired?.token, token)
+  })
+
+  it("labels a clear bot without removing it from the visit total", async () => {
+    const store = createMemoryStore()
+    const analytics = createMemoryAnalytics()
+    const created = await store.create({ name: "Harbour", destination: "https://example.com/land" })
+    const response = await handleVisit(
+      new Request(`http://127.0.0.1/c/${created.id}`, { headers: { "user-agent": "Mozilla/5.0 Googlebot" } }),
+      store,
+      analytics,
+    )
+    assert.equal(response.status, 302)
+    const report = await analytics.report(created.id, "Australia/Sydney", windowStart, windowEnd)
+    assert.equal((await store.get(created.id))?.visits, 1)
+    assert.equal(report?.scans, 1)
+    assert.equal(report?.automated, 1)
+    assert.equal(report?.recent[0]?.automated, true)
+  })
+
+  it("does not invent daily history for scans saved before reporting", async () => {
+    const id = "abcdefgh"
+    let raw: unknown = {
+      recorded: 3,
+      recent: [
+        {
+          at: "2026-01-01T00:00:00.000Z",
+          city: "Sydney",
+          country: "Australia",
+          device: "desktop",
+          browser: "Chrome",
+        },
+      ],
+      countries: { Australia: 3 },
+      devices: { desktop: 3 },
+      browsers: { Chrome: 3 },
+    }
+    const analytics = createBlobsAnalyticsStore({
+      async getWithMetadata() {
+        return { data: raw, etag: "1" }
+      },
+      async setJSON() {
+        return { modified: true }
+      },
+      async delete() {
+        raw = null
+      },
+      async list() {
+        return [`analytics/${id}`]
+      },
+    })
+    const report = await analytics.report(id, "Australia/Sydney", "2026-01-01", "2026-01-02")
+    assert.equal(report?.scans, 0)
+    assert.equal(report?.recognizedBrowsers, 0)
+    assert.equal(report?.recent[0]?.uniqueness, "unknown")
+    assert.equal(report?.recent[0]?.city, "Sydney")
+    assert.equal((await analytics.get(id))?.recorded, 3)
+  })
+
+  it("requires sign-in, rejects bad ranges, and escapes CSV formulas", async () => {
+    const deps = app()
+    const analytics = createMemoryAnalytics()
+    deps.analytics = analytics
+    const created = await deps.store.create({
+      name: `=1+1,"quoted"`,
+      destination: "https://example.com/land",
+      placeLabel: "+cmd",
+      timezone: "Australia/Darwin",
+    })
+    await analytics.record(created.id, eventAt("2026-11-06T01:00:00.000Z", "Darwin"), undefined, "Australia/Darwin")
+
+    assert.equal((await api(deps, `/api/campaigns/${created.id}/report`)).status, 401)
+    assert.equal((await api(deps, `/api/campaigns/${created.id}/report.csv`)).status, 401)
+
+    const signedIn = await api(deps, "/api/login", {
+      method: "POST",
+      body: JSON.stringify({ password: PASSWORD }),
+    })
+    const header = cookieHeader(signedIn)
+    const backwards = await api(deps, `/api/campaigns/${created.id}/report?from=2026-11-06&to=2026-11-01`, {
+      headers: { cookie: header },
+    })
+    assert.equal(backwards.status, 400)
+    const impossible = await api(deps, `/api/campaigns/${created.id}/report?from=2026-02-31&to=2026-03-01`, {
+      headers: { cookie: header },
+    })
+    assert.equal(impossible.status, 400)
+    const huge = await api(deps, `/api/campaigns/${created.id}/report?from=2020-01-01&to=2026-01-01`, {
+      headers: { cookie: header },
+    })
+    assert.equal(huge.status, 400)
+
+    const csv = await api(deps, `/api/campaigns/${created.id}/report.csv?from=2026-11-01&to=2026-11-06`, {
+      headers: { cookie: header },
+    })
+    assert.equal(csv.status, 200)
+    assert.match(csv.headers.get("content-type") ?? "", /text\/csv/)
+    const text = await csv.text()
+    assert.match(text, /"'=1\+1,""quoted"""/)
+    assert.match(text, /"'\+cmd"/)
+    assert.equal(text.includes("not connected"), true)
+    assert.equal(text.split("\n").some((row) => row.startsWith("=")), false)
+    const report = await api(deps, `/api/campaigns/${created.id}/report?from=2026-11-06&to=2026-11-06`, {
+      headers: { cookie: header },
+    })
+    const body = await report.json()
+    assert.equal(body.report.scans, 1)
+    assert.equal(body.report.enquiries, "not-tracked")
+    assert.equal(body.report.cities[0].label, "Darwin")
+    assert.equal(JSON.stringify(body).includes("203.0.113"), false)
+  })
+
+  it("keeps concurrent repeat cookies to one recognized browser", async () => {
+    const analytics = createMemoryAnalytics()
+    const id = "23456789"
+    const first = await analytics.record(id, eventAt("2026-11-06T00:00:00.000Z"), undefined, "Australia/Sydney")
+    await Promise.all(
+      Array.from({ length: 10 }, () =>
+        analytics.record(id, eventAt("2026-11-06T01:00:00.000Z"), first?.token, "Australia/Sydney"),
+      ),
+    )
+    const report = await analytics.report(id, "Australia/Sydney", "2026-11-06", "2026-11-06")
+    assert.equal(report?.scans, 11)
+    assert.equal(report?.repeats, 10)
+    assert.equal(report?.recognizedBrowsers, 1)
   })
 })
 

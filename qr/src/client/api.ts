@@ -4,6 +4,27 @@ export type ScanEventView = {
   country: string
   device: string
   browser: string
+  uniqueness?: "repeat" | "unknown"
+  automated?: boolean
+}
+
+export type ScanReportView = {
+  timezone: string
+  from: string
+  to: string
+  scans: number
+  repeats: number
+  uniquenessUnknown: number
+  recognizedBrowsers: number
+  automated: number
+  days: { date: string; scans: number; repeats: number; unknown: number; recognized: number; automated: number }[]
+  weekdays: { label: string; count: number }[]
+  hours: { hour: number; count: number }[]
+  cities: { label: string; count: number }[]
+  devices: { label: string; count: number }[]
+  browsers: { label: string; count: number }[]
+  recent: ScanEventView[]
+  enquiries: "not-tracked"
 }
 
 export type CampaignStats = {
@@ -21,6 +42,15 @@ export type CampaignView = {
   visits: number
   createdAt: string
   trackingUrl: string
+  timezone?: string
+  placeLabel?: string
+}
+
+export type CampaignDraft = {
+  name: string
+  destination: string
+  placeLabel?: string
+  timezone?: string
 }
 
 export class AuthError extends Error {
@@ -39,6 +69,8 @@ const parseJson = async (response: Response) => {
     campaign?: CampaignView
     ok?: boolean
     stats?: CampaignStats
+    report?: ScanReportView
+    notes?: Record<string, string>
   }
 }
 
@@ -71,13 +103,13 @@ export const listCampaigns = async () => {
   return body?.campaigns ?? []
 }
 
-export const createCampaign = async (input: { name: string; destination: string }) => {
+export const createCampaign = async (input: CampaignDraft) => {
   const body = await request("/api/campaigns", { method: "POST", body: JSON.stringify(input) })
   if (!body?.campaign) throw new Error("Campaign was not created.")
   return body.campaign
 }
 
-export const updateCampaign = async (id: string, input: { name: string; destination: string }) => {
+export const updateCampaign = async (id: string, input: CampaignDraft) => {
   const body = await request(`/api/campaigns/${id}`, {
     method: "PATCH",
     body: JSON.stringify(input),
@@ -91,6 +123,32 @@ export const deleteCampaign = (id: string) =>
     method: "DELETE",
     body: JSON.stringify({ confirm: "DELETE" }),
   })
+
+export const campaignReport = async (id: string, from: string, to: string) => {
+  const body = await request(
+    `/api/campaigns/${id}/report?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`,
+  )
+  if (!body?.report) throw new Error("The report is unavailable.")
+  return { report: body.report, notes: body.notes ?? {} }
+}
+
+export const downloadReport = async (campaign: CampaignView, from: string, to: string) => {
+  const response = await fetch(
+    `/api/campaigns/${campaign.id}/report.csv?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`,
+    { credentials: "same-origin", headers: { "x-cupspace-qr": "1" } },
+  )
+  if (response.status === 401) throw new AuthError()
+  if (!response.ok) throw new Error("Could not download the report.")
+  const blob = await response.blob()
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement("a")
+  link.href = url
+  link.download = `cupspace-report-${campaign.id}.csv`
+  document.body.append(link)
+  link.click()
+  link.remove()
+  URL.revokeObjectURL(url)
+}
 
 export const campaignStats = async (id: string) => {
   const body = await request(`/api/campaigns/${id}/stats`)

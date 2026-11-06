@@ -5,18 +5,42 @@ import {
   StoreError,
   type Campaign,
 } from "../shared/campaign"
-import { normalizeDestination, normalizeName } from "../shared/destination"
+import { normalizeDestination, normalizeName, normalizePlaceLabel } from "../shared/destination"
+import { isCampaignTimezone } from "../shared/timezone"
 
 export type VisitResult =
   | { status: "counted"; destination: string; visits: number }
   | { status: "missing" }
   | { status: "failed"; destination: string | null }
 
+export type CampaignDraft = {
+  name: string
+  destination: string
+  placeLabel?: string
+  timezone?: string
+}
+
+const applyOptional = (campaign: Campaign, input: CampaignDraft) => {
+  const next = cloneCampaign(campaign)
+  if ("placeLabel" in input) {
+    const label = normalizePlaceLabel(input.placeLabel ?? "")
+    if (!label.ok) throw new StoreError(label.error)
+    if (label.value) next.placeLabel = label.value
+    else delete next.placeLabel
+  }
+  if ("timezone" in input) {
+    if (!input.timezone) delete next.timezone
+    else if (isCampaignTimezone(input.timezone)) next.timezone = input.timezone
+    else throw new StoreError("Choose a campaign timezone.")
+  }
+  return next
+}
+
 export type CampaignStore = {
   list(): Promise<Campaign[]>
   get(id: string): Promise<Campaign | null>
-  create(input: { name: string; destination: string }): Promise<Campaign>
-  update(id: string, input: { name: string; destination: string }): Promise<Campaign | null>
+  create(input: CampaignDraft): Promise<Campaign>
+  update(id: string, input: CampaignDraft): Promise<Campaign | null>
   delete(id: string): Promise<boolean>
   incrementVisits(id: string): Promise<VisitResult>
   replaceAll(campaigns: unknown[]): Promise<Campaign[]>
@@ -84,13 +108,16 @@ export const createDocumentStore = (
         if (campaigns.length >= MAX_CAMPAIGNS) {
           throw new StoreError("Campaign limit reached. Delete an old campaign first.")
         }
-        const campaign: Campaign = {
-          id: createCampaignId(new Set(campaigns.map((item) => item.id))),
-          name: name.value,
-          destination: destination.value,
-          visits: 0,
-          createdAt: new Date().toISOString(),
-        }
+        const campaign = applyOptional(
+          {
+            id: createCampaignId(new Set(campaigns.map((item) => item.id))),
+            name: name.value,
+            destination: destination.value,
+            visits: 0,
+            createdAt: new Date().toISOString(),
+          },
+          input,
+        )
         return { campaigns: [campaign, ...campaigns], result: campaign, changed: true }
       })
     },
@@ -104,11 +131,14 @@ export const createDocumentStore = (
       return mutate((campaigns) => {
         const index = campaigns.findIndex((campaign) => campaign.id === id)
         if (index === -1) return { campaigns, result: null, changed: false }
-        const updated: Campaign = {
-          ...campaigns[index],
-          name: name.value,
-          destination: destination.value,
-        }
+        const updated = applyOptional(
+          {
+            ...campaigns[index],
+            name: name.value,
+            destination: destination.value,
+          },
+          input,
+        )
         const next = campaigns.slice()
         next[index] = updated
         return { campaigns: next, result: updated, changed: true }

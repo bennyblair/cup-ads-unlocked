@@ -1,10 +1,10 @@
 import { type FormEvent, useEffect, useRef, useState } from "react"
 
-import { normalizeDestination, normalizeName } from "../shared/destination"
-import { locationLabel } from "../shared/scan"
+import { normalizeDestination, normalizeName, normalizePlaceLabel } from "../shared/destination"
+import { CAMPAIGN_TIMEZONES, TIMEZONE_LABELS, campaignTimezone, isCampaignTimezone } from "../shared/timezone"
+import { suggestedDestination } from "../shared/utm"
 import {
   AuthError,
-  campaignStats,
   createCampaign,
   deleteCampaign,
   downloadBackup,
@@ -13,20 +13,16 @@ import {
   logout,
   restoreBackup,
   updateCampaign,
-  type CampaignStats,
   type CampaignView,
 } from "./api"
 import { BrandHeader } from "./Brand"
 import { Dialog } from "./Dialog"
+import { ReportPanel } from "./ReportPanel"
 
 const dateFormat = new Intl.DateTimeFormat("en-AU", {
   day: "numeric",
   month: "short",
   year: "numeric",
-})
-const scanTimeFormat = new Intl.DateTimeFormat("en-AU", {
-  dateStyle: "medium",
-  timeStyle: "short",
 })
 const numberFormat = new Intl.NumberFormat("en-AU")
 
@@ -183,7 +179,7 @@ export default function Dashboard() {
       {editing ? (
         <CampaignForm
           title="Edit campaign"
-          submitLabel="Save destination"
+          submitLabel="Save campaign"
           pendingLabel="Saving…"
           initial={editing}
           onClose={() => setEditing(null)}
@@ -235,8 +231,6 @@ const CampaignRow = ({
 }) => {
   const [busy, setBusy] = useState<"svg" | "png" | null>(null)
   const [detailsOpen, setDetailsOpen] = useState(false)
-  const [stats, setStats] = useState<CampaignStats | null>(null)
-  const [detailsLoading, setDetailsLoading] = useState(false)
   const lock = useRef(false)
 
   const download = async (format: "svg" | "png") => {
@@ -253,27 +247,12 @@ const CampaignRow = ({
     }
   }
 
-  const toggleDetails = async () => {
-    if (detailsOpen) {
-      setDetailsOpen(false)
-      return
-    }
-    setDetailsLoading(true)
-    try {
-      setStats(await campaignStats(campaign.id))
-      setDetailsOpen(true)
-    } catch (error) {
-      if (!handleAuth(error)) onError(error instanceof Error ? error.message : "Could not load scan details.")
-    } finally {
-      setDetailsLoading(false)
-    }
-  }
-
   return (
     <>
     <article className="campaign-row">
       <div>
         <h3>{campaign.name}</h3>
+        {campaign.placeLabel ? <p className="muted">{campaign.placeLabel}</p> : null}
         <p className="tracking">
           <a href={campaign.trackingUrl}>{campaign.trackingUrl}</a>
         </p>
@@ -289,8 +268,8 @@ const CampaignRow = ({
         {numberFormat.format(campaign.visits)}
       </p>
       <div className="row-actions">
-        <button type="button" className="ghost-button" onClick={() => void toggleDetails()}>
-          {detailsLoading ? "Loading…" : detailsOpen ? "Hide details" : "Scan details"}
+        <button type="button" className="ghost-button" onClick={() => setDetailsOpen((open) => !open)}>
+          {detailsOpen ? "Hide report" : "Report"}
         </button>
         <button type="button" className="ghost-button" disabled={busy !== null} onClick={() => void download("svg")}>
           {busy === "svg" ? "Downloading…" : "SVG"}
@@ -306,50 +285,33 @@ const CampaignRow = ({
         </button>
       </div>
     </article>
-    {detailsOpen && stats ? (
-      <section className="scan-details">
-        <p className="fine-print">
-          {numberFormat.format(stats.recorded)} visits have place and device details. The visit total includes every
-          visit, including older ones and repeat visits. It is not a count of unique people. Place is approximate and
-          shown as Unknown when the network does not provide it.
-        </p>
-        <Breakdown title="Countries" items={stats.countries} />
-        <Breakdown title="Devices" items={stats.devices} />
-        <Breakdown title="Browsers" items={stats.browsers} />
-        <h4>Recent scans</h4>
-        {stats.recent.length === 0 ? <p className="muted">No scan details yet.</p> : (
-          <ul className="recent-scans">
-            {stats.recent.map((event, index) => (
-              <li key={`${event.at}-${index}`}>
-                <time dateTime={event.at}>{scanTimeFormat.format(new Date(event.at))}</time>
-                <span>{locationLabel(event)}</span>
-                <span>{deviceLabel(event.device)} · {event.browser}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-    ) : null}
+    {detailsOpen ? <ReportPanel campaign={campaign} onError={onError} /> : null}
     </>
   )
 }
 
-const deviceLabel = (value: string) => value.charAt(0).toUpperCase() + value.slice(1)
-
-const Breakdown = ({ title, items }: { title: string; items: { label: string; count: number }[] }) => (
-  <div>
-    <h4>{title}</h4>
-    {items.length === 0 ? <p className="muted">None recorded yet.</p> : (
-      <ul className="breakdown">
-        {items.map((item) => (
-          <li key={item.label}>
-            {title === "Devices" ? deviceLabel(item.label) : item.label} · {numberFormat.format(item.count)}
-          </li>
-        ))}
-      </ul>
-    )}
-  </div>
-)
+const UtmHint = ({ name, destination }: { name: string; destination: string }) => {
+  const parsed = normalizeDestination(destination)
+  if (!parsed.ok) return null
+  const suggestion = suggestedDestination(parsed.value, name || "qr")
+  if (!suggestion || suggestion === parsed.value) return null
+  return (
+    <div className="utm-hint">
+      <p className="fine-print">
+        Optional UTM link for the destination site. Copy it into the destination field and save if you want it. Nothing
+        is changed until you do that, and the printed QR code stays the same.
+      </p>
+      <p className="tracking">{suggestion}</p>
+      <button
+        type="button"
+        className="ghost-button"
+        onClick={() => void navigator.clipboard.writeText(suggestion)}
+      >
+        Copy suggestion
+      </button>
+    </div>
+  )
+}
 
 const CampaignForm = ({
   title,
@@ -364,10 +326,12 @@ const CampaignForm = ({
   pendingLabel: string
   initial?: CampaignView
   onClose: () => void
-  onSubmit: (input: { name: string; destination: string }) => Promise<void>
+  onSubmit: (input: { name: string; destination: string; placeLabel: string; timezone: string }) => Promise<void>
 }) => {
   const [name, setName] = useState(initial?.name ?? "")
   const [destination, setDestination] = useState(initial?.destination ?? "")
+  const [placeLabel, setPlaceLabel] = useState(initial?.placeLabel ?? "")
+  const [timezone, setTimezone] = useState(campaignTimezone(initial?.timezone))
   const [error, setError] = useState("")
   const [pending, setPending] = useState(false)
   const lock = useRef(false)
@@ -377,6 +341,7 @@ const CampaignForm = ({
     if (lock.current) return
     const parsedName = normalizeName(name)
     const parsedDestination = normalizeDestination(destination)
+    const parsedPlace = normalizePlaceLabel(placeLabel)
     if (!parsedName.ok) {
       setError(parsedName.error)
       return
@@ -385,11 +350,24 @@ const CampaignForm = ({
       setError(parsedDestination.error)
       return
     }
+    if (!parsedPlace.ok) {
+      setError(parsedPlace.error)
+      return
+    }
+    if (!isCampaignTimezone(timezone)) {
+      setError("Choose a campaign timezone.")
+      return
+    }
     lock.current = true
     setPending(true)
     setError("")
     try {
-      await onSubmit({ name: parsedName.value, destination: parsedDestination.value })
+      await onSubmit({
+        name: parsedName.value,
+        destination: parsedDestination.value,
+        placeLabel: parsedPlace.value,
+        timezone,
+      })
     } catch (caught) {
       if (!handleAuth(caught)) setError(caught instanceof Error ? caught.message : "Could not save the campaign.")
       lock.current = false
@@ -422,6 +400,37 @@ const CampaignForm = ({
           required
         />
         <p className="fine-print">https:// is added when you leave it out. Only http and https links are accepted.</p>
+        <label htmlFor="campaign-place">Cafe or location label, optional</label>
+        <input
+          id="campaign-place"
+          value={placeLabel}
+          onChange={(event) => setPlaceLabel(event.target.value)}
+          maxLength={80}
+          placeholder="Ray White Townsville"
+        />
+        <p className="fine-print">
+          This only names this QR code so separate codes can be compared. Each cafe still needs its own code. One
+          printed code cannot tell cafes apart.
+        </p>
+        <label htmlFor="campaign-timezone">Timezone for reports</label>
+        <select
+          id="campaign-timezone"
+          value={timezone}
+          onChange={(event) => {
+            if (isCampaignTimezone(event.target.value)) setTimezone(event.target.value)
+          }}
+        >
+          {CAMPAIGN_TIMEZONES.map((zone) => (
+            <option key={zone} value={zone}>
+              {TIMEZONE_LABELS[zone]}
+            </option>
+          ))}
+        </select>
+        <p className="fine-print">
+          Sydney is the default. Choose Darwin or Brisbane / Townsville when those dates and hours should ignore
+          Sydney daylight saving. Saving this does not change the printed QR link.
+        </p>
+        <UtmHint name={name} destination={destination} />
         {initial ? (
           <p className="fine-print">
             Tracking URL <strong>{initial.trackingUrl}</strong>. Changing the destination does not change this QR code.

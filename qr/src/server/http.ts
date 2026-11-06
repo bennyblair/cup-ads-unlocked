@@ -1,5 +1,5 @@
 import { isCampaignId, trackingUrl, StoreError, type Campaign } from "../shared/campaign"
-import { normalizeDestination, normalizeName } from "../shared/destination"
+import { normalizeDestination, normalizeName, normalizePlaceLabel } from "../shared/destination"
 import { decideGate } from "../shared/gate"
 import { authEnvPresence, readAuthEnv } from "../shared/runtime-env"
 import {
@@ -11,10 +11,14 @@ import {
   requestIsSecure,
   sessionCookie,
 } from "../shared/session"
-import type { AnalyticsStore } from "./analytics-store"
+import { emptyScanReport, type AnalyticsStore } from "./analytics-store"
 import type { CampaignStore } from "./document-store"
 import { qrPng, qrSvg } from "./qr-image"
 import { scanFromRequest } from "../shared/scan"
+import { SCAN_TOKEN_PATTERN, scanCookieHeader, scanCookieToken } from "../shared/scan-cookie"
+import { reportToCsv } from "../shared/report-csv"
+import { REPORTING_NOTES } from "../shared/reporting-notes"
+import { addDays, campaignTimezone, isCampaignTimezone, todayInTimezone } from "../shared/timezone"
 
 export class HttpError extends Error {
   status: number
@@ -75,7 +79,7 @@ const text = (body: string, status: number, extraHeaders?: Record<string, string
     ),
   })
 
-const redirectTo = (location: string) =>
+const redirectTo = (location: string, setCookie?: string) =>
   new Response(null, {
     status: 302,
     headers: {
@@ -84,6 +88,7 @@ const redirectTo = (location: string) =>
       "Netlify-CDN-Cache-Control": "no-store",
       "X-Content-Type-Options": "nosniff",
       "X-Robots-Tag": "noindex",
+      ...(setCookie ? { "Set-Cookie": setCookie } : {}),
     },
   })
 
@@ -182,6 +187,8 @@ const publicCampaign = (campaign: Campaign) => ({
   visits: campaign.visits,
   createdAt: campaign.createdAt,
   trackingUrl: trackingUrl(campaign.id),
+  timezone: campaignTimezone(campaign.timezone),
+  ...(campaign.placeLabel ? { placeLabel: campaign.placeLabel } : {}),
 })
 
 const storedCampaign = (campaign: Campaign) => ({
@@ -190,6 +197,8 @@ const storedCampaign = (campaign: Campaign) => ({
   destination: campaign.destination,
   visits: campaign.visits,
   createdAt: campaign.createdAt,
+  ...(campaign.placeLabel ? { placeLabel: campaign.placeLabel } : {}),
+  ...(campaign.timezone ? { timezone: campaign.timezone } : {}),
 })
 
 const requireUser = async (request: Request, deps: AppDependencies) => {
@@ -202,7 +211,8 @@ const requireUser = async (request: Request, deps: AppDependencies) => {
 }
 
 const campaignIdFromPath = (pathname: string, suffix = "") => {
-  const match = pathname.match(new RegExp(`^/api/campaigns/([2-9a-hj-km-np-z]{8})${suffix}$`))
+  const escaped = suffix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  const match = pathname.match(new RegExp(`^/api/campaigns/([2-9a-hj-km-np-z]{8})${escaped}$`))
   return match && isCampaignId(match[1]) ? match[1] : null
 }
 
@@ -233,11 +243,13 @@ export const handleVisit = async (
   if (!id) return text("This QR code is not active.", 404)
 
   let destination: string | null = null
+  let timezone = campaignTimezone(undefined)
   try {
     const campaign = await store.get(id)
     if (!campaign) return text("This QR code is not active.", 404)
     destination = safeDestination(campaign.destination)
     if (!destination) return text("This QR code is not active.", 404)
+    timezone = campaignTimezone(campaign.timezone)
   } catch {
     console.error("qr lookup failed")
     return text("This QR code could not be opened.", 502)
@@ -260,15 +272,24 @@ export const handleVisit = async (
     console.error("qr visit count failed")
   }
 
+  let setCookie: string | undefined
   if (counted && analytics) {
     try {
-      await analytics.record(id, scanFromRequest(request))
+      const recorded = await analytics.record(
+        id,
+        scanFromRequest(request),
+        scanCookieToken(request.headers.get("cookie"), id),
+        timezone,
+      )
+      if (recorded?.token && SCAN_TOKEN_PATTERN.test(recorded.token)) {
+        setCookie = scanCookieHeader(id, recorded.token, requestIsSecure(request))
+      }
     } catch {
       console.error("qr scan details failed")
     }
   }
 
-  return redirectTo(destination)
+  return redirectTo(destination, setCookie)
 }
 
 const handleLogin = async (request: Request, deps: AppDependencies) => {
@@ -309,7 +330,45 @@ const readCampaignInput = (body: unknown) => {
   )
   if (!name.ok) throw new HttpError(name.error, 400)
   if (!destination.ok) throw new HttpError(destination.error, 400)
-  return { name: name.value, destination: destination.value }
+  const draft: { name: string; destination: string; placeLabel?: string; timezone?: string } = {
+    name: name.value,
+    destination: destination.value,
+  }
+  if (isRecord(body) && "placeLabel" in body) {
+    const label = normalizePlaceLabel(typeof body.placeLabel === "string" ? body.placeLabel : "")
+    if (!label.ok) throw new HttpError(label.error, 400)
+    draft.placeLabel = label.value
+  }
+  if (isRecord(body) && "timezone" in body) {
+    if (body.timezone == null || body.timezone === "") draft.timezone = ""
+    else if (typeof body.timezone === "string" && isCampaignTimezone(body.timezone)) draft.timezone = body.timezone
+    else throw new HttpError("Choose a campaign timezone.", 400)
+  }
+  return draft
+}
+
+const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/
+
+const isRealDate = (value: string) => {
+  if (!DATE_PATTERN.test(value)) return false
+  const [year, month, day] = value.split("-").map(Number)
+  const utc = new Date(Date.UTC(year, month - 1, day))
+  return utc.getUTCFullYear() === year && utc.getUTCMonth() === month - 1 && utc.getUTCDate() === day
+}
+
+const reportRange = (url: URL, timezone: ReturnType<typeof campaignTimezone>) => {
+  const today = todayInTimezone(timezone)
+  const from = url.searchParams.get("from") ?? addDays(today, -29)
+  const to = url.searchParams.get("to") ?? today
+  if (!isRealDate(from) || !isRealDate(to)) throw new HttpError("Use dates as YYYY-MM-DD.", 400)
+  if (from > to) throw new HttpError("The start date is after the end date.", 400)
+  const [fromYear, fromMonth, fromDay] = from.split("-").map(Number)
+  const [toYear, toMonth, toDay] = to.split("-").map(Number)
+  const span = Math.round(
+    (Date.UTC(toYear, toMonth - 1, toDay) - Date.UTC(fromYear, fromMonth - 1, fromDay)) / 86_400_000,
+  )
+  if (span > 400) throw new HttpError("Choose a range of 400 days or fewer.", 400)
+  return { from, to }
 }
 
 const qrResponse = async (id: string, format: "svg" | "png", store: CampaignStore) => {
@@ -409,6 +468,41 @@ export const handleApi = async (request: Request, deps: AppDependencies) => {
         browsers: [],
       }
       return json({ stats })
+    }
+
+    const reportCsvId = campaignIdFromPath(pathname, "/report.csv")
+    const reportId = reportCsvId ?? campaignIdFromPath(pathname, "/report")
+    if (reportId && request.method === "GET") {
+      const campaign = await deps.store.get(reportId)
+      if (!campaign) throw new HttpError("Campaign not found.", 404)
+      const timezone = campaignTimezone(campaign.timezone)
+      const range = reportRange(url, timezone)
+      const report =
+        (await deps.analytics?.report(reportId, timezone, range.from, range.to)) ??
+        emptyScanReport(timezone, range.from, range.to)
+      if (reportCsvId) {
+        return new Response(
+          reportToCsv({
+            name: campaign.name,
+            placeLabel: campaign.placeLabel,
+            trackingUrl: trackingUrl(campaign.id),
+            destination: campaign.destination,
+            visits: campaign.visits,
+            report,
+          }),
+          {
+            status: 200,
+            headers: {
+              "Content-Type": "text/csv; charset=utf-8",
+              "Content-Disposition": `attachment; filename="cupspace-report-${campaign.id}.csv"`,
+              "Cache-Control": "no-store",
+              "X-Content-Type-Options": "nosniff",
+              "X-Robots-Tag": "noindex",
+            },
+          },
+        )
+      }
+      return json({ report, notes: REPORTING_NOTES })
     }
 
     const id = campaignIdFromPath(pathname)
