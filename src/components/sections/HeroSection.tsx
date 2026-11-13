@@ -45,6 +45,12 @@ const HeroSection = () => (
           >
             Calculate café savings
           </Link>
+          <Link
+            to="/coffee-cup-advertising-sydney"
+            className="border-b-2 border-foreground pb-1 transition hover:border-primary hover:text-primary"
+          >
+            Coffee cup advertising in Sydney
+          </Link>
         </div>
       </div>
 

@@ -1,13 +1,28 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Link } from "react-router-dom"
-import maplibregl, {
-  type GeoJSONSource,
-  type Map as MapLibreMap,
-  type MapGeoJSONFeature,
-  type MapMouseEvent,
+import type {
+  GeoJSONSource,
+  IControl,
+  LngLatBounds,
+  Map as MapLibreMap,
+  MapGeoJSONFeature,
+  MapMouseEvent,
 } from "maplibre-gl"
-import "maplibre-gl/dist/maplibre-gl.css"
 import { ArrowRight, Coffee, LocateFixed, MapPin, Search } from "lucide-react"
+
+type MapLibreApi = {
+  Map: new (options: {
+    container: HTMLElement
+    style: string
+    center: [number, number]
+    zoom: number
+    minZoom: number
+    maxZoom: number
+    attributionControl: { compact: boolean }
+  }) => MapLibreMap
+  NavigationControl: new (options: { showCompass: boolean }) => IControl
+  LngLatBounds: new () => LngLatBounds
+}
 
 import {
   getAdvertiserRequestUrl,
@@ -126,6 +141,7 @@ const LocationsExplorer = ({
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MapLibreMap | null>(null)
+  const maplibreRef = useRef<MapLibreApi | null>(null)
   const [selectedAreaId, setSelectedAreaId] = useState("")
   const [query, setQuery] = useState("")
   const [publishedCafes, setPublishedCafes] = useState<PublicCafeLocation[]>([])
@@ -206,11 +222,21 @@ const LocationsExplorer = ({
     : undefined
 
   useEffect(() => {
-    if (!mapContainerRef.current || mapRef.current) {
-      return
-    }
+    let cancelled = false
 
-    const map = new maplibregl.Map({
+    const start = async () => {
+      const [loaded] = await Promise.all([
+        import("maplibre-gl"),
+        import("maplibre-gl/dist/maplibre-gl.css"),
+      ])
+      const maplibregl = (loaded as { default: MapLibreApi }).default
+      if (cancelled || !mapContainerRef.current || mapRef.current) {
+        return
+      }
+
+      maplibreRef.current = maplibregl
+
+      const map = new maplibregl.Map({
       container: mapContainerRef.current,
       style: mapStyle,
       center: australiaCenter,
@@ -372,8 +398,13 @@ const LocationsExplorer = ({
       })
     })
 
+    }
+
+    void start()
+
     return () => {
-      map.remove()
+      cancelled = true
+      mapRef.current?.remove()
       mapRef.current = null
     }
   }, [])
@@ -406,6 +437,10 @@ const LocationsExplorer = ({
     }
 
     if (area.locations.length > 1) {
+      const maplibregl = maplibreRef.current
+      if (!maplibregl) {
+        return
+      }
       const bounds = new maplibregl.LngLatBounds()
       area.locations.forEach((location) => bounds.extend(location.coordinates))
       map.fitBounds(bounds, {

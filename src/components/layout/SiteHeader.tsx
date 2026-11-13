@@ -18,6 +18,9 @@ const SiteHeader = () => (
         <Link className="transition hover:text-primary" to="/locations">
           Locations
         </Link>
+        <Link className="transition hover:text-primary" to="/coffee-cup-advertising-sydney">
+          Sydney
+        </Link>
         <Link className="transition hover:text-primary" to="/savings-calculator">
           Savings
         </Link>
@@ -57,6 +60,7 @@ const SiteHeader = () => (
           <div className="grid text-sm font-bold uppercase tracking-[0.08em]">
             <Link className="min-h-12 border-b border-foreground/20 px-3 py-3" to="/#solution">The model</Link>
             <Link className="min-h-12 border-b border-foreground/20 px-3 py-3" to="/locations">Locations</Link>
+            <Link className="min-h-12 border-b border-foreground/20 px-3 py-3" to="/coffee-cup-advertising-sydney">Sydney</Link>
             <Link className="min-h-12 border-b border-foreground/20 px-3 py-3" to="/savings-calculator">Savings</Link>
             <Link className="min-h-12 border-b border-foreground/20 px-3 py-3" to="/about">Our story</Link>
             <Link className="min-h-12 px-3 py-3" to="/case-studies">Case studies</Link>

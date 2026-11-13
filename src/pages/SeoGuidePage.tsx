@@ -16,11 +16,6 @@ const inline = (text: string): ReactNode[] =>
     return <Fragment key={i}>{part}</Fragment>
   })
 
-const setMeta = (selector: string, attr: string, value: string) => {
-  const el = document.querySelector(selector)
-  if (el) el.setAttribute(attr, value)
-}
-
 const renderBlock = (block: Block, i: number) => {
   switch (block.type) {
     case "h2":
@@ -62,30 +57,7 @@ const SeoGuidePage = ({ slug }: { slug: string }) => {
   const guide = seoGuides.find((g) => g.slug === slug)
 
   useEffect(() => {
-    if (!guide) return
     window.scrollTo(0, 0)
-    document.title = guide.title
-    const url = `https://cupspace.com.au/${guide.slug}`
-    setMeta('meta[name="description"]', "content", guide.description)
-    setMeta('meta[property="og:title"]', "content", guide.title)
-    setMeta('meta[property="og:description"]', "content", guide.description)
-    setMeta('meta[property="og:url"]', "content", url)
-    let canonical = document.querySelector('link[rel="canonical"]')
-    if (!canonical) {
-      canonical = document.createElement("link")
-      canonical.setAttribute("rel", "canonical")
-      document.head.appendChild(canonical)
-    }
-    canonical.setAttribute("href", url)
-    const ld = document.createElement("script")
-    ld.type = "application/ld+json"
-    ld.text = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: guide.faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
-    })
-    document.head.appendChild(ld)
-    return () => { ld.remove() }
   }, [guide])
 
   if (!guide) return <NotFound />

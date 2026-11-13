@@ -30,6 +30,11 @@ export const seoGuides: SeoGuide[] = [
     intro:
       "Your brand, in people's hands, in the suburbs you care about. CupSpace puts your campaign on takeaway coffee cups that local cafés serve every morning. Cafés get their cups free. You get media people carry down the street, into the office and onto the train.",
     blocks: [
+      { type: "h2", text: "How can I advertise my business on coffee cups in Sydney?" },
+      {
+        type: "p",
+        text: "Print your brand on takeaway coffee cups and have local cafés serve them in the Sydney suburbs you want to reach. CupSpace finds the cafés, and you approve each one. We handle design, printing and delivery. The cups go out with the morning coffee and are carried into offices, cars and homes. A QR code on the cup links to you, so that attention can become trackable enquiries.",
+      },
       { type: "h2", text: "How café advertising with CupSpace works" },
       {
         type: "ol",
@@ -53,10 +58,11 @@ export const seoGuides: SeoGuide[] = [
       { type: "h2", text: "Who it suits" },
       {
         type: "p",
-        text: "Real estate agents, gyms, health and allied health clinics, local services, new openings, events and any brand that wants to reach a specific Sydney neighbourhood. See [real estate agent marketing ideas](/real-estate-agent-marketing-ideas), [branded promotional coffee cups](/branded-promotional-coffee-cups) and [advertising ideas for small businesses](/small-business-advertising-ideas).",
+        text: "Real estate agents, health practices, trades, gyms, allied health clinics, local services, new openings, events and any brand that wants to reach a specific Sydney neighbourhood. See [real estate agent marketing ideas](/real-estate-agent-marketing-ideas), [branded promotional coffee cups](/branded-promotional-coffee-cups) and [advertising ideas for small businesses](/small-business-advertising-ideas).",
       },
     ],
     faq: [
+      ["How can I advertise my business on coffee cups in Sydney?", "Put your brand on takeaway cups that local cafés serve in the suburbs you choose. CupSpace handles design, printing and delivery. A QR code can link the cup to you so an enquiry can be tracked."],
       ["Which areas do you cover?", "We can look for cafés in any Sydney suburb you want to reach. Tell us your target area and we'll find cafés there."],
       ["Do I choose the cafés?", "Yes. You approve every café before your campaign starts."],
       ["Do I need to supply artwork?", "No. CupSpace handles cup design, printing and delivery. You can still supply your own brand assets."],

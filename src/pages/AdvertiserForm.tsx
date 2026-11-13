@@ -128,7 +128,7 @@ const AdvertiserForm = () => {
                 <input
                   type="hidden"
                   name="requestedLocation"
-                  value={[locationName, locationAddress].filter(Boolean).join(" — ")}
+                  value={[locationName, locationAddress].filter(Boolean).join(", ")}
                 />
                 <div className="hidden">
                   <label>
