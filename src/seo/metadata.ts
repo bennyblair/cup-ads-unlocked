@@ -5,10 +5,13 @@ export const LEGAL_NAME = "CUPSPACE PTY LTD"
 export const BRAND_NAME = "CupSpace"
 export const ABN = "71 690 786 817"
 export const CONTACT_EMAIL = "info@cupspace.com.au"
+export const PHONE_DISPLAY = "0485 931 539"
+export const PHONE_TEL = "+61485931539"
+export const PHONE_INTERNATIONAL = "+61 485 931 539"
 export const OG_IMAGE = `${SITE_ORIGIN}/og-cupspace-logo.png`
 
-// TODO(Ben): add telephone and streetAddress only after they are confirmed.
-// Do not invent a phone number or a street address.
+// TODO(Ben): add streetAddress only after it is confirmed.
+// Do not invent a street address.
 
 export type PageSeo = {
   path: string
@@ -222,13 +225,14 @@ const organizationNode = {
   },
   url: SITE_ORIGIN,
   email: CONTACT_EMAIL,
+  telephone: PHONE_INTERNATIONAL,
   logo: OG_IMAGE,
   image: OG_IMAGE,
   slogan: "Cups for cafés. Reach for brands.",
   description:
     "CupSpace is the brand of CUPSPACE PTY LTD, an Australian business that places advertising on takeaway coffee cups distributed through local cafés. The website is https://cupspace.com.au. This is not cupspace.com, and it is not an unrelated app that uses a similar name.",
   areaServed,
-  // telephone and address are intentionally omitted until Ben confirms them.
+  // TODO(Ben): street address stays unpublished until you confirm one.
 }
 
 const serviceNode = {

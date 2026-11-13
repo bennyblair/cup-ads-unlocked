@@ -48,8 +48,14 @@ for (const page of manifest) {
   if (!jsonLd.includes("LocalBusiness") || !jsonLd.includes("Coffee cup advertising")) {
     fail(`${page.path} JSON-LD is missing LocalBusiness or Service`)
   }
-  if (jsonLd.includes('"telephone"') || jsonLd.includes("streetAddress")) {
-    fail(`${page.path} JSON-LD includes an unconfirmed phone or street address`)
+  if (!jsonLd.includes('"telephone":"+61 485 931 539"')) {
+    fail(`${page.path} JSON-LD is missing the public telephone`)
+  }
+  if (jsonLd.includes("streetAddress")) {
+    fail(`${page.path} JSON-LD includes an unconfirmed street address`)
+  }
+  if (!page.noindex && (!html.includes("tel:+61485931539") || !html.includes("0485 931 539"))) {
+    fail(`${page.path} is missing the public phone link`)
   }
   if (page.noindex && !robots.includes("noindex")) fail(`${page.path} should be noindex`)
   if (!page.noindex && robots.includes("noindex")) fail(`${page.path} should be indexable`)
@@ -93,6 +99,7 @@ for (const phrase of [
   "CUPSPACE PTY LTD",
   "71 690 786 817",
   "info@cupspace.com.au",
+  "0485 931 539",
   "local cafés",
   "QR code",
   "Sydney, New South Wales, and Australia",

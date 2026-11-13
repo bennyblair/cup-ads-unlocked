@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 
 import BrandMark from "@/components/brand/BrandMark"
+import { PHONE_DISPLAY, PHONE_TEL } from "@/seo/metadata"
 
 const Footer = () => (
   <footer id="contact" className="bg-foreground py-12 text-background sm:py-16">
@@ -15,6 +16,9 @@ const Footer = () => (
           </p>
           <a className="mt-5 inline-block border-b border-accent text-sm font-bold" href="mailto:info@cupspace.com.au">
             info@cupspace.com.au
+          </a>
+          <a className="mt-3 inline-block border-b border-accent text-sm font-bold" href={`tel:${PHONE_TEL}`}>
+            {PHONE_DISPLAY}
           </a>
         </div>
 

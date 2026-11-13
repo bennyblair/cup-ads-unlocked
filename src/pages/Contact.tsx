@@ -8,13 +8,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { submitNetlifyForm } from "@/lib/netlify-forms"
-import { ABN, CONTACT_EMAIL, LEGAL_NAME } from "@/seo/metadata"
+import { ABN, CONTACT_EMAIL, LEGAL_NAME, PHONE_DISPLAY, PHONE_TEL } from "@/seo/metadata"
 
 const details = [
   ["Legal name", LEGAL_NAME],
   ["Brand", "CupSpace"],
   ["ABN", ABN],
   ["Email", CONTACT_EMAIL],
+  ["Phone", PHONE_DISPLAY],
   ["Website", "https://cupspace.com.au"],
   ["Service area", "Sydney, New South Wales, and Australia"],
 ]
@@ -63,6 +64,8 @@ const Contact = () => {
                     <dd className="font-medium">
                       {label === "Email" ? (
                         <a className="border-b-2 border-foreground" href={`mailto:${value}`}>{value}</a>
+                      ) : label === "Phone" ? (
+                        <a className="border-b-2 border-foreground" href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a>
                       ) : label === "Website" ? (
                         <a className="border-b-2 border-foreground" href={value}>{value}</a>
                       ) : (
@@ -73,7 +76,7 @@ const Contact = () => {
                 ))}
               </dl>
               <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
-                A phone number and a street address are not listed here. They have not been confirmed for publication.
+                A street address is not listed here. It has not been confirmed for publication.
               </p>
 
               <h2 className="mt-12 font-display text-3xl uppercase leading-[0.95] text-primary">What to enquire about</h2>

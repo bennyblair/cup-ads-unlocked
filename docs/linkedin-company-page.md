@@ -1,6 +1,6 @@
 # CupSpace LinkedIn company page
 
-Draft copy for Ben to create himself. This file does not publish anything. Do not invent a phone number, street address, founding year, headcount, client results or reviews.
+Draft copy for Ben to create himself. This file does not publish anything. Do not invent a street address, founding year, headcount, client results or reviews.
 
 Leave any LinkedIn field blank when the fact below says it is not confirmed.
 
@@ -26,12 +26,13 @@ CupSpace is for businesses that want local attention, including real estate agen
 
 Website: https://cupspace.com.au
 Email: info@cupspace.com.au
+Phone: 0485 931 539
 
 CupSpace at cupspace.com.au is not the website cupspace.com, and it is not an unrelated app that uses a similar name.
 
 Service area: Sydney, New South Wales, and Australia.
 
-A phone number and a street address are not listed because they have not been confirmed for publication.
+A street address is not listed because it has not been confirmed for publication.
 
 ## Industry
 
@@ -59,7 +60,6 @@ Not confirmed as a street address. Do not enter a street address that has not be
 
 ## Do not add
 
-- A phone number
 - A street address, unless Ben has confirmed the one to publish
 - Pricing
 - Named clients, reviews, ratings or campaign statistics
