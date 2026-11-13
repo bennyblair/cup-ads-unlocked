@@ -37,7 +37,7 @@ const createAnonymousPartnerLocations = ({
   coordinates.map((point, index) => ({
     id: `${idPrefix}-${index + 1}`,
     kind: "cafe",
-    name: `Partner café — ${area}`,
+    name: `Partner café: ${area}`,
     address: `${area} area, ${state}`,
     suburb,
     state,
@@ -659,7 +659,7 @@ export const networkLocations: NetworkLocation[] = [
   {
     id: "partner-bondi-1",
     kind: "cafe",
-    name: "Partner café — Bondi area",
+    name: "Partner café: Bondi area",
     address: "Bondi area, NSW",
     suburb: "Bondi",
     state: "NSW",
@@ -670,7 +670,7 @@ export const networkLocations: NetworkLocation[] = [
   {
     id: "partner-bondi-2",
     kind: "cafe",
-    name: "Partner café — Bondi area",
+    name: "Partner café: Bondi area",
     address: "Bondi area, NSW",
     suburb: "Bondi",
     state: "NSW",
@@ -681,7 +681,7 @@ export const networkLocations: NetworkLocation[] = [
   {
     id: "partner-bondi-junction",
     kind: "cafe",
-    name: "Partner café — Bondi Junction",
+    name: "Partner café: Bondi Junction",
     address: "Bondi Junction area, NSW",
     suburb: "Bondi Junction",
     state: "NSW",
@@ -692,7 +692,7 @@ export const networkLocations: NetworkLocation[] = [
   {
     id: "partner-woollahra",
     kind: "cafe",
-    name: "Partner café — Woollahra",
+    name: "Partner café: Woollahra",
     address: "Woollahra area, NSW",
     suburb: "Woollahra",
     state: "NSW",
@@ -703,7 +703,7 @@ export const networkLocations: NetworkLocation[] = [
   {
     id: "partner-edgecliff-1",
     kind: "cafe",
-    name: "Partner café — Edgecliff area",
+    name: "Partner café: Edgecliff area",
     address: "Edgecliff area, NSW",
     suburb: "Edgecliff",
     state: "NSW",
@@ -714,7 +714,7 @@ export const networkLocations: NetworkLocation[] = [
   {
     id: "partner-edgecliff-2",
     kind: "cafe",
-    name: "Partner café — Edgecliff area",
+    name: "Partner café: Edgecliff area",
     address: "Edgecliff area, NSW",
     suburb: "Edgecliff",
     state: "NSW",
@@ -725,7 +725,7 @@ export const networkLocations: NetworkLocation[] = [
   {
     id: "partner-maroubra-beach",
     kind: "cafe",
-    name: "Partner café — Maroubra Beach",
+    name: "Partner café: Maroubra Beach",
     address: "Maroubra Beach area, NSW",
     suburb: "Maroubra",
     state: "NSW",
@@ -736,7 +736,7 @@ export const networkLocations: NetworkLocation[] = [
   {
     id: "partner-sydney-cbd-north",
     kind: "cafe",
-    name: "Partner café — Sydney City",
+    name: "Partner café: Sydney City",
     address: "Sydney City area, NSW",
     suburb: "Sydney",
     state: "NSW",
@@ -747,7 +747,7 @@ export const networkLocations: NetworkLocation[] = [
   {
     id: "partner-sydney-cbd-south",
     kind: "cafe",
-    name: "Partner café — Sydney City",
+    name: "Partner café: Sydney City",
     address: "Sydney City area, NSW",
     suburb: "Sydney",
     state: "NSW",
@@ -758,7 +758,7 @@ export const networkLocations: NetworkLocation[] = [
   {
     id: "partner-sydney-west",
     kind: "cafe",
-    name: "Partner café — Sydney City",
+    name: "Partner café: Sydney City",
     address: "Sydney City area, NSW",
     suburb: "Sydney",
     state: "NSW",
@@ -769,7 +769,7 @@ export const networkLocations: NetworkLocation[] = [
   {
     id: "partner-sydney-east",
     kind: "cafe",
-    name: "Partner café — Sydney City",
+    name: "Partner café: Sydney City",
     address: "Sydney City area, NSW",
     suburb: "Sydney",
     state: "NSW",

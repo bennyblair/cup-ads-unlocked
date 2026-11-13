@@ -23,7 +23,7 @@ const campaignSteps = [
   {
     number: "01",
     title: "Choose the streets",
-    body: "Two cafés were selected across Marrickville and Newtown—areas where the audience already lived, worked and inspected property. Each café received 10,000 campaign cups.",
+    body: "Two cafés were selected across Marrickville and Newtown, areas where the audience already lived, worked and inspected property. Each café received 10,000 campaign cups.",
   },
   {
     number: "02",
@@ -160,7 +160,7 @@ const CaseStudies = () => {
                   <p>
                     The challenge was not awareness alone. It was context. The
                     agency needed to show up when potential buyers were thinking
-                    about suburbs, commutes and the shape of their next move—not
+                    about suburbs, commutes and the shape of their next move, not
                     while they were clearing another crowded feed.
                   </p>
                   <p className="border-y-2 border-foreground py-7 font-display text-3xl uppercase leading-[1.02] text-primary sm:text-5xl">

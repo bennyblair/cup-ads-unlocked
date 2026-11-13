@@ -93,7 +93,7 @@ const EmetCapitalCaseStudy = () => {
                 <p className="mt-8 max-w-3xl border-l-4 border-primary pl-5 text-xl font-medium leading-relaxed text-muted-foreground">
                   How CupSpace hyper-targeted affluent areas across four capital
                   cities to put Emet Capital in front of property investors,
-                  developers and business owners—and turn local attention into
+                  developers and business owners, and turn local attention into
                   new customer conversations.
                 </p>
               </div>

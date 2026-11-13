@@ -22,6 +22,7 @@ const Footer = () => (
           <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-accent">Explore</p>
           <ul className="space-y-1 text-background/70">
             <li><Link className="flex min-h-11 items-center hover:text-background" to="/locations">Locations</Link></li>
+            <li><Link className="flex min-h-11 items-center hover:text-background" to="/coffee-cup-advertising-sydney">Coffee cup advertising in Sydney</Link></li>
             <li><Link className="flex min-h-11 items-center hover:text-background" to="/case-studies">Case Studies</Link></li>
             <li><Link className="flex min-h-11 items-center hover:text-background" to="/savings-calculator">Savings calculator</Link></li>
             <li><Link className="flex min-h-11 items-center hover:text-background" to="/about">Our story</Link></li>
@@ -33,13 +34,18 @@ const Footer = () => (
           <ul className="space-y-1 text-background/70">
             <li><Link className="flex min-h-11 items-center hover:text-background" to="/advertiser-form">For brands</Link></li>
             <li><Link className="flex min-h-11 items-center hover:text-background" to="/cafe-form">For cafés</Link></li>
+            <li><Link className="flex min-h-11 items-center hover:text-background" to="/contact">Contact</Link></li>
           </ul>
         </nav>
       </div>
 
-      <div className="flex flex-col gap-2 pt-7 text-xs uppercase tracking-[0.12em] text-background/45 sm:flex-row sm:justify-between">
-        <p>© 2026 CupSpace. Australia.</p>
-        <p>Physical media / local impact</p>
+      <div className="flex flex-col gap-3 pt-7 text-xs uppercase tracking-[0.12em] text-background/45 sm:flex-row sm:items-center sm:justify-between">
+        <p>© 2026 CupSpace. CUPSPACE PTY LTD. ABN 71 690 786 817. Australia.</p>
+        <p className="flex flex-wrap gap-x-4 gap-y-2">
+          <span>Physical media / local impact</span>
+          <Link className="hover:text-background" to="/privacy">Privacy</Link>
+          <Link className="hover:text-background" to="/terms">Terms</Link>
+        </p>
       </div>
     </div>
   </footer>
