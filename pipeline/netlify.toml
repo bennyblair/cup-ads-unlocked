@@ -1,0 +1,26 @@
+# CupSpace Pipeline.
+# Create a NEW Netlify site with base directory "pipeline".
+# Do not point the existing cupspace.com.au site at this directory.
+[build]
+  command = "npm run build"
+  publish = "dist"
+  # Do not set build.ignore here. On a clean checkout, an empty
+  # CACHED_COMMIT_REF makes `git diff --quiet $COMMIT_REF .` exit 0, and
+  # Netlify then cancels the build before Edge Functions are bundled.
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[edge_functions]]
+  function = "gate"
+  path = "/*"
+
+# /api/* is handled by the function config path, which wins over this fallback.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
