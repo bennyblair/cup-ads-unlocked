@@ -1,0 +1,42 @@
+// Netlify edge functions are bundled by Deno. Relative imports must include
+// the .ts extension or the bundler looks up the path with no extension and fails.
+import { decideGate } from "../../src/shared/gate.ts"
+import { readAuthEnv } from "../../src/shared/runtime-env.ts"
+import { hasValidSession } from "../../src/shared/session.ts"
+
+type EdgeContext = { next: () => Promise<Response> | Response }
+
+const redirect = (request: Request, to: string) =>
+  new Response(null, {
+    status: 302,
+    headers: {
+      Location: new URL(to, request.url).toString(),
+      "Cache-Control": "no-store",
+      "X-Robots-Tag": "noindex, nofollow",
+    },
+  })
+
+export default async (request: Request, context: EdgeContext) => {
+  const pathname = new URL(request.url).pathname
+  try {
+    const { password, sessionSecret } = readAuthEnv()
+    const authenticated = await hasValidSession(request, sessionSecret, password)
+    const decision = decideGate({ method: request.method, pathname, authenticated })
+    if (decision.type === "redirect") return redirect(request, decision.to)
+    if (decision.type === "unauthorized") {
+      return new Response(JSON.stringify({ error: "Sign in required." }), {
+        status: 401,
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff",
+          "X-Robots-Tag": "noindex, nofollow",
+        },
+      })
+    }
+    return context.next()
+  } catch {
+    console.error("pipeline gate failed")
+    return redirect(request, "/login")
+  }
+}
